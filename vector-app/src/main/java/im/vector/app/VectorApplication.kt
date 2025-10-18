@@ -62,6 +62,15 @@ import im.vector.app.features.themes.ThemeUtils
 import im.vector.app.features.version.VersionProvider
 import im.vector.application.R
 import org.jitsi.meet.sdk.log.JitsiMeetDefaultLogHandler
+
+// Security and Obfuscation imports
+import com.example.antidebug.AntiDebug
+import com.example.antidebug.ThreatType
+import com.example.antidebug.SecurityReport
+import com.example.antidebug.MonitoringStatistics
+import com.example.antidebug.SecurityCheckResult
+import io.element.android.library.obfuscation.ObfuscationManager
+import io.element.android.library.obfuscation.ObfuscationConfig
 import org.matrix.android.sdk.api.Matrix
 import org.matrix.android.sdk.api.auth.AuthenticationService
 import timber.log.Timber
@@ -121,6 +130,11 @@ class VectorApplication :
         enableStrictModeIfNeeded()
         super.onCreate()
         appContext = this
+        
+        // Initialize security and obfuscation systems
+        initializeSecurity()
+        initializeObfuscation()
+        
         flipperProxy.init(matrix)
         vectorAnalytics.init()
         vectorAnalytics.updateSuperProperties(
@@ -295,5 +309,180 @@ class VectorApplication :
 
     private fun initMemoryLeakAnalysis() {
         leakDetector.enable(vectorPreferences.isMemoryLeakAnalysisEnabled())
+    }
+    
+    /**
+     * Initialize security systems including anti-debug protection
+     */
+    private fun initializeSecurity() {
+        try {
+            // Initialize AntiDebug SDK with continuous monitoring for production builds
+            AntiDebug.init(this, enableContinuousMonitoring = !buildMeta.isDebug)
+            
+            // Perform initial security check
+            val securityReport = AntiDebug.performSecurityCheck()
+            
+            // Handle any detected threats
+            if (securityReport.hasThreats()) {
+                Timber.w("Security threats detected during initialization")
+                handleSecurityThreats(securityReport)
+            } else {
+                Timber.d("Security initialization completed successfully")
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to initialize security systems")
+            // In production, you might want to exit the app if security fails
+            if (!buildMeta.isDebug) {
+                // For production builds, consider terminating the app
+                // System.exit(1)
+            }
+        }
+    }
+    
+    /**
+     * Initialize obfuscation systems
+     */
+    private fun initializeObfuscation() {
+        try {
+            // Initialize obfuscation manager with configuration
+            ObfuscationManager.initialize(
+                context = this,
+                config = object : ObfuscationConfig {
+                    override val isDebugMode = BuildConfig.DEBUG
+                }
+            )
+            
+            // Log obfuscation status
+            val obfuscationStatus = ObfuscationManager.getObfuscationStatus()
+            val obfuscationStats = ObfuscationManager.getObfuscationStats()
+            
+            Timber.d("Obfuscation initialized - Status: $obfuscationStatus, Stats: $obfuscationStats")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to initialize obfuscation systems")
+        }
+    }
+    
+    /**
+     * Handle detected security threats
+     */
+    private fun handleSecurityThreats(securityReport: SecurityReport) {
+        when {
+            securityReport.debuggerDetected -> {
+                Timber.w("Debugger detected - handling threat")
+                // Threat handling is already done in the individual detection methods
+            }
+            securityReport.rootDetected -> {
+                Timber.w("Root detected - handling threat")
+                // Threat handling is already done in the individual detection methods
+            }
+            securityReport.emulatorDetected -> {
+                Timber.w("Emulator detected - handling threat")
+                // Threat handling is already done in the individual detection methods
+            }
+            securityReport.tamperingDetected -> {
+                Timber.w("Tampering detected - handling threat")
+                // Threat handling is already done in the individual detection methods
+            }
+            securityReport.hooksDetected -> {
+                Timber.w("Hooks detected - handling threat")
+                // Threat handling is already done in the individual detection methods
+            }
+            securityReport.suspiciousBehavior -> {
+                Timber.w("Suspicious behavior detected - handling threat")
+                // Threat handling is already done in the individual detection methods
+            }
+        }
+        
+        // For production builds, consider terminating the app
+        if (!buildMeta.isDebug) {
+            Timber.w("Security threat detected in production build - terminating app")
+            finishAffinity()
+            System.exit(1)
+        }
+    }
+    
+    /**
+     * Perform periodic security checks
+     */
+    fun performSecurityCheck() {
+        try {
+            val securityReport = AntiDebug.performSecurityCheck()
+            if (securityReport.hasThreats()) {
+                handleSecurityThreats(securityReport)
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Security check failed")
+        }
+    }
+    
+    /**
+     * Get security monitoring statistics
+     */
+    fun getSecurityStatistics(): MonitoringStatistics? {
+        return try {
+            AntiDebug.getMonitoringStatistics()
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to get security statistics")
+            null
+        }
+    }
+    
+    /**
+     * Perform immediate security check
+     */
+    fun performImmediateSecurityCheck(): SecurityCheckResult? {
+        return try {
+            AntiDebug.performImmediateSecurityCheck()
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to perform immediate security check")
+            null
+        }
+    }
+    
+    /**
+     * Pause security monitoring
+     */
+    fun pauseSecurityMonitoring() {
+        try {
+            AntiDebug.pauseMonitoring()
+            Timber.d("Security monitoring paused")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to pause security monitoring")
+        }
+    }
+    
+    /**
+     * Resume security monitoring
+     */
+    fun resumeSecurityMonitoring() {
+        try {
+            AntiDebug.resumeMonitoring()
+            Timber.d("Security monitoring resumed")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to resume security monitoring")
+        }
+    }
+    
+    /**
+     * Get data protection instance for secure storage
+     */
+    fun getDataProtection(): com.example.antidebug.DataProtection? {
+        return try {
+            AntiDebug.getDataProtection()
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to get data protection instance")
+            null
+        }
+    }
+    
+    /**
+     * Handle security threats (public method for external calls)
+     */
+    fun handleSecurityThreat(threatType: ThreatType) {
+        try {
+            AntiDebug.handleThreat(threatType)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to handle security threat: $threatType")
+        }
     }
 }

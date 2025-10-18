@@ -94,3 +94,114 @@
 -dontwarn org.mozilla.javascript.**
 -dontwarn org.slf4j.**
 -dontwarn org.jspecify.annotations.NullMarked
+
+# Security and Obfuscation Rules
+# Anti-Debug SDK
+-keep class im.vector.app.security.** { *; }
+-keep class im.vector.app.security.AntiDebug { *; }
+-keep class im.vector.app.security.SecurityReport { *; }
+-keep class im.vector.app.security.ThreatType { *; }
+-keep class im.vector.app.security.ResponseHandler { *; }
+-keep class im.vector.app.security.DataProtection { *; }
+
+# Keep native methods for anti-debug
+-keepclasseswithmembernames class im.vector.app.security.** {
+    native <methods>;
+}
+
+# Obfuscation Manager
+-keep class im.vector.app.obfuscation.ObfuscationManager { *; }
+-keep class im.vector.app.obfuscation.ObfuscationManager$* { *; }
+
+# Keep obfuscation utility classes
+-keep class im.vector.app.obfuscation.static.** { *; }
+-keep class im.vector.app.obfuscation.runtime.** { *; }
+-keep class im.vector.app.obfuscation.data.** { *; }
+-keep class im.vector.app.obfuscation.native.** { *; }
+
+# Keep obfuscation utility methods
+-keepclassmembers class im.vector.app.obfuscation.** {
+    public static * mask*(...);
+    public static * encrypt*(...);
+    public static * decrypt*(...);
+    public static * obfuscate*(...);
+}
+
+# Keep security initialization methods
+-keepclassmembers class im.vector.app.VectorApplication {
+    public void initializeSecurity();
+    public void initializeObfuscation();
+}
+
+# Keep security monitoring methods
+-keepclassmembers class im.vector.app.** {
+    public void performSecurityCheck();
+    public void handleSecurityThreat(...);
+}
+
+# Keep obfuscation status methods
+-keepclassmembers class im.vector.app.obfuscation.ObfuscationManager {
+    public static * getObfuscationStatus();
+    public static * getObfuscationStats();
+}
+
+# Keep data masking methods
+-keepclassmembers class im.vector.app.obfuscation.data.DataMasking {
+    public static * mask*(...);
+    public static * encrypt*(...);
+    public static * decrypt*(...);
+}
+
+# Keep reflection-based security classes
+-keepclassmembers class * {
+    @im.vector.app.obfuscation.runtime.ReflectionIndirection *;
+}
+
+# Keep security-related serializable classes
+-keep class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient <fields>;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+# Anti-Debug SDK Rules
+-keep class com.example.antidebug.** { *; }
+-keepclassmembers class com.example.antidebug.** {
+    public <methods>;
+}
+
+# Keep native methods for anti-debug
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep anti-debug data classes
+-keep class com.example.antidebug.SecurityReport { *; }
+-keep class com.example.antidebug.MonitoringStatistics { *; }
+-keep class com.example.antidebug.SecurityCheckResult { *; }
+-keep class com.example.antidebug.ThreatInfo { *; }
+-keep enum com.example.antidebug.ThreatType { *; }
+
+# Keep anti-debug public API
+-keep class com.example.antidebug.AntiDebug {
+    public static <methods>;
+}
+
+# Keep response handler
+-keep class com.example.antidebug.ResponseHandler {
+    public <methods>;
+}
+
+# Keep data protection
+-keep class com.example.antidebug.DataProtection {
+    public <methods>;
+}
+
+# Keep continuous monitoring
+-keep class com.example.antidebug.ContinuousMonitoring {
+    public <methods>;
+}

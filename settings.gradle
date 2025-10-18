@@ -21,3 +21,7 @@ include ':library:external:barcodescanner:zxing'
 include ':library:rustCrypto'
 include ':matrix-sdk-android'
 include ':matrix-sdk-android-flow'
+
+// Security and Obfuscation modules
+include ':anti-debug-sdk'
+include ':library:obfuscation'

@@ -138,7 +138,8 @@ android {
     namespace "im.vector.application"
     // Due to a bug introduced in Android gradle plugin 3.6.0, we have to specify the ndk version to use
     // Ref: https://issuetracker.google.com/issues/144111441
-    ndkVersion "21.3.6528147"
+    // Updated to support 16 KB page size compatibility
+    ndkVersion "26.1.10909125"
 
     compileSdk versions.compileSdk
 
@@ -172,6 +173,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86", 'arm64-v8a', 'x86_64'
         }
+        
 
         // Ref: https://developer.android.com/studio/build/configure-apk-splits.html
         splits {
@@ -377,6 +379,11 @@ android {
         pickFirsts.add("META-INF/LICENSE.md")
         pickFirsts.add("META-INF/LICENSE-notice.md")
         pickFirsts.add("MANIFEST.MF")
+        
+        // Enable 16 KB page size compatibility for Android 15+
+        jniLibs {
+            useLegacyPackaging = false
+        }
     }
 }
 

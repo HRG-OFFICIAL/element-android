@@ -1,4 +1,4 @@
-﻿package io.element.android.library.obfuscation.static
+package io.element.android.library.obfuscation.static
 
 import android.content.Context
 import android.util.Base64
@@ -29,8 +29,8 @@ object AdvancedObfuscator {
     // ===== 1. STATIC CODE OBFUSCATION =====
     
     /**
-     * 1.1 enterprise-level-Level Identifier Renaming - Industry-leading obfuscation
-     * Generates names like a0, b2, c3, d1, etc. to match enterprise-level's obfuscation level
+     * 1.1 advanced-Level Identifier Renaming - Industry-leading obfuscation
+     * Generates names like a0, b2, c3, d1, etc. to match advanced's obfuscation level
      */
     object IdentifierObfuscator {
         private val nameMap = mutableMapOf<String, String>()
@@ -38,27 +38,27 @@ object AdvancedObfuscator {
         private val usedNames = mutableSetOf<String>()
         private var nameCounter = 0
         
-        // enterprise-level-style naming pattern: single letter + single digit
+        // advanced-style naming pattern: single letter + single digit
         private val letters = ('a'..'z').toList()
         private val digits = ('0'..'9').toList()
         
         fun obfuscateIdentifier(original: String): String {
             return nameMap.getOrPut(original) {
-                val obfuscated = generateenterprise-levelStyleName()
+                val obfuscated = generateAdvancedStyleName()
                 reverseMap[obfuscated] = original
                 obfuscated
             }
         }
         
         /**
-         * Generate enterprise-level-style obfuscated names (a0, b2, c3, etc.)
+         * Generate advanced-style obfuscated names (a0, b2, c3, etc.)
          */
-        private fun generateenterprise-levelStyleName(): String {
+        private fun generateAdvancedStyleName(): String {
             var attempts = 0
             var name: String
             
             do {
-                // enterprise-level pattern: single letter + single digit
+                // advanced pattern: single letter + single digit
                 val letter = letters[secureRandom.nextInt(letters.size)]
                 val digit = digits[secureRandom.nextInt(digits.size)]
                 name = "$letter$digit"
@@ -94,7 +94,7 @@ object AdvancedObfuscator {
          */
         fun dynamicRename(identifier: String): String {
             val currentName = nameMap[identifier] ?: return identifier
-            val newName = generateenterprise-levelStyleName()
+            val newName = generateAdvancedStyleName()
             nameMap[identifier] = newName
             reverseMap.remove(currentName)
             reverseMap[newName] = identifier
@@ -106,7 +106,7 @@ object AdvancedObfuscator {
          */
         fun obfuscateClassName(original: String): String {
             val prefix = "a" // All classes start with 'a' for consistency
-            val suffix = generateenterprise-levelStyleName()
+            val suffix = generateAdvancedStyleName()
             return "$prefix$suffix"
         }
         
@@ -114,14 +114,14 @@ object AdvancedObfuscator {
          * Generate obfuscated method names
          */
         fun obfuscateMethodName(original: String): String {
-            return generateenterprise-levelStyleName()
+            return generateAdvancedStyleName()
         }
         
         /**
          * Generate obfuscated field names
          */
         fun obfuscateFieldName(original: String): String {
-            return generateenterprise-levelStyleName()
+            return generateAdvancedStyleName()
         }
         
         /**

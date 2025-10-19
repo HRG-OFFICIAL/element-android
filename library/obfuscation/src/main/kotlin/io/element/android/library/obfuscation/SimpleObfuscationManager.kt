@@ -250,8 +250,8 @@ class SimpleObfuscationManager private constructor(
 }
 
 /**
- * Default Obfuscation Config
+ * Simple Obfuscation Config for SimpleObfuscationManager
  */
-class DefaultObfuscationConfig : ObfuscationConfig {
+class SimpleObfuscationConfig : ObfuscationConfig {
     override val isDebugMode: Boolean = false
 }

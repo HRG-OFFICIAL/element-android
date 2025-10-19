@@ -1,4 +1,4 @@
-﻿package io.element.android.library.obfuscation.static
+package io.element.android.library.obfuscation.static
 
 import kotlin.random.Random
 
@@ -35,7 +35,7 @@ object FlowObfuscator {
     private val stateTransitions = mutableMapOf<Int, Int>()
     
     /**
-     * enterprise-level-Level Opaque Predicates - Mathematically proven to be always true/false
+     * advanced-Level Opaque Predicates - Mathematically proven to be always true/false
      * These are extremely difficult for static analysis tools to resolve
      */
     
@@ -96,7 +96,7 @@ object FlowObfuscator {
     }
     
     /**
-     * Control Flow Flattening - enterprise-level's signature technique
+     * Control Flow Flattening - advanced's signature technique
      * Converts linear code into a state machine
      */
     fun executeFlattenedCode(blocks: List<() -> Unit>) {
@@ -223,9 +223,9 @@ object FlowObfuscator {
         
         // Meaningless computation that looks important
         for (i in 0..7) {
-            result = result xor MAGIC_CONSTANT_2
+            result = result xor MAGIC_CONSTANT_2.toInt()
             result = result shl 1
-            result = result or MAGIC_CONSTANT_3
+            result = result or MAGIC_CONSTANT_3.toInt()
             result = result and 0xFFFF
         }
         

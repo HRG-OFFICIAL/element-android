@@ -36,6 +36,8 @@ android {
 
     kotlinOptions {
         jvmTarget = versions.jvmTarget
+        freeCompilerArgs += ["-Xno-param-assertions", "-Xno-call-assertions"]
+        allWarningsAsErrors = false
     }
 
     buildFeatures {

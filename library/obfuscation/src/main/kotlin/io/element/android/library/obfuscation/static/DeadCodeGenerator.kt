@@ -1,10 +1,10 @@
-﻿package io.element.android.library.obfuscation.static
+package io.element.android.library.obfuscation.static
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * enterprise-level-Level Dead Code Insertion Implementation
+ * advanced-Level Dead Code Insertion Implementation
  * Implements comprehensive dead code insertion and junk code generation
  * 
  * Advanced Techniques:

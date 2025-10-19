@@ -1,10 +1,10 @@
-﻿package io.element.android.library.obfuscation.runtime
+package io.element.android.library.obfuscation.runtime
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * enterprise-level-Level Polymorphic Code Generation Implementation
+ * advanced-Level Polymorphic Code Generation Implementation
  * Implements industry-leading polymorphic code generation and self-modifying code
  * 
  * Advanced Techniques:

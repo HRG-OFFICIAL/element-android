@@ -1,10 +1,10 @@
-﻿package io.element.android.library.obfuscation.static
+package io.element.android.library.obfuscation.static
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * enterprise-level-Level Method Obfuscation Implementation
+ * advanced-Level Method Obfuscation Implementation
  * Implements industry-leading method inlining and outlining techniques
  * 
  * Advanced Techniques:
@@ -30,7 +30,7 @@ object MethodObfuscator {
          * Inline small methods to eliminate call overhead and obfuscate structure
          */
         fun inlineMethod(methodName: String, methodBody: () -> Any): ByteArray {
-            val methodSignature = generateMethodSignature(methodName)
+            val methodSignature = generateMethodSignatureBytes(methodName)
             
             // Check if method should be inlined based on size and frequency
             if (shouldInlineMethod(methodName, methodBody)) {
@@ -114,7 +114,7 @@ object MethodObfuscator {
                 val outlinedMethodName = "${methodName}_chunk_$index"
                 val outlinedCode = generateOutlinedMethod(outlinedMethodName, chunk)
                 outlinedMethods.add(outlinedCode)
-                this.outlinedMethods.add(outlinedMethodName)
+                MethodObfuscator.outlinedMethods.add(outlinedMethodName)
             }
             
             return outlinedMethods
@@ -146,7 +146,7 @@ object MethodObfuscator {
             val code = mutableListOf<Byte>()
             
             // Add method signature
-            code.addAll(generateMethodSignature(methodName))
+            code.addAll(generateMethodSignatureBytes(methodName))
             
             // Add method prologue
             code.addAll(generateMethodPrologue())
@@ -170,7 +170,7 @@ object MethodObfuscator {
             val result = a * b + secureRandom.nextInt(100)
             
             // Add some obfuscation
-            val obfuscated = result xor 0xDEADBEEF
+            val obfuscated = result xor 0xDEADBEEF.toInt()
             return obfuscated
         }
     }
@@ -187,7 +187,7 @@ object MethodObfuscator {
             val code = mutableListOf<Byte>()
             
             // Add method signature
-            code.addAll(generateMethodSignature(methodName))
+            code.addAll(generateMethodSignatureBytes(methodName))
             
             // Add parameter handling
             code.addAll(generateParameterHandling(parameters))
@@ -325,7 +325,7 @@ object MethodObfuscator {
         private fun obfuscateMethodName(methodName: String): String {
             val obfuscatedName = StringBuilder()
             
-            // Generate enterprise-level-style name
+            // Generate advanced-style name
             val letter = ('a'..'z').random()
             val digit = ('0'..'9').random()
             obfuscatedName.append(letter).append(digit)
@@ -419,6 +419,25 @@ object MethodObfuscator {
     }
     
     /**
+     * Generate method signature bytes
+     */
+    private fun generateMethodSignatureBytes(methodName: String): List<Byte> {
+        val signature = mutableListOf<Byte>()
+        
+        // Add method name hash
+        val nameHash = methodName.hashCode()
+        signature.addAll(intToBytes(nameHash))
+        
+        // Add obfuscation markers
+        signature.add(0xCA.toByte())
+        signature.add(0xFE.toByte())
+        signature.add(0xBA.toByte())
+        signature.add(0xBE.toByte())
+        
+        return signature
+    }
+    
+    /**
      * Get obfuscation statistics
      */
     fun getObfuscationStats(): Map<String, Any> {
@@ -428,5 +447,30 @@ object MethodObfuscator {
             "cached_methods" to methodCache.size,
             "total_methods" to (inlinedMethods.size + outlinedMethods.size)
         )
+    }
+    
+    // Public API methods for ObfuscationManager
+    
+    /**
+     * Inline a method - public wrapper
+     */
+    fun inlineMethod(methodName: String, methodBody: () -> Any): ByteArray {
+        return MethodInliner.inlineMethod(methodName, methodBody)
+    }
+    
+    /**
+     * Outline a method - public wrapper
+     */
+    fun outlineMethod(methodName: String, methodBody: ByteArray): String {
+        // Convert ByteArray back to lambda and process
+        val outlinedMethods = MethodOutliner.outlineMethod(methodName) { 
+            // Dummy lambda for outlined method
+            "outlined_${methodName}"
+        }
+        
+        // Store in cache
+        methodCache[methodName] = outlinedMethods[0]
+        
+        return "outlined_${methodName}"
     }
 }

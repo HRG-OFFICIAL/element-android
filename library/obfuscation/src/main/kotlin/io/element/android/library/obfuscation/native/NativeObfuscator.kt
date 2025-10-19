@@ -1,4 +1,4 @@
-﻿package io.element.android.library.obfuscation.native
+package io.element.android.library.obfuscation.native
 
 import android.content.Context
 import android.util.Base64
@@ -12,7 +12,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * enterprise-level-Level Native Code Obfuscation Implementation
+ * advanced-Level Native Code Obfuscation Implementation
  * Implements industry-leading native library protection techniques
  * 
  * Advanced Techniques:
@@ -503,15 +503,15 @@ object NativeObfuscator {
     }
     
     /**
-     * enterprise-level-Level Native Code Obfuscation
+     * advanced-Level Native Code Obfuscation
      * Implements industry-leading native protection techniques
      */
-    object enterprise-levelLevelNativeObfuscator {
+    object advancedLevelNativeObfuscator {
         
         /**
          * Multi-layer native code obfuscation
          */
-        fun obfuscateenterprise-levelStyle(nativeCode: ByteArray): ByteArray {
+        fun obfuscateAdvancedStyle(nativeCode: ByteArray): ByteArray {
             var obfuscated = nativeCode.copyOf()
             
             // Layer 1: Symbol stripping and name mangling
@@ -722,7 +722,7 @@ object NativeObfuscator {
         }
     }
     
-    // Additional helper methods for enterprise-level-level obfuscation
+    // Additional helper methods for advanced-level obfuscation
     
     private fun generateObfuscationKey(): ByteArray {
         val key = ByteArray(32)

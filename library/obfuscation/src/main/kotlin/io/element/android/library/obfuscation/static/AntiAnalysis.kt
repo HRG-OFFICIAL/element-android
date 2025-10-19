@@ -1,10 +1,10 @@
-﻿package io.element.android.library.obfuscation.static
+package io.element.android.library.obfuscation.static
 
 import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * enterprise-level-Level Anti-Analysis Techniques
+ * advanced-Level Anti-Analysis Techniques
  * Implements industry-leading anti-disassembly and anti-decompilation techniques
  * 
  * This class provides comprehensive protection against:

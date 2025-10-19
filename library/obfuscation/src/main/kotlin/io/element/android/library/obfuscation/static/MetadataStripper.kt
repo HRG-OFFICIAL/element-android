@@ -1,10 +1,10 @@
-﻿package io.element.android.library.obfuscation.static
+package io.element.android.library.obfuscation.static
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * enterprise-level-Level Metadata Stripping Implementation
+ * advanced-Level Metadata Stripping Implementation
  * Implements comprehensive debug information removal and metadata obfuscation
  * 
  * Advanced Techniques:

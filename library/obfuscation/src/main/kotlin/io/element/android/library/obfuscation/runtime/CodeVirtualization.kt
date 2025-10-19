@@ -1,10 +1,10 @@
-﻿package io.element.android.library.obfuscation.runtime
+package io.element.android.library.obfuscation.runtime
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * enterprise-level-Level Code Virtualization System
+ * advanced-Level Code Virtualization System
  * Implements a custom virtual machine for bytecode obfuscation
  * 
  * This system creates a virtual machine that executes obfuscated bytecode,
@@ -119,7 +119,7 @@ object CodeVirtualization {
                     }
                     OP_CALL -> {
                         val functionId = readInt(bytecode, pc + 1)
-                        val result = callVirtualizedFunction(functionId)
+                        val result = callVirtualizedFunction(functionId) ?: Unit
                         vmStack.add(result)
                         pc += 5
                     }

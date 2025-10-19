@@ -1,239 +1,367 @@
 package io.element.android.library.obfuscation.static
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.util.Log
 import java.io.File
-import java.io.StringWriter
 import java.util.*
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
-import org.w3c.dom.Document
-import org.w3c.dom.Element
-import org.w3c.dom.NodeList
 
 /**
- * Manifest Obfuscation
+ * Manifest Obfuscator
  * 
- * Provides comprehensive obfuscation for Android manifest components and permissions.
- * This includes obfuscating activity names, service names, receiver names, provider names,
- * permission names, and intent filters to make reverse engineering more difficult.
+ * Provides comprehensive manifest obfuscation for Android applications including:
+ * - Component name obfuscation (Activities, Services, Receivers, Providers)
+ * - Permission obfuscation and filtering
+ * - Intent filter obfuscation
+ * - Metadata obfuscation
+ * - Application attribute obfuscation
  */
 object ManifestObfuscator {
 
     private const val TAG = "ManifestObfuscator"
     
-    // Obfuscation mappings
+    // Obfuscated component name mappings
     private val componentMappings = mutableMapOf<String, String>()
     private val permissionMappings = mutableMapOf<String, String>()
     private val intentFilterMappings = mutableMapOf<String, String>()
     
-    // Obfuscation patterns
-    private val componentPatterns = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j")
-    private val permissionPatterns = listOf("p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9")
-    private val intentFilterPatterns = listOf("if0", "if1", "if2", "if3", "if4", "if5", "if6", "if7", "if8", "if9")
-
     /**
-     * Obfuscate manifest components
-     * 
-     * @param manifestData The original manifest XML content
-     * @return Obfuscated manifest XML content
+     * Component Name Obfuscator
+     * Obfuscates Android manifest components (Activities, Services, Receivers, Providers)
      */
-    fun obfuscateManifestComponents(manifestData: String): String {
+    object ComponentNameObfuscator {
+        
+        /**
+         * Obfuscate activity names in manifest
+         */
+        fun obfuscateActivityNames(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all activity declarations
+            val activityPattern = """<activity\s+android:name="([^"]+)"""".toRegex()
+            val activities = activityPattern.findAll(manifestContent).map { it.groupValues[1] }.toList()
+            
+            activities.forEach { activityName ->
+                val obfuscatedName = generateObfuscatedComponentName(activityName, "activity")
+                componentMappings[activityName] = obfuscatedName
+                obfuscatedContent = obfuscatedContent.replace(activityName, obfuscatedName)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        /**
+         * Obfuscate service names in manifest
+         */
+        fun obfuscateServiceNames(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all service declarations
+            val servicePattern = """<service\s+android:name="([^"]+)"""".toRegex()
+            val services = servicePattern.findAll(manifestContent).map { it.groupValues[1] }.toList()
+            
+            services.forEach { serviceName ->
+                val obfuscatedName = generateObfuscatedComponentName(serviceName, "service")
+                componentMappings[serviceName] = obfuscatedName
+                obfuscatedContent = obfuscatedContent.replace(serviceName, obfuscatedName)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        /**
+         * Obfuscate receiver names in manifest
+         */
+        fun obfuscateReceiverNames(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all receiver declarations
+            val receiverPattern = """<receiver\s+android:name="([^"]+)"""".toRegex()
+            val receivers = receiverPattern.findAll(manifestContent).map { it.groupValues[1] }.toList()
+            
+            receivers.forEach { receiverName ->
+                val obfuscatedName = generateObfuscatedComponentName(receiverName, "receiver")
+                componentMappings[receiverName] = obfuscatedName
+                obfuscatedContent = obfuscatedContent.replace(receiverName, obfuscatedName)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        /**
+         * Obfuscate provider names in manifest
+         */
+        fun obfuscateProviderNames(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all provider declarations
+            val providerPattern = """<provider\s+android:name="([^"]+)"""".toRegex()
+            val providers = providerPattern.findAll(manifestContent).map { it.groupValues[1] }.toList()
+            
+            providers.forEach { providerName ->
+                val obfuscatedName = generateObfuscatedComponentName(providerName, "provider")
+                componentMappings[providerName] = obfuscatedName
+                obfuscatedContent = obfuscatedContent.replace(providerName, obfuscatedName)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        /**
+         * Generate obfuscated component name using advanced naming
+         */
+        private fun generateObfuscatedComponentName(originalName: String, componentType: String): String {
+            val hash = originalName.hashCode().toString().replace("-", "")
+            val prefix = when (componentType) {
+                "activity" -> "a"
+                "service" -> "s"
+                "receiver" -> "r"
+                "provider" -> "p"
+                else -> "c"
+            }
+            return "${prefix}${hash.takeLast(3)}"
+        }
+    }
+    
+    /**
+     * Permission Obfuscator
+     * Obfuscates and filters Android permissions
+     */
+    object PermissionObfuscator {
+        
+        /**
+         * Obfuscate permission names in manifest
+         */
+        fun obfuscatePermissions(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all permission declarations
+            val permissionPattern = """<uses-permission\s+android:name="([^"]+)"""".toRegex()
+            val permissions = permissionPattern.findAll(manifestContent).map { it.groupValues[1] }.toList()
+            
+            permissions.forEach { permission ->
+                val obfuscatedPermission = generateObfuscatedPermissionName(permission)
+                permissionMappings[permission] = obfuscatedPermission
+                obfuscatedContent = obfuscatedContent.replace(permission, obfuscatedPermission)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        /**
+         * Filter sensitive permissions from manifest
+         */
+        fun filterSensitivePermissions(manifestContent: String): String {
+            var filteredContent = manifestContent
+            
+            val sensitivePermissions = listOf(
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE",
+                "android.permission.CAMERA",
+                "android.permission.RECORD_AUDIO",
+                "android.permission.ACCESS_FINE_LOCATION",
+                "android.permission.ACCESS_COARSE_LOCATION",
+                "android.permission.READ_CONTACTS",
+                "android.permission.WRITE_CONTACTS",
+                "android.permission.READ_CALL_LOG",
+                "android.permission.WRITE_CALL_LOG",
+                "android.permission.READ_SMS",
+                "android.permission.SEND_SMS",
+                "android.permission.RECEIVE_SMS"
+            )
+            
+            sensitivePermissions.forEach { permission ->
+                val permissionLine = """<uses-permission\s+android:name="$permission"[^>]*/>""".toRegex()
+                filteredContent = filteredContent.replace(permissionLine, "")
+            }
+            
+            return filteredContent
+        }
+        
+        /**
+         * Generate obfuscated permission name
+         */
+        private fun generateObfuscatedPermissionName(originalPermission: String): String {
+            val hash = originalPermission.hashCode().toString().replace("-", "")
+            return "android.permission.OBF_${hash.takeLast(6)}"
+        }
+    }
+    
+    /**
+     * Intent Filter Obfuscator
+     * Obfuscates intent filters and actions
+     */
+    object IntentFilterObfuscator {
+        
+        /**
+         * Obfuscate intent filter actions
+         */
+        fun obfuscateIntentFilters(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all intent filter actions
+            val actionPattern = """<action\s+android:name="([^"]+)"""".toRegex()
+            val actions = actionPattern.findAll(manifestContent).map { it.groupValues[1] }.toList()
+            
+            actions.forEach { action ->
+                val obfuscatedAction = generateObfuscatedActionName(action)
+                intentFilterMappings[action] = obfuscatedAction
+                obfuscatedContent = obfuscatedContent.replace(action, obfuscatedAction)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        /**
+         * Generate obfuscated action name
+         */
+        private fun generateObfuscatedActionName(originalAction: String): String {
+            val hash = originalAction.hashCode().toString().replace("-", "")
+            return "android.intent.action.OBF_${hash.takeLast(6)}"
+        }
+    }
+    
+    /**
+     * Application Attribute Obfuscator
+     * Obfuscates application-level attributes
+     */
+    object ApplicationAttributeObfuscator {
+        
+        /**
+         * Obfuscate application attributes
+         */
+        fun obfuscateApplicationAttributes(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Obfuscate application label
+            obfuscatedContent = obfuscateApplicationLabel(obfuscatedContent)
+            
+            // Obfuscate application description
+            obfuscatedContent = obfuscateApplicationDescription(obfuscatedContent)
+            
+            // Obfuscate application icon
+            obfuscatedContent = obfuscateApplicationIcon(obfuscatedContent)
+            
+            return obfuscatedContent
+        }
+        
+        private fun obfuscateApplicationLabel(manifestContent: String): String {
+            val labelPattern = """android:label="([^"]+)"""".toRegex()
+            return manifestContent.replace(labelPattern) { matchResult ->
+                val originalLabel = matchResult.groupValues[1]
+                val obfuscatedLabel = generateObfuscatedLabel(originalLabel)
+                "android:label=\"$obfuscatedLabel\""
+            }
+        }
+        
+        private fun obfuscateApplicationDescription(manifestContent: String): String {
+            val descriptionPattern = """android:description="([^"]+)"""".toRegex()
+            return manifestContent.replace(descriptionPattern) { matchResult ->
+                val originalDescription = matchResult.groupValues[1]
+                val obfuscatedDescription = generateObfuscatedDescription(originalDescription)
+                "android:description=\"$obfuscatedDescription\""
+            }
+        }
+        
+        private fun obfuscateApplicationIcon(manifestContent: String): String {
+            val iconPattern = """android:icon="@drawable/([^"]+)"""".toRegex()
+            return manifestContent.replace(iconPattern) { matchResult ->
+                val originalIcon = matchResult.groupValues[1]
+                val obfuscatedIcon = generateObfuscatedIconName(originalIcon)
+                "android:icon=\"@drawable/$obfuscatedIcon\""
+            }
+        }
+        
+        private fun generateObfuscatedLabel(originalLabel: String): String {
+            val hash = originalLabel.hashCode().toString().replace("-", "")
+            return "App_${hash.takeLast(4)}"
+        }
+        
+        private fun generateObfuscatedDescription(originalDescription: String): String {
+            val hash = originalDescription.hashCode().toString().replace("-", "")
+            return "Desc_${hash.takeLast(4)}"
+        }
+        
+        private fun generateObfuscatedIconName(originalIcon: String): String {
+            val hash = originalIcon.hashCode().toString().replace("-", "")
+            return "ic_${hash.takeLast(4)}"
+        }
+    }
+    
+    /**
+     * Metadata Obfuscator
+     * Obfuscates metadata and custom attributes
+     */
+    object MetadataObfuscator {
+        
+        /**
+         * Obfuscate metadata entries
+         */
+        fun obfuscateMetadata(manifestContent: String): String {
+            var obfuscatedContent = manifestContent
+            
+            // Find all metadata entries
+            val metadataPattern = """<meta-data\s+android:name="([^"]+)"[^>]*/>""".toRegex()
+            val metadataEntries = metadataPattern.findAll(manifestContent).toList()
+            
+            metadataEntries.forEach { matchResult ->
+                val originalName = matchResult.groupValues[1]
+                val obfuscatedName = generateObfuscatedMetadataName(originalName)
+                obfuscatedContent = obfuscatedContent.replace(originalName, obfuscatedName)
+            }
+            
+            return obfuscatedContent
+        }
+        
+        private fun generateObfuscatedMetadataName(originalName: String): String {
+            val hash = originalName.hashCode().toString().replace("-", "")
+            return "meta_${hash.takeLast(6)}"
+        }
+    }
+    
+    /**
+     * Comprehensive manifest obfuscation
+     */
+    fun obfuscateManifest(manifestContent: String): String {
+        Log.d(TAG, "Starting comprehensive manifest obfuscation")
+        
+        var obfuscatedContent = manifestContent
+        
         try {
-            val document = parseManifest(manifestData)
-            val manifest = document.documentElement
+            // 1. Obfuscate component names
+            obfuscatedContent = ComponentNameObfuscator.obfuscateActivityNames(obfuscatedContent)
+            obfuscatedContent = ComponentNameObfuscator.obfuscateServiceNames(obfuscatedContent)
+            obfuscatedContent = ComponentNameObfuscator.obfuscateReceiverNames(obfuscatedContent)
+            obfuscatedContent = ComponentNameObfuscator.obfuscateProviderNames(obfuscatedContent)
             
-            // Obfuscate activities
-            obfuscateActivities(document, manifest)
+            // 2. Obfuscate permissions
+            obfuscatedContent = PermissionObfuscator.obfuscatePermissions(obfuscatedContent)
+            obfuscatedContent = PermissionObfuscator.filterSensitivePermissions(obfuscatedContent)
             
-            // Obfuscate services
-            obfuscateServices(document, manifest)
+            // 3. Obfuscate intent filters
+            obfuscatedContent = IntentFilterObfuscator.obfuscateIntentFilters(obfuscatedContent)
             
-            // Obfuscate receivers
-            obfuscateReceivers(document, manifest)
+            // 4. Obfuscate application attributes
+            obfuscatedContent = ApplicationAttributeObfuscator.obfuscateApplicationAttributes(obfuscatedContent)
             
-            // Obfuscate providers
-            obfuscateProviders(document, manifest)
+            // 5. Obfuscate metadata
+            obfuscatedContent = MetadataObfuscator.obfuscateMetadata(obfuscatedContent)
             
-            // Obfuscate permissions
-            obfuscatePermissions(document, manifest)
+            Log.d(TAG, "Manifest obfuscation completed successfully")
+            Log.d(TAG, "Components obfuscated: ${componentMappings.size}")
+            Log.d(TAG, "Permissions obfuscated: ${permissionMappings.size}")
+            Log.d(TAG, "Intent filters obfuscated: ${intentFilterMappings.size}")
             
-            // Obfuscate intent filters
-            obfuscateIntentFilters(document, manifest)
-            
-            return serializeManifest(document)
         } catch (e: Exception) {
-            Log.e(TAG, "Error obfuscating manifest components", e)
-            return manifestData
+            Log.e(TAG, "Error during manifest obfuscation", e)
         }
+        
+        return obfuscatedContent
     }
-
+    
     /**
-     * Obfuscate activity names
-     */
-    private fun obfuscateActivities(document: Document, manifest: Element) {
-        val activities = manifest.getElementsByTagName("activity")
-        for (i in 0 until activities.length) {
-            val activity = activities.item(i) as Element
-            val originalName = activity.getAttribute("android:name")
-            if (originalName.isNotEmpty()) {
-                val obfuscatedName = generateObfuscatedName(originalName, componentMappings, componentPatterns)
-                activity.setAttribute("android:name", obfuscatedName)
-                Log.d(TAG, "Obfuscated activity: $originalName -> $obfuscatedName")
-            }
-        }
-    }
-
-    /**
-     * Obfuscate service names
-     */
-    private fun obfuscateServices(document: Document, manifest: Element) {
-        val services = manifest.getElementsByTagName("service")
-        for (i in 0 until services.length) {
-            val service = services.item(i) as Element
-            val originalName = service.getAttribute("android:name")
-            if (originalName.isNotEmpty()) {
-                val obfuscatedName = generateObfuscatedName(originalName, componentMappings, componentPatterns)
-                service.setAttribute("android:name", obfuscatedName)
-                Log.d(TAG, "Obfuscated service: $originalName -> $obfuscatedName")
-            }
-        }
-    }
-
-    /**
-     * Obfuscate receiver names
-     */
-    private fun obfuscateReceivers(document: Document, manifest: Element) {
-        val receivers = manifest.getElementsByTagName("receiver")
-        for (i in 0 until receivers.length) {
-            val receiver = receivers.item(i) as Element
-            val originalName = receiver.getAttribute("android:name")
-            if (originalName.isNotEmpty()) {
-                val obfuscatedName = generateObfuscatedName(originalName, componentMappings, componentPatterns)
-                receiver.setAttribute("android:name", obfuscatedName)
-                Log.d(TAG, "Obfuscated receiver: $originalName -> $obfuscatedName")
-            }
-        }
-    }
-
-    /**
-     * Obfuscate provider names
-     */
-    private fun obfuscateProviders(document: Document, manifest: Element) {
-        val providers = manifest.getElementsByTagName("provider")
-        for (i in 0 until providers.length) {
-            val provider = providers.item(i) as Element
-            val originalName = provider.getAttribute("android:name")
-            if (originalName.isNotEmpty()) {
-                val obfuscatedName = generateObfuscatedName(originalName, componentMappings, componentPatterns)
-                provider.setAttribute("android:name", obfuscatedName)
-                Log.d(TAG, "Obfuscated provider: $originalName -> $obfuscatedName")
-            }
-        }
-    }
-
-    /**
-     * Obfuscate permission names
-     */
-    private fun obfuscatePermissions(document: Document, manifest: Element) {
-        val permissions = manifest.getElementsByTagName("uses-permission")
-        for (i in 0 until permissions.length) {
-            val permission = permissions.item(i) as Element
-            val originalName = permission.getAttribute("android:name")
-            if (originalName.isNotEmpty()) {
-                val obfuscatedName = generateObfuscatedName(originalName, permissionMappings, permissionPatterns)
-                permission.setAttribute("android:name", obfuscatedName)
-                Log.d(TAG, "Obfuscated permission: $originalName -> $obfuscatedName")
-            }
-        }
-    }
-
-    /**
-     * Obfuscate intent filters
-     */
-    private fun obfuscateIntentFilters(document: Document, manifest: Element) {
-        val intentFilters = manifest.getElementsByTagName("intent-filter")
-        for (i in 0 until intentFilters.length) {
-            val intentFilter = intentFilters.item(i) as Element
-            val actions = intentFilter.getElementsByTagName("action")
-            for (j in 0 until actions.length) {
-                val action = actions.item(j) as Element
-                val originalName = action.getAttribute("android:name")
-                if (originalName.isNotEmpty()) {
-                    val obfuscatedName = generateObfuscatedName(originalName, intentFilterMappings, intentFilterPatterns)
-                    action.setAttribute("android:name", obfuscatedName)
-                    Log.d(TAG, "Obfuscated intent filter: $originalName -> $obfuscatedName")
-                }
-            }
-        }
-    }
-
-    /**
-     * Generate obfuscated name
-     */
-    private fun generateObfuscatedName(
-        originalName: String,
-        mappings: MutableMap<String, String>,
-        patterns: List<String>
-    ): String {
-        return mappings.getOrPut(originalName) {
-            val random = Random(originalName.hashCode().toLong())
-            val pattern = patterns[random.nextInt(patterns.size)]
-            val number = random.nextInt(1000)
-            "$pattern$number"
-        }
-    }
-
-    /**
-     * Parse manifest XML
-     */
-    private fun parseManifest(manifestData: String): Document {
-        val factory = DocumentBuilderFactory.newInstance()
-        val builder = factory.newDocumentBuilder()
-        return builder.parse(manifestData.byteInputStream())
-    }
-
-    /**
-     * Serialize manifest XML
-     */
-    private fun serializeManifest(document: Document): String {
-        val transformerFactory = TransformerFactory.newInstance()
-        val transformer = transformerFactory.newTransformer()
-        val source = DOMSource(document)
-        val result = StreamResult(StringWriter())
-        transformer.transform(source, result)
-        return result.writer.toString()
-    }
-
-    /**
-     * Obfuscate permissions list
-     * 
-     * @param permissions List of permission strings
-     * @return Obfuscated permissions list
-     */
-    fun obfuscatePermissions(permissions: List<String>): List<String> {
-        return permissions.map { permission ->
-            generateObfuscatedName(permission, permissionMappings, permissionPatterns)
-        }
-    }
-
-    /**
-     * Obfuscate intent filters list
-     * 
-     * @param intentFilters List of intent filter strings
-     * @return Obfuscated intent filters list
-     */
-    fun obfuscateIntentFilters(intentFilters: List<String>): List<String> {
-        return intentFilters.map { intentFilter ->
-            generateObfuscatedName(intentFilter, intentFilterMappings, intentFilterPatterns)
-        }
-    }
-
-    /**
-     * Get obfuscation mappings
+     * Get obfuscation mappings for debugging
      */
     fun getObfuscationMappings(): Map<String, Map<String, String>> {
         return mapOf(
@@ -242,7 +370,7 @@ object ManifestObfuscator {
             "intent_filters" to intentFilterMappings
         )
     }
-
+    
     /**
      * Clear obfuscation mappings
      */
@@ -250,57 +378,5 @@ object ManifestObfuscator {
         componentMappings.clear()
         permissionMappings.clear()
         intentFilterMappings.clear()
-    }
-
-    /**
-     * Apply manifest obfuscation to file
-     * 
-     * @param context Android context
-     * @param manifestFile Manifest file path
-     * @return Success status
-     */
-    fun applyManifestObfuscation(context: Context, manifestFile: String): Boolean {
-        return try {
-            val file = File(manifestFile)
-            if (file.exists()) {
-                val originalContent = file.readText()
-                val obfuscatedContent = obfuscateManifestComponents(originalContent)
-                file.writeText(obfuscatedContent)
-                Log.d(TAG, "Manifest obfuscation applied successfully")
-                true
-            } else {
-                Log.e(TAG, "Manifest file not found: $manifestFile")
-                false
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error applying manifest obfuscation", e)
-            false
-        }
-    }
-
-    /**
-     * Restore original manifest
-     * 
-     * @param context Android context
-     * @param manifestFile Manifest file path
-     * @return Success status
-     */
-    fun restoreManifest(context: Context, manifestFile: String): Boolean {
-        return try {
-            val file = File(manifestFile)
-            if (file.exists()) {
-                // This would require storing original mappings
-                // For now, just clear the mappings
-                clearMappings()
-                Log.d(TAG, "Manifest mappings cleared")
-                true
-            } else {
-                Log.e(TAG, "Manifest file not found: $manifestFile")
-                false
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error restoring manifest", e)
-            false
-        }
     }
 }

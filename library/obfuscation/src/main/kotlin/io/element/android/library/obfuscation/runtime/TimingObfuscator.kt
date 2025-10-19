@@ -1,11 +1,11 @@
-﻿package io.element.android.library.obfuscation.runtime
+package io.element.android.library.obfuscation.runtime
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
 /**
- * enterprise-level-Level Timing Obfuscation Implementation
+ * advanced-Level Timing Obfuscation Implementation
  * Implements comprehensive timing-based obfuscation and environment-dependent behavior
  * 
  * Advanced Techniques:
@@ -62,7 +62,7 @@ object TimingObfuscator {
             when (profile.preExecutionStrategy) {
                 TimingStrategy.RANDOM_DELAY -> {
                     val delay = secureRandom.nextInt(profile.maxDelay - profile.minDelay) + profile.minDelay
-                    Thread.sleep(delay)
+                    Thread.sleep(delay.toLong())
                 }
                 TimingStrategy.CALCULATION_DELAY -> {
                     performCalculationDelay(profile.calculationComplexity)
@@ -86,7 +86,7 @@ object TimingObfuscator {
             when (profile.postExecutionStrategy) {
                 TimingStrategy.RANDOM_DELAY -> {
                     val delay = secureRandom.nextInt(profile.maxDelay - profile.minDelay) + profile.minDelay
-                    Thread.sleep(delay)
+                    Thread.sleep(delay.toLong())
                 }
                 TimingStrategy.CALCULATION_DELAY -> {
                     performCalculationDelay(profile.calculationComplexity)
@@ -314,7 +314,7 @@ object TimingObfuscator {
         
         private fun executeWithHeavyObfuscation(code: () -> Any): Any {
             // Add heavy timing obfuscation
-            Thread.sleep(secureRandom.nextInt(500) + 100)
+            Thread.sleep((secureRandom.nextInt(500) + 100).toLong())
             
             // Execute with fake behavior
             val fakeResult = generateFakeResult()
@@ -327,7 +327,7 @@ object TimingObfuscator {
         
         private fun executeWithEmulatorObfuscation(code: () -> Any): Any {
             // Add emulator-specific delays
-            Thread.sleep(secureRandom.nextInt(1000) + 500)
+            Thread.sleep((secureRandom.nextInt(1000) + 500).toLong())
             
             // Execute with emulator-specific behavior
             return code()
@@ -335,7 +335,7 @@ object TimingObfuscator {
         
         private fun executeWithAnalysisCountermeasures(code: () -> Any): Any {
             // Add analysis tool countermeasures
-            Thread.sleep(secureRandom.nextInt(2000) + 1000)
+            Thread.sleep((secureRandom.nextInt(2000) + 1000).toLong())
             
             // Execute with analysis countermeasures
             return generateFakeResult()
@@ -343,7 +343,7 @@ object TimingObfuscator {
         
         private fun executeWithSandboxCountermeasures(code: () -> Any): Any {
             // Add sandbox countermeasures
-            Thread.sleep(secureRandom.nextInt(1500) + 750)
+            Thread.sleep((secureRandom.nextInt(1500) + 750).toLong())
             
             // Execute with sandbox countermeasures
             return generateFakeResult()
@@ -351,7 +351,7 @@ object TimingObfuscator {
         
         private fun executeWithMaximumObfuscation(code: () -> Any): Any {
             // Add maximum obfuscation
-            Thread.sleep(secureRandom.nextInt(3000) + 2000)
+            Thread.sleep((secureRandom.nextInt(3000) + 2000).toLong())
             
             // Execute with maximum obfuscation
             return generateFakeResult()
@@ -409,7 +409,7 @@ object TimingObfuscator {
                 
                 // Add random timing variation
                 val randomVariation = secureRandom.nextInt(1000000) // 0-1ms
-                Thread.sleep(randomVariation / 1000000)
+                Thread.sleep((randomVariation / 1000000).toLong())
                 
                 // Execute original code
                 val result = code()
@@ -419,7 +419,7 @@ object TimingObfuscator {
                 
                 // Add post-execution random variation
                 val postVariation = secureRandom.nextInt(1000000) // 0-1ms
-                Thread.sleep(postVariation / 1000000)
+                Thread.sleep((postVariation / 1000000).toLong())
                 
                 result
             }

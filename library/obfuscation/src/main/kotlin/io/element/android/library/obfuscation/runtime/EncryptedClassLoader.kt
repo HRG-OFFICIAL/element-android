@@ -1,4 +1,4 @@
-﻿package io.element.android.library.obfuscation.runtime
+package io.element.android.library.obfuscation.runtime
 
 import android.content.Context
 import android.util.Base64
@@ -12,7 +12,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * enterprise-level-Level Encrypted Class Loading Implementation
+ * advanced-Level Encrypted Class Loading Implementation
  * Implements industry-leading encrypted class loading and runtime class generation
  * 
  * Advanced Techniques:
@@ -52,7 +52,16 @@ object EncryptedClassLoader {
                 
                 // Load class using custom class loader
                 val classLoader = createCustomClassLoader()
-                val loadedClass = classLoader.defineClass(encryptedClassName, decryptedBytecode, 0, decryptedBytecode.size)
+                // Use reflection to call protected defineClass method
+                val defineClassMethod = ClassLoader::class.java.getDeclaredMethod(
+                    "defineClass",
+                    String::class.java,
+                    ByteArray::class.java,
+                    Int::class.javaPrimitiveType,
+                    Int::class.javaPrimitiveType
+                )
+                defineClassMethod.isAccessible = true
+                val loadedClass = defineClassMethod.invoke(classLoader, encryptedClassName, decryptedBytecode, 0, decryptedBytecode.size) as Class<*>
                 
                 // Cache the loaded class
                 classCache[encryptedClassName] = loadedClass
@@ -151,8 +160,18 @@ object EncryptedClassLoader {
                     throw ClassNotFoundException("Class not found: $name")
                 }
                 
-                fun defineClass(name: String, b: ByteArray, off: Int, len: Int): Class<*> {
-                    return defineClass(name, b, off, len, null)
+                fun defineClass2(name: String, b: ByteArray, off: Int, len: Int): Class<*> {
+                    // Call superclass defineClass using reflection
+                    val method = ClassLoader::class.java.getDeclaredMethod(
+                        "defineClass",
+                        String::class.java,
+                        ByteArray::class.java,
+                        Int::class.javaPrimitiveType,
+                        Int::class.javaPrimitiveType,
+                        java.security.ProtectionDomain::class.java
+                    )
+                    method.isAccessible = true
+                    return method.invoke(this, name, b, off, len, null) as Class<*>
                 }
             }
         }
@@ -230,9 +249,9 @@ object EncryptedClassLoader {
                     is StringConstant -> {
                         constantPool.write(0x01) // CONSTANT_Utf8_info
                         val utf8Bytes = constant.value.toByteArray()
-                        constantPool.write((utf8Bytes.size shr 8).toByte())
-                        constantPool.write(utf8Bytes.size.toByte())
-                        constantPool.write(utf8Bytes)
+                        constantPool.write((utf8Bytes.size shr 8).toInt() and 0xFF)
+                        constantPool.write(utf8Bytes.size and 0xFF)
+                        constantPool.write(utf8Bytes, 0, utf8Bytes.size)
                     }
                     is ClassConstant -> {
                         constantPool.write(0x07) // CONSTANT_Class_info
@@ -268,14 +287,14 @@ object EncryptedClassLoader {
             val fieldsData = ByteArrayOutputStream()
             
             // Fields count
-            fieldsData.write((fields.size shr 8).toByte())
-            fieldsData.write(fields.size.toByte())
+            fieldsData.write((fields.size shr 8) and 0xFF)
+            fieldsData.write(fields.size and 0xFF)
             
             fields.forEach { field ->
-                fieldsData.write(0x00, 0x02) // Access flags (private)
-                fieldsData.write(0x00, 0x03) // Name index
-                fieldsData.write(0x00, 0x04) // Descriptor index
-                fieldsData.write(0x00, 0x00) // Attributes count
+                fieldsData.write(byteArrayOf(0x00, 0x02), 0, 2) // Access flags (private)
+                fieldsData.write(byteArrayOf(0x00, 0x03), 0, 2) // Name index
+                fieldsData.write(byteArrayOf(0x00, 0x04), 0, 2) // Descriptor index
+                fieldsData.write(byteArrayOf(0x00, 0x00), 0, 2) // Attributes count
             }
             
             return fieldsData.toByteArray()
@@ -288,24 +307,24 @@ object EncryptedClassLoader {
             val methodsData = ByteArrayOutputStream()
             
             // Methods count
-            methodsData.write((methods.size shr 8).toByte())
-            methodsData.write(methods.size.toByte())
+            methodsData.write((methods.size shr 8) and 0xFF)
+            methodsData.write(methods.size and 0xFF)
             
             methods.forEach { method ->
-                methodsData.write(0x00, 0x01) // Access flags (public)
-                methodsData.write(0x00, 0x05) // Name index
-                methodsData.write(0x00, 0x06) // Descriptor index
-                methodsData.write(0x00, 0x01) // Attributes count
+                methodsData.write(byteArrayOf(0x00, 0x01), 0, 2) // Access flags (public)
+                methodsData.write(byteArrayOf(0x00, 0x05), 0, 2) // Name index
+                methodsData.write(byteArrayOf(0x00, 0x06), 0, 2) // Descriptor index
+                methodsData.write(byteArrayOf(0x00, 0x01), 0, 2) // Attributes count
                 
                 // Code attribute
-                methodsData.write(0x00, 0x07) // Attribute name index
-                methodsData.write(0x00, 0x00, 0x00, 0x10) // Attribute length
-                methodsData.write(0x00, 0x02) // Max stack
-                methodsData.write(0x00, 0x01) // Max locals
-                methodsData.write(0x00, 0x00, 0x00, 0x04) // Code length
-                methodsData.write(0x10, 0x00, 0x00, 0x00) // Code (bipush 0, return)
-                methodsData.write(0x00, 0x00) // Exception table length
-                methodsData.write(0x00, 0x00) // Attributes count
+                methodsData.write(byteArrayOf(0x00, 0x07), 0, 2) // Attribute name index
+                methodsData.write(byteArrayOf(0x00, 0x00, 0x00, 0x10), 0, 4) // Attribute length
+                methodsData.write(byteArrayOf(0x00, 0x02), 0, 2) // Max stack
+                methodsData.write(byteArrayOf(0x00, 0x01), 0, 2) // Max locals
+                methodsData.write(byteArrayOf(0x00, 0x00, 0x00, 0x04), 0, 4) // Code length
+                methodsData.write(byteArrayOf(0x10, 0x00, 0x00, 0x00), 0, 4) // Code (bipush 0, return)
+                methodsData.write(byteArrayOf(0x00, 0x00), 0, 2) // Exception table length
+                methodsData.write(byteArrayOf(0x00, 0x00), 0, 2) // Attributes count
             }
             
             return methodsData.toByteArray()

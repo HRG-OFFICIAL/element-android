@@ -1,4 +1,4 @@
-﻿package io.element.android.library.obfuscation.examples
+package io.element.android.library.obfuscation.examples
 
 import android.content.Context
 import io.element.android.library.obfuscation.ObfuscationManager
@@ -18,20 +18,20 @@ class ComprehensiveObfuscationExample(private val context: Context) {
     }
 
     /**
-     * Example: enterprise-level-Level String Obfuscation
+     * Example: advanced-Level String Obfuscation
      * Demonstrates multi-layer string encryption with hardware-based keys
      */
     fun demonstrateStringObfuscation() {
         val sensitiveData = "API_KEY_12345_SECRET"
         
-        // enterprise-level-style string obfuscation (a0, b2, c3 naming)
-        val encryptedData = obfuscationManager.staticObfuscation.obfuscateStringenterprise-levelStyle(
+        // advanced-style string obfuscation (a0, b2, c3 naming)
+        val encryptedData = obfuscationManager.staticObfuscation.obfuscateStringAdvancedStyle(
             sensitiveData, 
             "api_context"
         )
         
         // Decrypt when needed
-        val decryptedData = obfuscationManager.staticObfuscation.deobfuscateStringenterprise-levelStyle(
+        val decryptedData = obfuscationManager.staticObfuscation.deobfuscateStringAdvancedStyle(
             encryptedData, 
             "api_context"
         )
@@ -334,7 +334,7 @@ class ComprehensiveObfuscationExample(private val context: Context) {
     fun demonstrateResourceObfuscation() {
         // Resource name obfuscation
         val originalResourceName = "main_activity_layout"
-        val obfuscatedResourceName = obfuscationManager.resourceObfuscation.obfuscateResourceName(
+        val obfuscatedResourceName = io.element.android.library.obfuscation.static.ResourceObfuscator.ResourceNameMangler.obfuscateResourceName(
             originalResourceName, 
             "layout"
         )

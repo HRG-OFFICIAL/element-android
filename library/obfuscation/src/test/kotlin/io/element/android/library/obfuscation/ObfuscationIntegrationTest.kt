@@ -1,4 +1,4 @@
-﻿package io.element.android.library.obfuscation
+package io.element.android.library.obfuscation
 
 import android.content.Context
 import io.element.android.library.obfuscation.static.AdvancedObfuscator
@@ -58,10 +58,10 @@ class ObfuscationIntegrationTest {
         val manager = ObfuscationManager.getInstance()
         val staticObf = manager.staticObfuscation
 
-        // Test enterprise-level-level string obfuscation
+        // Test advanced-level string obfuscation
         val testString = "Hello World"
-        val encrypted = staticObf.obfuscateStringenterprise-levelStyle(testString, "test")
-        val decrypted = staticObf.deobfuscateStringenterprise-levelStyle(encrypted, "test")
+        val encrypted = staticObf.obfuscateStringadvancedStyle(testString, "test")
+        val decrypted = staticObf.deobfuscateStringadvancedStyle(encrypted, "test")
         assertEquals("String obfuscation should work correctly", testString, decrypted)
 
         // Test method inlining
@@ -220,7 +220,7 @@ class ObfuscationIntegrationTest {
         assertTrue("Data techniques should be 8+", (stats["data_techniques"] as Int) >= 8)
         assertTrue("Native techniques should be 6+", (stats["native_techniques"] as Int) >= 6)
         assertTrue("Resource techniques should be 25+", (stats["resource_techniques"] as Int) >= 25)
-        assertTrue("enterprise-level-level features should be 12+", (stats["enterprise-level_level_features"] as Int) >= 12)
+        assertTrue("advanced-level features should be 12+", (stats["advanced_level_features"] as Int) >= 12)
         assertTrue("Anti-analysis methods should be 18+", (stats["anti_analysis_methods"] as Int) >= 18)
     }
 
@@ -236,7 +236,7 @@ class ObfuscationIntegrationTest {
 
         // In debug mode, obfuscation should be disabled
         val testString = "Hello World"
-        val encrypted = staticObf.obfuscateStringenterprise-levelStyle(testString, "test")
+        val encrypted = staticObf.obfuscateStringadvancedStyle(testString, "test")
         assertEquals("In debug mode, string should not be obfuscated", testString, String(encrypted))
 
         val originalCode = { "test" }

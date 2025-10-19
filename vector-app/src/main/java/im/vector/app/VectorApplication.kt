@@ -135,7 +135,7 @@ class VectorApplication :
         val timeoutHandler = Handler(mainLooper)
         timeoutHandler.postDelayed({
             Timber.w("Application startup taking longer than expected - continuing with basic initialization")
-        }, 10000) // 10 second timeout - more aggressive
+        }, 15000) // 15 second timeout - more reasonable
         
         // In debug builds, use minimal startup mode if configured
         if (buildMeta.isDebug) {
@@ -232,8 +232,8 @@ class VectorApplication :
             }
         }.start()
 
-        // Move ProcessLifecycleOwner observers to background thread
-        Thread {
+        // ProcessLifecycleOwner observers - must be called on main thread
+        Handler(mainLooper).post {
             try {
                 ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
                     private var stopBackgroundSync = false
@@ -275,9 +275,9 @@ class VectorApplication :
             } catch (e: Exception) {
                 Timber.e(e, "Failed to initialize ProcessLifecycleOwner observers")
             }
-        }.start()
-        // Move receiver registration and emoji initialization to background
-        Thread {
+        }
+        // Receiver registration and emoji initialization - must be called on main thread
+        Handler(mainLooper).post {
             try {
                 // This should be done as early as possible
                 // initKnownEmojiHashSet(appContext)
@@ -295,7 +295,7 @@ class VectorApplication :
             } catch (e: Exception) {
                 Timber.e(e, "Failed to initialize receiver and emoji systems")
             }
-        }.start()
+        }
 
         // Initialize Mapbox before inflating mapViews
         // Move Mapbox initialization to background
@@ -415,92 +415,160 @@ class VectorApplication :
             Handler(mainLooper).postDelayed({
                 Thread {
                     try {
-                        // Initialize heavy systems in background
-                        flipperProxy.init(matrix)
-                        vectorAnalytics.init()
-                        vectorAnalytics.updateSuperProperties(
-                                SuperProperties(
-                                        appPlatform = SuperProperties.AppPlatform.EA,
-                                        cryptoSDK = SuperProperties.CryptoSDK.Rust,
-                                        cryptoSDKVersion = Matrix.getCryptoVersion(longFormat = false)
-                                )
-                        )
-                        invitesAcceptor.initialize()
-                        autoRageShaker.initialize()
-                        decryptionFailureTracker.start()
-                        
-                        if (buildMeta.isDebug) {
-                            Stetho.initializeWithDefaults(this@VectorApplication)
+                        // Initialize heavy systems in background with individual error handling
+                        try {
+                            flipperProxy.init(matrix)
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize Flipper")
                         }
                         
-                        // Initialize other background systems
-                        val fontRequest = FontRequest(
-                                "com.google.android.gms.fonts",
-                                "com.google.android.gms",
-                                "Noto Color Emoji Compat",
-                                R.array.com_google_android_gms_fonts_certs
-                        )
-                        @Suppress("DEPRECATION")
-                        FontsContractCompat.requestFont(this@VectorApplication, fontRequest, emojiCompatFontProvider, getFontThreadHandler())
-                        vectorLocale.init()
-                        ThemeUtils.init(this@VectorApplication)
-                        vectorConfiguration.applyToApplicationContext()
-                        emojiCompatWrapper.init(fontRequest)
-                        notificationUtils.createNotificationChannels()
+                        try {
+                            vectorAnalytics.init()
+                            vectorAnalytics.updateSuperProperties(
+                                    SuperProperties(
+                                            appPlatform = SuperProperties.AppPlatform.EA,
+                                            cryptoSDK = SuperProperties.CryptoSDK.Rust,
+                                            cryptoSDKVersion = Matrix.getCryptoVersion(longFormat = false)
+                                    )
+                            )
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize analytics")
+                        }
                         
-                        // ProcessLifecycleOwner observers
-                        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-                            private var stopBackgroundSync = false
-
-                            override fun onResume(owner: LifecycleOwner) {
-                                Timber.i("App entered foreground")
-                                fcmHelper.onEnterForeground(activeSessionHolder)
-                                if (webRtcCallManager.currentCall.get() == null) {
-                                    Timber.i("App entered foreground and no active call: stop any background sync")
-                                    activeSessionHolder.getSafeActiveSessionAsync {
-                                        it?.syncService()?.stopAnyBackgroundSync()
-                                    }
-                                } else {
-                                    Timber.i("App entered foreground: there is an active call, set stopBackgroundSync to true")
-                                    stopBackgroundSync = true
-                                }
+                        try {
+                            invitesAcceptor.initialize()
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize invites acceptor")
+                        }
+                        
+                        try {
+                            autoRageShaker.initialize()
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize auto rage shaker")
+                        }
+                        
+                        try {
+                            decryptionFailureTracker.start()
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to start decryption failure tracker")
+                        }
+                        
+                        if (buildMeta.isDebug) {
+                            try {
+                                Stetho.initializeWithDefaults(this@VectorApplication)
+                            } catch (e: Exception) {
+                                Timber.e(e, "Failed to initialize Stetho")
                             }
+                        }
+                        
+                        // Initialize other background systems with individual error handling
+                        try {
+                            val fontRequest = FontRequest(
+                                    "com.google.android.gms.fonts",
+                                    "com.google.android.gms",
+                                    "Noto Color Emoji Compat",
+                                    R.array.com_google_android_gms_fonts_certs
+                            )
+                            @Suppress("DEPRECATION")
+                            FontsContractCompat.requestFont(this@VectorApplication, fontRequest, emojiCompatFontProvider, getFontThreadHandler())
+                            emojiCompatWrapper.init(fontRequest)
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize font and emoji systems")
+                        }
+                        
+                        try {
+                            vectorLocale.init()
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize vector locale")
+                        }
+                        
+                        try {
+                            ThemeUtils.init(this@VectorApplication)
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize theme utils")
+                        }
+                        
+                        try {
+                            vectorConfiguration.applyToApplicationContext()
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to apply vector configuration")
+                        }
+                        
+                        try {
+                            notificationUtils.createNotificationChannels()
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to create notification channels")
+                        }
+                        
+                        // ProcessLifecycleOwner observers - must be called on main thread
+                        Handler(mainLooper).post {
+                            try {
+                                ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+                                    private var stopBackgroundSync = false
 
-                            override fun onPause(owner: LifecycleOwner) {
-                                Timber.i("App entered background")
-                                fcmHelper.onEnterBackground(activeSessionHolder)
-
-                                if (stopBackgroundSync) {
-                                    if (webRtcCallManager.currentCall.get() == null) {
-                                        Timber.i("App entered background: stop any background sync")
-                                        activeSessionHolder.getSafeActiveSessionAsync {
-                                            it?.syncService()?.stopAnyBackgroundSync()
+                                    override fun onResume(owner: LifecycleOwner) {
+                                        Timber.i("App entered foreground")
+                                        fcmHelper.onEnterForeground(activeSessionHolder)
+                                        if (webRtcCallManager.currentCall.get() == null) {
+                                            Timber.i("App entered foreground and no active call: stop any background sync")
+                                            activeSessionHolder.getSafeActiveSessionAsync {
+                                                it?.syncService()?.stopAnyBackgroundSync()
+                                            }
+                                        } else {
+                                            Timber.i("App entered foreground: there is an active call, set stopBackgroundSync to true")
+                                            stopBackgroundSync = true
                                         }
-                                        stopBackgroundSync = false
-                                    } else {
-                                        Timber.i("App entered background: there is an active call do not stop background sync")
                                     }
-                                }
+
+                                    override fun onPause(owner: LifecycleOwner) {
+                                        Timber.i("App entered background")
+                                        fcmHelper.onEnterBackground(activeSessionHolder)
+
+                                        if (stopBackgroundSync) {
+                                            if (webRtcCallManager.currentCall.get() == null) {
+                                                Timber.i("App entered background: stop any background sync")
+                                                activeSessionHolder.getSafeActiveSessionAsync {
+                                                    it?.syncService()?.stopAnyBackgroundSync()
+                                                }
+                                                stopBackgroundSync = false
+                                            } else {
+                                                Timber.i("App entered background: there is an active call do not stop background sync")
+                                            }
+                                        }
+                                    }
+                                })
+                                ProcessLifecycleOwner.get().lifecycle.addObserver(spaceStateHandler)
+                                ProcessLifecycleOwner.get().lifecycle.addObserver(pinLocker)
+                                ProcessLifecycleOwner.get().lifecycle.addObserver(callManager)
+                            } catch (e: Exception) {
+                                Timber.e(e, "Failed to add ProcessLifecycleOwner observers on main thread")
                             }
-                        })
-                        ProcessLifecycleOwner.get().lifecycle.addObserver(spaceStateHandler)
-                        ProcessLifecycleOwner.get().lifecycle.addObserver(pinLocker)
-                        ProcessLifecycleOwner.get().lifecycle.addObserver(callManager)
+                        }
                         
-                        // Receiver registration
-                        ContextCompat.registerReceiver(
-                                applicationContext,
-                                powerKeyReceiver,
-                                IntentFilter().apply {
-                                    addAction(Intent.ACTION_SCREEN_OFF)
-                                    addAction(Intent.ACTION_SCREEN_ON)
-                                },
-                                ContextCompat.RECEIVER_NOT_EXPORTED,
-                        )
-                        EmojiManager.install(GoogleEmojiProvider())
+                        // Receiver registration and emoji setup - must be called on main thread
+                        Handler(mainLooper).post {
+                            try {
+                                ContextCompat.registerReceiver(
+                                        applicationContext,
+                                        powerKeyReceiver,
+                                        IntentFilter().apply {
+                                            addAction(Intent.ACTION_SCREEN_OFF)
+                                            addAction(Intent.ACTION_SCREEN_ON)
+                                        },
+                                        ContextCompat.RECEIVER_NOT_EXPORTED,
+                                )
+                                EmojiManager.install(GoogleEmojiProvider())
+                            } catch (e: Exception) {
+                                Timber.e(e, "Failed to register receiver and install emoji manager on main thread")
+                            }
+                        }
                         
                         // Mapbox initialization
-                        Mapbox.getInstance(this@VectorApplication)
+                        try {
+                            Mapbox.getInstance(this@VectorApplication)
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to initialize Mapbox")
+                        }
                         
                         Timber.d("Background initialization completed successfully")
                     } catch (e: Exception) {

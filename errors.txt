@@ -1,0 +1,312 @@
+2025-10-19 23:51:16.997  7636-7636  nativeloader            im.vector.app.debug                  D  Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+2025-10-19 23:51:17.186  7636-7636  re-initialized>         im.vector.app.debug                  W  type=1400 audit(0.0:2321): avc:  granted  { execute } for  path="/data/data/im.vector.app.debug/code_cache/startup_agents/3fc68f17-agent.so" dev="dm-55" ino=354164 scontext=u:r:untrusted_app:s0:c214,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c214,c256,c512,c768 tclass=file app=im.vector.app.debug
+2025-10-19 23:51:17.276  7636-7636  nativeloader            im.vector.app.debug                  D  Load /data/user/0/im.vector.app.debug/code_cache/startup_agents/3fc68f17-agent.so using system ns (caller=<unknown>): ok
+2025-10-19 23:51:17.472  7636-7636  ector.app.debug         im.vector.app.debug                  W  hiddenapi: DexFile /data/data/im.vector.app.debug/code_cache/.studio/instruments-c9b0d10a.jar is in boot class path but is not in a known location
+2025-10-19 23:51:17.763  7636-7636  ector.app.debug         im.vector.app.debug                  W  Redefining intrinsic method java.lang.Thread java.lang.Thread.currentThread(). This may cause the unexpected use of the original definition of java.lang.Thread java.lang.Thread.currentThread()in methods that have already been compiled.
+2025-10-19 23:51:17.763  7636-7636  ector.app.debug         im.vector.app.debug                  W  Redefining intrinsic method boolean java.lang.Thread.interrupted(). This may cause the unexpected use of the original definition of boolean java.lang.Thread.interrupted()in methods that have already been compiled.
+---------------------------- PROCESS STARTED (7636) for package im.vector.app.debug ----------------------------
+2025-10-19 23:51:17.872  7636-7636  ApplicationLoaders      im.vector.app.debug                  D  Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+2025-10-19 23:51:17.872  7636-7636  ApplicationLoaders      im.vector.app.debug                  D  Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+2025-10-19 23:51:23.902  7636-7636  nativeloader            im.vector.app.debug                  D  Configuring clns-9 for other apk /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/lib/x86_64:/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/im.vector.app.debug
+2025-10-19 23:51:23.912  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 202956589; UID 10214; state: ENABLED
+2025-10-19 23:51:23.931  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f0019db8) locale list changing from [] to [en-US]
+2025-10-19 23:51:23.941  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f00126f8) locale list changing from [] to [en-US]
+2025-10-19 23:51:23.970  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V  Currently set values for:
+2025-10-19 23:51:23.970  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V    angle_gl_driver_selection_pkgs=[]
+2025-10-19 23:51:23.971  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V    angle_gl_driver_selection_values=[]
+2025-10-19 23:51:23.971  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V  im.vector.app.debug is not listed in per-application setting
+2025-10-19 23:51:23.972  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V  ANGLE allowlist from config: 
+2025-10-19 23:51:23.973  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V  im.vector.app.debug is not listed in ANGLE allowlist or settings, returning default
+2025-10-19 23:51:23.974  7636-7636  GraphicsEnvironment     im.vector.app.debug                  V  Neither updatable production driver nor prerelease driver is supported.
+2025-10-19 23:51:24.056  7636-7636  MultiDex                im.vector.app.debug                  I  VM with version 2.1.0 has multidex support
+2025-10-19 23:51:24.057  7636-7636  MultiDex                im.vector.app.debug                  I  Installing application
+2025-10-19 23:51:24.057  7636-7636  MultiDex                im.vector.app.debug                  I  VM has multidex support, MultiDex support library is disabled.
+2025-10-19 23:51:24.221  7636-7636  FirebaseApp             im.vector.app.debug                  I  Device unlocked: initializing all Firebase APIs for app [DEFAULT]
+2025-10-19 23:51:24.298  7636-7636  FirebaseInitProvider    im.vector.app.debug                  I  FirebaseApp initialization successful
+2025-10-19 23:51:24.343  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 312399441; UID 10214; state: ENABLED
+2025-10-19 23:51:24.355  7636-7636  Sentry                  im.vector.app.debug                  D  io.sentry.auto-init read: false
+2025-10-19 23:51:24.356  7636-7636  Sentry                  im.vector.app.debug                  I  Retrieving auto-init from AndroidManifest.xml
+2025-10-19 23:51:24.392  7636-7636  org.jitsi....nitializer im.vector.app.debug                  D  create
+2025-10-19 23:51:24.411  7636-7636  SoLoader                im.vector.app.debug                  W  Initializing SoLoader: 0
+2025-10-19 23:51:24.419  7636-7636  SoLoader                im.vector.app.debug                  W  Recording new base apk path: /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk
+                                                                                                    Previously recorded 0 base apk paths.
+2025-10-19 23:51:24.431  7636-7636  SoLoader                im.vector.app.debug                  I  Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+2025-10-19 23:51:24.433  7636-7636  SoLoader                im.vector.app.debug                  I  Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+2025-10-19 23:51:24.434  7636-7636  SoLoader                im.vector.app.debug                  I  Preparing SO source: DirectApkSoSource[root = [/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64]]
+2025-10-19 23:51:24.849  7636-7636  SoLoader                im.vector.app.debug                  I  Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/lib/x86_64 flags = 0]]
+2025-10-19 23:51:24.849  7636-7636  SoLoader                im.vector.app.debug                  I  init finish: 4 SO sources prepared
+2025-10-19 23:51:24.853  7636-7636  SoLoader                im.vector.app.debug                  W  SoLoader initialized: 8
+2025-10-19 23:51:25.052  7636-7636  EGL_emulation           im.vector.app.debug                  I  Opening libGLESv1_CM_emulation.so
+2025-10-19 23:51:25.054  7636-7636  EGL_emulation           im.vector.app.debug                  I  Opening libGLESv2_emulation.so
+2025-10-19 23:51:25.135  7636-7636  org.webrtc.Logging      im.vector.app.debug                  I  EglBase14Impl: Using OpenGL ES version 2
+2025-10-19 23:51:25.264  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ReactInstanceManagerHolder
+2025-10-19 23:51:25.358  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ReactInstanceManagerHolder
+2025-10-19 23:51:25.359  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ReactInstanceManagerHolder
+2025-10-19 23:51:25.362  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ReactInstanceManagerHolder
+2025-10-19 23:51:25.393  7636-7636  SoLoader                im.vector.app.debug                  W  SoLoader already initialized
+2025-10-19 23:51:25.563  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden method Landroid/view/WindowManagerGlobal;->getInstance()Landroid/view/WindowManagerGlobal; (runtime_flags=0, domain=platform, api=unsupported) from Lcurtains/internal/WindowManagerSpy$windowManagerInstance$2; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.564  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/view/WindowManagerGlobal;->mViews:Ljava/util/ArrayList; (runtime_flags=0, domain=platform, api=unsupported) from Lcurtains/internal/WindowManagerSpy$mViewsField$2; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.570  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/app/ActivityThread;->mH:Landroid/app/ActivityThread$H; (runtime_flags=0, domain=platform, api=unsupported) from Lleakcanary/ServiceWatcher; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.571  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden method Landroid/app/ActivityThread;->currentActivityThread()Landroid/app/ActivityThread; (runtime_flags=0, domain=platform, api=unsupported) from Lleakcanary/ServiceWatcher$activityThreadInstance$2; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.573  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/os/Handler;->mCallback:Landroid/os/Handler$Callback; (runtime_flags=0, domain=platform, api=unsupported) from Lleakcanary/ServiceWatcher; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.577  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/util/Singleton;->mInstance:Ljava/lang/Object; (runtime_flags=0, domain=platform, api=unsupported) from Lleakcanary/ServiceWatcher; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.578  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden method Landroid/util/Singleton;->get()Ljava/lang/Object; (runtime_flags=0, domain=platform, api=unsupported) from Lleakcanary/ServiceWatcher; (domain=app) using reflection: allowed
+2025-10-19 23:51:25.580  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/app/ActivityManager;->IActivityManagerSingleton:Landroid/util/Singleton; (runtime_flags=0, domain=platform, api=unsupported) from Lleakcanary/ServiceWatcher; (domain=app) using reflection: allowed
+2025-10-19 23:51:26.218  7636-7636  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/librealm-jni.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:26.456  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.701  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.716  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.736  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.749  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.769  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.784  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.800  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:26.813  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:27.160  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-global
+2025-10-19 23:51:27.196  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  Found key for alias:matrix-sdk-auth
+2025-10-19 23:51:27.213  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f001a718) locale list changing from [] to [en-US]
+2025-10-19 23:51:27.224  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ApiInterceptor.init
+2025-10-19 23:51:27.348  7636-7668  JitsiMeetSDK            im.vector.app.debug                  I  Using im.vector.app.features.call.audio.API23AudioDeviceDetector@a66495f as the audio device handler
+2025-10-19 23:51:27.371  7636-7668  AudioSystem             im.vector.app.debug                  D  onNewService: media.audio_policy service obtained 0x7149000a8950
+2025-10-19 23:51:27.391  7636-7668  AudioSystem             im.vector.app.debug                  D  getService: checking for service media.audio_policy: 0x7149000a8950
+2025-10-19 23:51:27.541  7636-7668  JitsiMeetSDK            im.vector.app.debug                  I  Update audio route for mode: DEFAULT
+2025-10-19 23:51:27.595  7636-7668  JitsiMeetSDK            im.vector.app.debug                  I   Available audio devices: [im.vector.app.features.call.audio.CallAudioManager$Device$Speaker@2219ed6]
+2025-10-19 23:51:27.604  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  Debug build detected - using minimal startup mode
+2025-10-19 23:51:27.642  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ----------------------------------------------------------------
+2025-10-19 23:51:27.645  7636-7636  VectorApplication       im.vector.app.debug                  D  ----------------------------------------------------------------
+2025-10-19 23:51:27.648  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ----------------------------------------------------------------
+2025-10-19 23:51:27.649  7636-7636  VectorApplication       im.vector.app.debug                  D  ----------------------------------------------------------------
+2025-10-19 23:51:27.650  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D   Application version: 1.6.50-dev [222234380] (G-2c9447c5-2025-10-19 15:41:06 +0530)
+2025-10-19 23:51:27.651  7636-7636  VectorApplication       im.vector.app.debug                  D   Application version: 1.6.50-dev [222234380] (G-2c9447c5-2025-10-19 15:41:06 +0530)
+2025-10-19 23:51:27.653  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D   SDK version: 1.6.50 (2c9447c5)
+2025-10-19 23:51:27.654  7636-7636  VectorApplication       im.vector.app.debug                  D   SDK version: 1.6.50 (2c9447c5)
+2025-10-19 23:51:27.659  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D   Local time: 10-19 23:51:27.610+0530
+2025-10-19 23:51:27.660  7636-7636  VectorApplication       im.vector.app.debug                  D   Local time: 10-19 23:51:27.610+0530
+2025-10-19 23:51:27.661  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ----------------------------------------------------------------
+2025-10-19 23:51:27.664  7636-7636  VectorApplication       im.vector.app.debug                  D  ----------------------------------------------------------------
+2025-10-19 23:51:27.665  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  ----------------------------------------------------------------
+                                                                                                    
+                                                                                                    
+                                                                                                    
+2025-10-19 23:51:27.667  7636-7636  VectorApplication       im.vector.app.debug                  D  ----------------------------------------------------------------
+                                                                                                    
+                                                                                                    
+                                                                                                    
+2025-10-19 23:51:27.832  7636-7636  LeakCanary              im.vector.app.debug                  D  Updated LeakCanary.config: Config(dumpHeap=false)
+2025-10-19 23:51:27.845  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  Minimal startup completed successfully
+2025-10-19 23:51:27.845  7636-7636  VectorApplication       im.vector.app.debug                  D  Minimal startup completed successfully
+2025-10-19 23:51:27.889  7636-7636  Choreographer           im.vector.app.debug                  I  Skipped 208 frames!  The application may be doing too much work on its main thread.
+2025-10-19 23:51:27.899  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D   Audio devices added
+2025-10-19 23:51:27.904  7636-7636  API23Audio...ceCallback im.vector.app.debug                  D   Audio devices added
+2025-10-19 23:51:27.909  7636-7668  JitsiMeetSDK            im.vector.app.debug                  I   Available audio devices: [im.vector.app.features.call.audio.CallAudioManager$Device$Speaker@2219ed6]
+2025-10-19 23:51:27.912  7636-7668  API23Audio...ceDetector im.vector.app.debug                  I   Available audio devices: [im.vector.app.features.call.audio.CallAudioManager$Device$Speaker@2219ed6]
+2025-10-19 23:51:27.920  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:27.933  7636-7682  DisplayManager          im.vector.app.debug                  I  Choreographer implicitly registered for the refresh rate.
+2025-10-19 23:51:27.951  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f00155d8) locale list changing from [] to [en-US]
+2025-10-19 23:51:28.018  7636-7682  HWUI                    im.vector.app.debug                  W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-10-19 23:51:28.018  7636-7682  HWUI                    im.vector.app.debug                  W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-10-19 23:51:28.123  7636-7636  ashmem                  im.vector.app.debug                  E  Pinning is deprecated since Android Q. Please use trim or other methods.
+2025-10-19 23:51:28.124  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f00187d8) locale list changing from [] to [en-US]
+2025-10-19 23:51:28.179  7636-7636  AppCompatDelegate       im.vector.app.debug                  D  Checking for metadata for AppLocalesMetadataHolderService : Service not found
+2025-10-19 23:51:28.181  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f0014c78) locale list changing from [] to [en-US]
+2025-10-19 23:51:28.216  7636-7641  ector.app.debug         im.vector.app.debug                  W  Suspending all threads took: 13.861ms
+2025-10-19 23:51:28.218  7636-7641  ector.app.debug         im.vector.app.debug                  W  Cleared Reference was only reachable from finalizer (only reported once)
+2025-10-19 23:51:28.257  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreate Activity MainActivity
+2025-10-19 23:51:28.259  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onCreate Activity MainActivity
+2025-10-19 23:51:28.280  7636-7641  ector.app.debug         im.vector.app.debug                  I  Background concurrent mark compact GC freed 2094KB AllocSpace bytes, 4(144KB) LOS objects, 49% free, 4319KB/8639KB, paused 16.520ms,2.170ms total 150.968ms
+2025-10-19 23:51:28.450  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 279646685; UID 10214; state: ENABLED
+2025-10-19 23:51:28.472  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 309578419; UID 10214; state: ENABLED
+2025-10-19 23:51:28.477  7636-7636  DesktopModeFlags        im.vector.app.debug                  D  Toggle override initialized to: OVERRIDE_UNSET
+2025-10-19 23:51:28.526  7636-7636  HWUI                    im.vector.app.debug                  W  Image decoding logging dropped!
+2025-10-19 23:51:28.721  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityCreated
+2025-10-19 23:51:28.919  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 63938206; UID 10214; state: ENABLED
+2025-10-19 23:51:28.984  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (runtime_flags=0, domain=platform, api=unsupported) from Landroidx/appcompat/widget/ViewUtils; (domain=app) using reflection: allowed
+2025-10-19 23:51:29.025  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 270674727; UID 10214; state: ENABLED
+2025-10-19 23:51:29.193  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStarted
+2025-10-19 23:51:29.197  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  App returning to foreground…
+2025-10-19 23:51:29.200  7636-7636  DefaultBac...onObserver im.vector.app.debug                  D  App returning to foreground…
+2025-10-19 23:51:29.206  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityResumed
+2025-10-19 23:51:29.260  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onResume Activity MainActivity
+2025-10-19 23:51:29.262  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onResume Activity MainActivity
+2025-10-19 23:51:29.264  7636-7636  JitsiMeetSDK            im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:29.265  7636-7636  ConfigurationViewModel  im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:29.305  7636-7636  JitsiMeetSDK            im.vector.app.debug                  W  Starting MainActivity with null
+2025-10-19 23:51:29.306  7636-7636  MainActivity            im.vector.app.debug                  W  Starting MainActivity with null
+2025-10-19 23:51:29.487  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityPaused
+2025-10-19 23:51:29.489  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onPause Activity MainActivity
+2025-10-19 23:51:29.490  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onPause Activity MainActivity
+2025-10-19 23:51:29.549  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f00171f8) locale list changing from [] to [en-US]
+2025-10-19 23:51:29.571  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreate Activity OnboardingActivity
+2025-10-19 23:51:29.572  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onCreate Activity OnboardingActivity
+2025-10-19 23:51:29.594  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityCreated
+2025-10-19 23:51:29.832  7636-7641  ector.app.debug         im.vector.app.debug                  I  Background concurrent mark compact GC freed 2260KB AllocSpace bytes, 3(124KB) LOS objects, 49% free, 6412KB/12MB, paused 3.019ms,3.344ms total 176.224ms
+2025-10-19 23:51:29.876  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStarted
+2025-10-19 23:51:30.064  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreate Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.065  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onCreate Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.100  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreateView Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.100  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onCreateView Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.377  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onViewCreated Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.377  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onViewCreated Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.475  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityResumed
+2025-10-19 23:51:30.476  7636-7636  AutofillManager         im.vector.app.debug                  D  Fill dialog is enabled:false, hints=[]
+2025-10-19 23:51:30.477  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onResume Activity OnboardingActivity
+2025-10-19 23:51:30.477  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onResume Activity OnboardingActivity
+2025-10-19 23:51:30.480  7636-7636  JitsiMeetSDK            im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:30.481  7636-7636  ConfigurationViewModel  im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:30.496  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onResume Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.496  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onResume Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:30.504  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 352594277; UID 10214; state: ENABLED
+2025-10-19 23:51:30.569  7636-7636  CompatChangeReporter    im.vector.app.debug                  D  Compat change id reported: 349153669; UID 10214; state: ENABLED
+2025-10-19 23:51:30.581  7636-7636  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Lcom/android/internal/policy/DecorView;->mWindow:Lcom/android/internal/policy/PhoneWindow; (runtime_flags=0, domain=platform, api=unsupported) from Lcurtains/internal/WindowSpy$windowField$2; (domain=app) using reflection: allowed
+2025-10-19 23:51:30.600  7636-7636  HWUI                    im.vector.app.debug                  W  Unknown dataspace 0
+2025-10-19 23:51:30.641  7636-7696  SoLoader                im.vector.app.debug                  W  SoLoader already initialized
+2025-10-19 23:51:30.786  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libc++_shared.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:30.812  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libfbjni.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:30.993  7636-7640  ector.app.debug         im.vector.app.debug                  I  Compiler allocated 5042KB to compile void android.view.ViewRootImpl.performTraversals()
+2025-10-19 23:51:31.118  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libcrypto.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:31.146  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libssl.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:31.194  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libevent_core-2.1.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:31.195  7636-7636  HWUI                    im.vector.app.debug                  W  Image decoding logging dropped!
+2025-10-19 23:51:31.281  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libevent-2.1.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:31.329  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libevent_extra-2.1.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:31.390  7636-7641  ector.app.debug         im.vector.app.debug                  I  Background concurrent mark compact GC freed 6100KB AllocSpace bytes, 18(4728KB) LOS objects, 49% free, 9451KB/18MB, paused 2.939ms,8.168ms total 103.789ms
+2025-10-19 23:51:31.430  7636-7697  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libflipper.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes31.dex): ok
+2025-10-19 23:51:31.538  7636-7696  flipper                 im.vector.app.debug                  I  [flipper] [client] Add plugin CrashReporter
+2025-10-19 23:51:31.548  7636-7696  flipper                 im.vector.app.debug                  I  [flipper] [client] Add plugin Preferences
+2025-10-19 23:51:31.571  7636-7636  Choreographer           im.vector.app.debug                  I  Skipped 53 frames!  The application may be doing too much work on its main thread.
+2025-10-19 23:51:31.623  7636-7696  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/view/View;->mKeyedTags:Landroid/util/SparseArray; (runtime_flags=0, domain=platform, api=unsupported) from Lcom/facebook/flipper/plugins/inspector/descriptors/ViewDescriptor; (domain=app) using reflection: allowed
+2025-10-19 23:51:31.624  7636-7696  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/view/View;->mListenerInfo:Landroid/view/View$ListenerInfo; (runtime_flags=0, domain=platform, api=unsupported) from Lcom/facebook/flipper/plugins/inspector/descriptors/ViewDescriptor; (domain=app) using reflection: allowed
+2025-10-19 23:51:31.624  7636-7696  ector.app.debug         im.vector.app.debug                  I  hiddenapi: Accessing hidden field Landroid/view/View$ListenerInfo;->mOnClickListener:Landroid/view/View$OnClickListener; (runtime_flags=0, domain=platform, api=unsupported) from Lcom/facebook/flipper/plugins/inspector/descriptors/ViewDescriptor; (domain=app) using reflection: allowed
+2025-10-19 23:51:31.632  7636-7647  HWUI                    im.vector.app.debug                  I  Davey! duration=959ms; Flags=1, FrameTimelineVsyncId=44056, IntendedVsync=14932954507954, Vsync=14932987841286, InputEventId=0, HandleInputStart=14932989930700, AnimationStart=14932990147300, PerformTraversalsStart=14932990182000, DrawStart=14933546016500, FrameDeadline=14932971174620, FrameStartTime=14932989883500, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=14933586247300, SyncStart=14933587856000, IssueDrawCommandsStart=14933588055300, SwapBuffers=14933879835600, FrameCompleted=14933915902800, DequeueBufferDuration=53600, QueueBufferDuration=1101400, GpuCompleted=14933915902800, SwapBuffersCompleted=14933895204600, DisplayPresentTime=0, CommandSubmissionCompleted=14933879835600, 
+2025-10-19 23:51:31.652  7636-7647  HWUI                    im.vector.app.debug                  I  Davey! duration=941ms; Flags=0, FrameTimelineVsyncId=44078, IntendedVsync=14933004507952, Vsync=14933887841250, InputEventId=0, HandleInputStart=14933903770600, AnimationStart=14933903799800, PerformTraversalsStart=14933907812900, DrawStart=14933908551400, FrameDeadline=14933937841248, FrameStartTime=14933900855800, FrameInterval=16666666, WorkloadTarget=16666666, SyncQueued=14933910447900, SyncStart=14933911441300, IssueDrawCommandsStart=14933911598800, SwapBuffers=14933914560900, FrameCompleted=14933947026400, DequeueBufferDuration=36800, QueueBufferDuration=232700, GpuCompleted=14933947026400, SwapBuffersCompleted=14933916791000, DisplayPresentTime=0, CommandSubmissionCompleted=14933914560900, 
+2025-10-19 23:51:31.669  7636-7696  flipper                 im.vector.app.debug                  I  [flipper] [client] Add plugin Inspector
+2025-10-19 23:51:31.670  7636-7696  flipper                 im.vector.app.debug                  I  [flipper] [client] Add plugin Network
+2025-10-19 23:51:31.680  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStopped
+2025-10-19 23:51:31.686  7636-7696  flipper                 im.vector.app.debug                  I  [flipper] [client] Add plugin Databases
+2025-10-19 23:51:31.713  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of androidx.lifecycle.ReportFragment (androidx.lifecycle.ReportFragment received Fragment#onDestroy() callback) with key 731fa237-b35e-465c-9dc0-bc05f36783b8
+2025-10-19 23:51:31.714  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityDestroyed
+2025-10-19 23:51:31.717  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of im.vector.app.features.MainActivity (im.vector.app.features.MainActivity received Activity#onDestroy() callback) with key 0aa6b5f5-34a0-47dc-8f24-5b335b089eb4
+2025-10-19 23:51:31.719  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onDestroy Activity MainActivity
+2025-10-19 23:51:31.720  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onDestroy Activity MainActivity
+2025-10-19 23:51:31.753  7636-7674  JitsiMeetSDK            im.vector.app.debug                  D  Analytics Id updated to ''
+2025-10-19 23:51:31.753  7636-7674  Analytics               im.vector.app.debug                  D  Analytics Id updated to ''
+2025-10-19 23:51:31.756  7636-7663  JitsiMeetSDK            im.vector.app.debug                  D  User consent updated to false
+2025-10-19 23:51:31.771  7636-7663  Analytics               im.vector.app.debug                  D  User consent updated to false
+2025-10-19 23:51:31.785  7636-7663  JitsiMeetSDK            im.vector.app.debug                  D  Stopping Sentry
+2025-10-19 23:51:31.788  7636-7663  Analytics               im.vector.app.debug                  D  Stopping Sentry
+2025-10-19 23:51:31.870  7636-7636  InsetsController        im.vector.app.debug                  D  hide(ime(), fromIme=false)
+2025-10-19 23:51:31.876  7636-7636  ImeTracker              im.vector.app.debug                  I  im.vector.app.debug:e8b21a3f: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-10-19 23:51:31.969  7636-7696  nativeloader            im.vector.app.debug                  D  Load /data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!/lib/x86_64/libjnidispatch.so using class loader ns clns-9 (caller=/data/app/~~tPUu8f_ErQ2OxnjSnkuVLQ==/im.vector.app.debug-d9EH3d8cPYxkA5_b_Q1kNg==/base.apk!classes33.dex): ok
+2025-10-19 23:51:32.095  7636-7697  System.err              im.vector.app.debug                  W  SLF4J: No SLF4J providers were found.
+2025-10-19 23:51:32.097  7636-7697  System.err              im.vector.app.debug                  W  SLF4J: Defaulting to no-operation (NOP) logger implementation
+2025-10-19 23:51:32.097  7636-7697  System.err              im.vector.app.debug                  W  SLF4J: See https://www.slf4j.org/codes.html#noProviders for further details.
+2025-10-19 23:51:32.717  7636-7716  stetho                  im.vector.app.debug                  I  Listening on @stetho_im.vector.app.debug_devtools_remote
+2025-10-19 23:51:32.771  7636-7696  JitsiMeetSDK            im.vector.app.debug                  E  Failed to initialize background systems in minimal startup (Ask Gemini)
+                                                                                                    java.lang.IllegalStateException: Method addObserver must be called on the main thread
+                                                                                                    	at androidx.lifecycle.LifecycleRegistry.enforceMainThreadIfNeeded(LifecycleRegistry.jvm.kt:302)
+                                                                                                    	at androidx.lifecycle.LifecycleRegistry.addObserver(LifecycleRegistry.jvm.kt:180)
+                                                                                                    	at im.vector.app.VectorApplication.initializeMinimalStartup$lambda$12$lambda$11(VectorApplication.kt:452)
+                                                                                                    	at im.vector.app.VectorApplication.$r8$lambda$9B1dL0Dl7HXFlvLIKDtiPCkEoqQ(Unknown Source:0)
+                                                                                                    	at im.vector.app.VectorApplication$$ExternalSyntheticLambda8.run(D8$$SyntheticClass:0)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+                                                                                                    
+                                                                                                    java.lang.IllegalStateException: Method addObserver must be called on the main thread
+                                                                                                    	at androidx.lifecycle.LifecycleRegistry.enforceMainThreadIfNeeded(LifecycleRegistry.jvm.kt:302)
+                                                                                                    	at androidx.lifecycle.LifecycleRegistry.addObserver(LifecycleRegistry.jvm.kt:180)
+                                                                                                    	at im.vector.app.VectorApplication.initializeMinimalStartup$lambda$12$lambda$11(VectorApplication.kt:452)
+                                                                                                    	at im.vector.app.VectorApplication.$r8$lambda$9B1dL0Dl7HXFlvLIKDtiPCkEoqQ(Unknown Source:0)
+                                                                                                    	at im.vector.app.VectorApplication$$ExternalSyntheticLambda8.run(D8$$SyntheticClass:0)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-10-19 23:51:32.772  7636-7696  VectorApplication       im.vector.app.debug                  E  Failed to initialize background systems in minimal startup (Ask Gemini)
+                                                                                                    java.lang.IllegalStateException: Method addObserver must be called on the main thread
+                                                                                                    	at androidx.lifecycle.LifecycleRegistry.enforceMainThreadIfNeeded(LifecycleRegistry.jvm.kt:302)
+                                                                                                    	at androidx.lifecycle.LifecycleRegistry.addObserver(LifecycleRegistry.jvm.kt:180)
+                                                                                                    	at im.vector.app.VectorApplication.initializeMinimalStartup$lambda$12$lambda$11(VectorApplication.kt:452)
+                                                                                                    	at im.vector.app.VectorApplication.$r8$lambda$9B1dL0Dl7HXFlvLIKDtiPCkEoqQ(Unknown Source:0)
+                                                                                                    	at im.vector.app.VectorApplication$$ExternalSyntheticLambda8.run(D8$$SyntheticClass:0)
+                                                                                                    	at java.lang.Thread.run(Thread.java:1119)
+2025-10-19 23:51:33.195  7636-7636  JitsiMeetSDK            im.vector.app.debug                  V  Emoji compat onInitialized success 
+2025-10-19 23:51:33.201  7636-7636  EmojiCompatWrapper$init im.vector.app.debug                  V  Emoji compat onInitialized success 
+2025-10-19 23:51:33.250  7636-7720  ProfileInstaller        im.vector.app.debug                  D  Installing profile for im.vector.app.debug
+2025-10-19 23:51:36.631  7636-7636  HWUI                    im.vector.app.debug                  W  Image decoding logging dropped!
+2025-10-19 23:51:36.736  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:37.607  7636-7636  JitsiMeetSDK            im.vector.app.debug                  W  Application startup taking longer than expected - continuing with basic initialization
+2025-10-19 23:51:37.607  7636-7636  VectorApplication       im.vector.app.debug                  W  Application startup taking longer than expected - continuing with basic initialization
+2025-10-19 23:51:39.711  7636-7636  HWUI                    im.vector.app.debug                  W  Image decoding logging dropped!
+2025-10-19 23:51:39.773  7636-7636  HWUI                    im.vector.app.debug                  W  Image decoding logging dropped!
+2025-10-19 23:51:46.290  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityPaused
+2025-10-19 23:51:46.295  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onPause Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:46.296  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onPause Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:46.299  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onPause Activity OnboardingActivity
+2025-10-19 23:51:46.300  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onPause Activity OnboardingActivity
+2025-10-19 23:51:46.493  7636-7641  ector.app.debug         im.vector.app.debug                  W  Suspending all threads took: 11.631ms
+2025-10-19 23:51:47.152  7636-7636  VRI[OnboardingActivity] im.vector.app.debug                  D  visibilityChanged oldVisibility=true newVisibility=false
+2025-10-19 23:51:47.223  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStopped
+2025-10-19 23:51:47.224  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  App going to background…
+2025-10-19 23:51:47.226  7636-7636  DefaultBac...onObserver im.vector.app.debug                  D  App going to background…
+2025-10-19 23:51:47.244  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of androidx.lifecycle.ReportFragment (androidx.lifecycle.ReportFragment received Fragment#onDestroy() callback) with key 82322e44-127f-447a-9fab-f24d5ce50197
+2025-10-19 23:51:47.244  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityDestroyed
+2025-10-19 23:51:47.247  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of im.vector.app.features.onboarding.OnboardingActivity (im.vector.app.features.onboarding.OnboardingActivity received Activity#onDestroy() callback) with key 7a89281e-08ea-4aea-9cf3-7ac15048913e
+2025-10-19 23:51:47.304  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onDestroyView Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:47.306  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onDestroyView Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:47.322  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of androidx.constraintlayout.widget.ConstraintLayout (im.vector.app.features.onboarding.ftueauth.FtueAuthSplashCarouselFragment received Fragment#onDestroyView() callback (references to its views should be cleared to prevent leaks)) with key 3c5900ea-456f-49b5-84d3-f19c188c5324
+2025-10-19 23:51:47.330  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onDestroy Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:47.330  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onDestroy Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:47.331  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of im.vector.app.features.onboarding.ftueauth.FtueAuthSplashCarouselFragment (im.vector.app.features.onboarding.ftueauth.FtueAuthSplashCarouselFragment received Fragment#onDestroy() callback) with key dd55eb57-0d95-4c9e-8f28-4cc4e99395eb
+2025-10-19 23:51:47.333  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onDestroy Activity OnboardingActivity
+2025-10-19 23:51:47.334  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onDestroy Activity OnboardingActivity
+2025-10-19 23:51:47.334  7636-7636  WindowOnBackDispatcher  im.vector.app.debug                  W  sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda13@2d37fb4
+2025-10-19 23:51:47.342  7636-7636  ViewRootImpl            im.vector.app.debug                  D  Skipping stats log for color mode
+2025-10-19 23:51:52.235  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:52.247  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:52.253  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:52.328  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:52.335  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.
+2025-10-19 23:51:53.095  7636-7682  HWUI                    im.vector.app.debug                  W  Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2025-10-19 23:51:53.095  7636-7682  HWUI                    im.vector.app.debug                  W  Failed to initialize 101010-2 format, error = EGL_SUCCESS
+2025-10-19 23:51:53.161  7636-7636  ector.app.debug         im.vector.app.debug                  I  AssetManager2(0x7148f00284f8) locale list changing from [] to [en-US]
+2025-10-19 23:51:53.169  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreate Activity MainActivity
+2025-10-19 23:51:53.173  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onCreate Activity MainActivity
+2025-10-19 23:51:53.209  7636-7636  HWUI                    im.vector.app.debug                  W  Image decoding logging dropped!
+2025-10-19 23:51:53.247  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityCreated
+2025-10-19 23:51:53.269  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStarted
+2025-10-19 23:51:53.270  7636-7636  JitsiMeetSDK            im.vector.app.debug                  D  App returning to foreground…
+2025-10-19 23:51:53.271  7636-7636  DefaultBac...onObserver im.vector.app.debug                  D  App returning to foreground…
+2025-10-19 23:51:53.273  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityResumed
+2025-10-19 23:51:53.273  7636-7636  AutofillManager         im.vector.app.debug                  D  Fill dialog is enabled:false, hints=[]
+2025-10-19 23:51:53.275  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onResume Activity MainActivity
+2025-10-19 23:51:53.275  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onResume Activity MainActivity
+2025-10-19 23:51:53.276  7636-7636  JitsiMeetSDK            im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:53.277  7636-7636  ConfigurationViewModel  im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:53.352  7636-7636  JitsiMeetSDK            im.vector.app.debug                  W  Starting MainActivity with null
+2025-10-19 23:51:53.352  7636-7636  MainActivity            im.vector.app.debug                  W  Starting MainActivity with null
+2025-10-19 23:51:53.449  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityPaused
+2025-10-19 23:51:53.449  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onPause Activity MainActivity
+2025-10-19 23:51:53.450  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onPause Activity MainActivity
+2025-10-19 23:51:53.518  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreate Activity OnboardingActivity
+2025-10-19 23:51:53.518  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onCreate Activity OnboardingActivity
+2025-10-19 23:51:53.546  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityCreated
+2025-10-19 23:51:53.618  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStarted
+2025-10-19 23:51:53.627  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreate Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.629  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onCreate Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.645  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onCreateView Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.645  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onCreateView Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.694  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onViewCreated Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.695  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onViewCreated Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.724  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityResumed
+2025-10-19 23:51:53.732  7636-7636  AutofillManager         im.vector.app.debug                  D  Fill dialog is enabled:false, hints=[]
+2025-10-19 23:51:53.733  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onResume Activity OnboardingActivity
+2025-10-19 23:51:53.738  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onResume Activity OnboardingActivity
+2025-10-19 23:51:53.746  7636-7636  JitsiMeetSDK            im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:53.747  7636-7636  ConfigurationViewModel  im.vector.app.debug                  V  Configuration: init to en_US_FONT_SCALE_NORMAL_system
+2025-10-19 23:51:53.784  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onResume Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:53.784  7636-7636  VectorBaseFragment      im.vector.app.debug                  I  onResume Fragment FtueAuthSplashCarouselFragment
+2025-10-19 23:51:54.220  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityStopped
+2025-10-19 23:51:54.232  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of androidx.lifecycle.ReportFragment (androidx.lifecycle.ReportFragment received Fragment#onDestroy() callback) with key 5838b3e8-ae1e-4a58-80f6-e04b90e12a8d
+2025-10-19 23:51:54.237  7636-7636  OrientationModule       im.vector.app.debug                  D  onActivityDestroyed
+2025-10-19 23:51:54.237  7636-7636  LeakCanary              im.vector.app.debug                  D  Watching instance of im.vector.app.features.MainActivity (im.vector.app.features.MainActivity received Activity#onDestroy() callback) with key f373bc81-ebeb-45d8-b017-fa71cbf62e99
+2025-10-19 23:51:54.238  7636-7636  JitsiMeetSDK            im.vector.app.debug                  I  onDestroy Activity MainActivity
+2025-10-19 23:51:54.240  7636-7636  VectorBaseActivity      im.vector.app.debug                  I  onDestroy Activity MainActivity
+2025-10-19 23:51:54.295  7636-7636  InsetsController        im.vector.app.debug                  D  hide(ime(), fromIme=false)
+2025-10-19 23:51:54.295  7636-7636  ImeTracker              im.vector.app.debug                  I  im.vector.app.debug:56f327e5: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+2025-10-19 23:51:59.240  7636-7661  LeakCanary              im.vector.app.debug                  D  LeakCanary is currently disabled: LeakCanary.Config.dumpHeap is set to false.

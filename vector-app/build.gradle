@@ -166,6 +166,9 @@ android {
         buildConfigField "String", "GIT_REVISION", "\"${gitRevision()}\""
         buildConfigField "String", "GIT_REVISION_DATE", "\"${gitRevisionDate()}\""
         buildConfigField "String", "GIT_BRANCH_NAME", "\"${gitBranchName()}\""
+        buildConfigField "boolean", "DISABLE_SECURITY_IN_DEBUG", "${project.findProperty("vector.disableSecurityInDebug") ?: "true"}"
+        buildConfigField "boolean", "DISABLE_OBFUSCATION_IN_DEBUG", "${project.findProperty("vector.disableObfuscationInDebug") ?: "true"}"
+        buildConfigField "boolean", "USE_MINIMAL_STARTUP_IN_DEBUG", "${project.findProperty("vector.useMinimalStartupInDebug") ?: "true"}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

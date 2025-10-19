@@ -40,96 +40,128 @@ class DebuggerDetection(private val context: Context) {
      */
     fun isDebuggerAttached(): Boolean {
         return try {
-            // advanced-Level Anti-Debug: Use advanced multi-layered detection
-            val primaryMethods = listOf(
-                ::checkAndroidDebugApi,
-                ::checkTracerPid,
-                ::checkNativePtrace,
-                ::checkProcessTree
-            )
-            
-            val secondaryMethods = listOf(
-                ::checkDebugFlags,
-                ::checkTimingAttack,
-                ::checkAdvancedTimingAttack,
-                ::checkDebugEnvironmentVariables,
-                ::checkDebugSystemProperties,
-                ::checkDebugPorts,
-                ::checkDebugFiles,
-                ::checkDebugLibraries
-            )
-            
-            val tertiaryMethods = listOf(
-                ::checkMemoryBreakpoints,
-                ::checkHardwareBreakpoints,
-                ::checkSoftwareBreakpoints,
-                ::checkJDWPPort,
-                ::checkBreakpointInstructions
-            )
-            
-            // Obfuscated execution with random order and timing
-            val allMethods = (primaryMethods + secondaryMethods + tertiaryMethods).shuffled()
-            
-            // Use scoring system for more sophisticated detection
-            var detectionScore = 0
-            var primaryDetected = false
-            var secondaryDetected = false
-            var tertiaryDetected = false
-            
-            // Check primary methods first (highest priority)
-            for (method in primaryMethods) {
-                try {
-                    Thread.sleep((1..3).random().toLong())
-                    if (method.invoke()) {
-                        primaryDetected = true
-                        detectionScore += 5
-                        Log.d(TAG, "Primary debugger detection triggered: ${method.name}")
-                    }
-                } catch (e: Exception) {
-                    Log.w(TAG, "Primary detection method failed: ${e.message}")
-                }
+            // In debug builds, be more lenient with debugger detection
+            val isDebugBuild = try {
+                val buildConfigClass = Class.forName("com.example.antidebug.BuildConfig")
+                val debugField = buildConfigClass.getDeclaredField("DEBUG")
+                debugField.isAccessible = true
+                debugField.getBoolean(null)
+            } catch (e: Exception) {
+                false
             }
             
-            // If primary detection failed, check secondary methods
-            if (!primaryDetected) {
-                for (method in secondaryMethods) {
+            if (isDebugBuild) {
+                Log.d(TAG, "Debug build detected - using lenient debugger detection")
+                // In debug builds, only check for obvious debugger indicators
+                val criticalChecks = listOf(
+                    ::checkAndroidDebugApi,
+                    ::checkTracerPid
+                )
+                
+                // Require multiple indicators in debug builds
+                val positiveChecks = criticalChecks.count { check ->
                     try {
-                        Thread.sleep((1..2).random().toLong())
+                        check.invoke()
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Debugger check failed: ${e.message}")
+                        false
+                    }
+                }
+                
+                // Only consider debugger attached if both critical checks pass
+                positiveChecks >= 2
+            } else {
+                // advanced-Level Anti-Debug: Use advanced multi-layered detection
+                val primaryMethods = listOf(
+                    ::checkAndroidDebugApi,
+                    ::checkTracerPid,
+                    ::checkNativePtrace,
+                    ::checkProcessTree
+                )
+                
+                val secondaryMethods = listOf(
+                    ::checkDebugFlags,
+                    ::checkTimingAttack,
+                    ::checkAdvancedTimingAttack,
+                    ::checkDebugEnvironmentVariables,
+                    ::checkDebugSystemProperties,
+                    ::checkDebugPorts,
+                    ::checkDebugFiles,
+                    ::checkDebugLibraries
+                )
+                
+                val tertiaryMethods = listOf(
+                    ::checkMemoryBreakpoints,
+                    ::checkHardwareBreakpoints,
+                    ::checkSoftwareBreakpoints,
+                    ::checkJDWPPort,
+                    ::checkBreakpointInstructions
+                )
+                
+                // Obfuscated execution with random order and timing
+                val allMethods = (primaryMethods + secondaryMethods + tertiaryMethods).shuffled()
+                
+                // Use scoring system for more sophisticated detection
+                var detectionScore = 0
+                var primaryDetected = false
+                var secondaryDetected = false
+                var tertiaryDetected = false
+                
+                // Check primary methods first (highest priority)
+                for (method in primaryMethods) {
+                    try {
+                        Thread.sleep((1..3).random().toLong())
                         if (method.invoke()) {
-                            secondaryDetected = true
-                            detectionScore += 3
-                            Log.d(TAG, "Secondary debugger detection triggered: ${method.name}")
+                            primaryDetected = true
+                            detectionScore += 5
+                            Log.d(TAG, "Primary debugger detection triggered: ${method.name}")
                         }
                     } catch (e: Exception) {
-                        Log.w(TAG, "Secondary detection method failed: ${e.message}")
+                        Log.w(TAG, "Primary detection method failed: ${e.message}")
                     }
                 }
-            }
-            
-            // If still no detection, check tertiary methods
-            if (!primaryDetected && !secondaryDetected) {
-                for (method in tertiaryMethods) {
-                    try {
-                        Thread.sleep((1..2).random().toLong())
-                        if (method.invoke()) {
-                            tertiaryDetected = true
-                            detectionScore += 1
-                            Log.d(TAG, "Tertiary debugger detection triggered: ${method.name}")
+                
+                // If primary detection failed, check secondary methods
+                if (!primaryDetected) {
+                    for (method in secondaryMethods) {
+                        try {
+                            Thread.sleep((1..2).random().toLong())
+                            if (method.invoke()) {
+                                secondaryDetected = true
+                                detectionScore += 3
+                                Log.d(TAG, "Secondary debugger detection triggered: ${method.name}")
+                            }
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Secondary detection method failed: ${e.message}")
                         }
-                    } catch (e: Exception) {
-                        Log.w(TAG, "Tertiary detection method failed: ${e.message}")
                     }
                 }
+                
+                // If still no detection, check tertiary methods
+                if (!primaryDetected && !secondaryDetected) {
+                    for (method in tertiaryMethods) {
+                        try {
+                            Thread.sleep((1..2).random().toLong())
+                            if (method.invoke()) {
+                                tertiaryDetected = true
+                                detectionScore += 1
+                                Log.d(TAG, "Tertiary debugger detection triggered: ${method.name}")
+                            }
+                    } catch (e: Exception) {
+                            Log.w(TAG, "Tertiary detection method failed: ${e.message}")
+                        }
+                    }
+                }
+                
+                // advanced-level threshold: score >= 5 or any primary detection
+                val isDebuggerDetected = primaryDetected || detectionScore >= 5
+                
+                if (isDebuggerDetected) {
+                    Log.w(TAG, "Debugger detected! Score: $detectionScore, Primary: $primaryDetected, Secondary: $secondaryDetected, Tertiary: $tertiaryDetected")
+                }
+                
+                isDebuggerDetected
             }
-            
-            // advanced-level threshold: score >= 5 or any primary detection
-            val isDebuggerDetected = primaryDetected || detectionScore >= 5
-            
-            if (isDebuggerDetected) {
-                Log.w(TAG, "Debugger detected! Score: $detectionScore, Primary: $primaryDetected, Secondary: $secondaryDetected, Tertiary: $tertiaryDetected")
-            }
-            
-            isDebuggerDetected
         } catch (e: Exception) {
             Log.e(TAG, "Error in debugger detection", e)
             false

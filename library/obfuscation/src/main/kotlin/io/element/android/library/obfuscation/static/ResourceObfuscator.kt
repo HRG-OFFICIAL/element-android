@@ -41,10 +41,10 @@ object ResourceObfuscator {
         fun obfuscateResourceName(originalName: String, resourceType: String): String {
             return resourceMap.getOrPut(originalName) {
                 generateObfuscatedResourceName(resourceType)
-            }
         }
-        
-        /**
+    }
+    
+    /**
          * Obfuscate resource names to meaningless identifiers
          */
         fun obfuscateResourceNames(resources: Map<String, String>): Map<String, String> {
@@ -147,8 +147,8 @@ object ResourceObfuscator {
         fun encryptAsset(assetPath: String, context: Context? = null): String? {
             return try {
                 val assetFile = File(assetPath)
-                if (!assetFile.exists()) return null
-                
+            if (!assetFile.exists()) return null
+            
                 val assetData = assetFile.readBytes()
                 val encryptedData = encryptAssetData(assetData)
                 

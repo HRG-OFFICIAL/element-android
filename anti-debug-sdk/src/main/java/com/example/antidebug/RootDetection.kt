@@ -75,28 +75,61 @@ class RootDetection(private val context: Context) {
      */
     fun isDeviceRooted(): Boolean {
         return try {
-            val checks = listOf(
-                ::checkSuBinary,
-                ::checkRootPackages,
-                ::checkSystemProperties,
-                ::checkWritableSystem,
-                ::checkBuildTags,
-                ::checkRootMethod1,
-                ::checkRootMethod2,
-                ::checkRootMethod3,
-                ::checkNativeRoot,
-                ::checkSuCommand,
-                ::checkRootFiles,
-                ::checkMountCommands
-            )
+            // In debug builds, be more lenient with root detection
+            val isDebugBuild = try {
+                val buildConfigClass = Class.forName("com.example.antidebug.BuildConfig")
+                val debugField = buildConfigClass.getDeclaredField("DEBUG")
+                debugField.isAccessible = true
+                debugField.getBoolean(null)
+            } catch (e: Exception) {
+                false
+            }
             
-            // Return true if any check detects root
-            checks.any { check ->
-                try {
-                    check.invoke()
-                } catch (e: Exception) {
-                    Log.w(TAG, "Root check failed: ${e.message}")
-                    false
+            if (isDebugBuild) {
+                Log.d(TAG, "Debug build detected - using lenient root detection")
+                // In debug builds, only check for obvious root indicators
+                val criticalChecks = listOf(
+                    ::checkSuBinary,
+                    ::checkRootPackages,
+                    ::checkSystemProperties
+                )
+                
+                // Require multiple indicators in debug builds
+                val positiveChecks = criticalChecks.count { check ->
+                    try {
+                        check.invoke()
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Root check failed: ${e.message}")
+                        false
+                    }
+                }
+                
+                // Only consider rooted if 2 or more critical checks pass
+                positiveChecks >= 2
+            } else {
+                val checks = listOf(
+                    ::checkSuBinary,
+                    ::checkRootPackages,
+                    ::checkSystemProperties,
+                    ::checkWritableSystem,
+                    ::checkBuildTags,
+                    ::checkRootMethod1,
+                    ::checkRootMethod2,
+                    ::checkRootMethod3,
+                    ::checkNativeRoot,
+                    ::checkSuCommand,
+                    ::checkRootFiles,
+                    ::checkMountCommands
+                )
+                
+                // Return true if any check detects root
+                checks.any { check ->
+                    try {
+                        check.invoke()
+                    } catch (e: Exception) {
+                        Log.w(TAG, "Root check failed: ${e.message}")
+                        false
+                    }
                 }
             }
         } catch (e: Exception) {

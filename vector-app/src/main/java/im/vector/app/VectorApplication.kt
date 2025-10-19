@@ -65,7 +65,7 @@ import org.jitsi.meet.sdk.log.JitsiMeetDefaultLogHandler
 
 // Security and Obfuscation imports
 import com.example.antidebug.AntiDebug
-import com.example.antidebug.ThreatType
+import com.example.antidebug.AntiDebug.ThreatType
 import com.example.antidebug.SecurityReport
 import com.example.antidebug.MonitoringStatistics
 import com.example.antidebug.SecurityCheckResult
@@ -131,22 +131,42 @@ class VectorApplication :
         super.onCreate()
         appContext = this
         
-        // Initialize security and obfuscation systems
-        initializeSecurity()
-        initializeObfuscation()
+        // Add timeout handler to prevent ANR
+        val timeoutHandler = Handler(mainLooper)
+        timeoutHandler.postDelayed({
+            Timber.w("Application startup taking longer than expected - continuing with basic initialization")
+        }, 10000) // 10 second timeout - more aggressive
         
-        flipperProxy.init(matrix)
-        vectorAnalytics.init()
-        vectorAnalytics.updateSuperProperties(
-                SuperProperties(
-                        appPlatform = SuperProperties.AppPlatform.EA,
-                        cryptoSDK = SuperProperties.CryptoSDK.Rust,
-                        cryptoSDKVersion = Matrix.getCryptoVersion(longFormat = false)
-                )
-        )
-        invitesAcceptor.initialize()
-        autoRageShaker.initialize()
-        decryptionFailureTracker.start()
+        // In debug builds, use minimal startup mode if configured
+        if (buildMeta.isDebug) {
+            val useMinimalStartup = try {
+                val buildConfigClass = Class.forName("im.vector.app.BuildConfig")
+                val field = buildConfigClass.getDeclaredField("USE_MINIMAL_STARTUP_IN_DEBUG")
+                field.isAccessible = true
+                field.getBoolean(null)
+            } catch (e: Exception) {
+                true // Default to true for safety
+            }
+            
+            if (useMinimalStartup) {
+                Timber.d("Debug build detected - using minimal startup mode")
+                initializeMinimalStartup()
+                return
+            }
+        }
+        
+        // Initialize security and obfuscation systems in background
+        Thread {
+            try {
+                initializeSecurity()
+                initializeObfuscation()
+                timeoutHandler.removeCallbacksAndMessages(null) // Clear timeout on success
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to initialize security/obfuscation in background")
+            }
+        }.start()
+        
+        // Initialize only essential systems on main thread
         vectorUncaughtExceptionHandler.activate()
 
         // Remove Log handler statically added by Jitsi
@@ -159,85 +179,133 @@ class VectorApplication :
         }
         Timber.plant(vectorFileLogger)
 
-        if (buildMeta.isDebug) {
-            Stetho.initializeWithDefaults(this)
-        }
         logInfo()
         LazyThreeTen.init(this)
         Mavericks.initialize(debugMode = false)
+        
+        // Move heavy initialization to background thread
+        Thread {
+            try {
+                flipperProxy.init(matrix)
+                vectorAnalytics.init()
+                vectorAnalytics.updateSuperProperties(
+                        SuperProperties(
+                                appPlatform = SuperProperties.AppPlatform.EA,
+                                cryptoSDK = SuperProperties.CryptoSDK.Rust,
+                                cryptoSDKVersion = Matrix.getCryptoVersion(longFormat = false)
+                        )
+                )
+                invitesAcceptor.initialize()
+                autoRageShaker.initialize()
+                decryptionFailureTracker.start()
+                
+                if (buildMeta.isDebug) {
+                    Stetho.initializeWithDefaults(this@VectorApplication)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to initialize heavy systems in background")
+            }
+        }.start()
 
         configureEpoxy()
 
         registerActivityLifecycleCallbacks(VectorActivityLifecycleCallbacks(popupAlertManager))
-        val fontRequest = FontRequest(
-                "com.google.android.gms.fonts",
-                "com.google.android.gms",
-                "Noto Color Emoji Compat",
-                R.array.com_google_android_gms_fonts_certs
-        )
-        @Suppress("DEPRECATION")
-        FontsContractCompat.requestFont(this, fontRequest, emojiCompatFontProvider, getFontThreadHandler())
-        vectorLocale.init()
-        ThemeUtils.init(this)
-        vectorConfiguration.applyToApplicationContext()
-
-        emojiCompatWrapper.init(fontRequest)
-
-        notificationUtils.createNotificationChannels()
-
-        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-            private var stopBackgroundSync = false
-
-            override fun onResume(owner: LifecycleOwner) {
-                Timber.i("App entered foreground")
-                fcmHelper.onEnterForeground(activeSessionHolder)
-                if (webRtcCallManager.currentCall.get() == null) {
-                    Timber.i("App entered foreground and no active call: stop any background sync")
-                    activeSessionHolder.getSafeActiveSessionAsync {
-                        it?.syncService()?.stopAnyBackgroundSync()
-                    }
-                } else {
-                    Timber.i("App entered foreground: there is an active call, set stopBackgroundSync to true")
-                    stopBackgroundSync = true
-                }
+        
+        // Move heavy operations to background thread
+        Thread {
+            try {
+                val fontRequest = FontRequest(
+                        "com.google.android.gms.fonts",
+                        "com.google.android.gms",
+                        "Noto Color Emoji Compat",
+                        R.array.com_google_android_gms_fonts_certs
+                )
+                @Suppress("DEPRECATION")
+                FontsContractCompat.requestFont(this@VectorApplication, fontRequest, emojiCompatFontProvider, getFontThreadHandler())
+                vectorLocale.init()
+                ThemeUtils.init(this@VectorApplication)
+                vectorConfiguration.applyToApplicationContext()
+                emojiCompatWrapper.init(fontRequest)
+                notificationUtils.createNotificationChannels()
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to initialize background systems")
             }
+        }.start()
 
-            override fun onPause(owner: LifecycleOwner) {
-                Timber.i("App entered background")
-                fcmHelper.onEnterBackground(activeSessionHolder)
+        // Move ProcessLifecycleOwner observers to background thread
+        Thread {
+            try {
+                ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+                    private var stopBackgroundSync = false
 
-                if (stopBackgroundSync) {
-                    if (webRtcCallManager.currentCall.get() == null) {
-                        Timber.i("App entered background: stop any background sync")
-                        activeSessionHolder.getSafeActiveSessionAsync {
-                            it?.syncService()?.stopAnyBackgroundSync()
+                    override fun onResume(owner: LifecycleOwner) {
+                        Timber.i("App entered foreground")
+                        fcmHelper.onEnterForeground(activeSessionHolder)
+                        if (webRtcCallManager.currentCall.get() == null) {
+                            Timber.i("App entered foreground and no active call: stop any background sync")
+                            activeSessionHolder.getSafeActiveSessionAsync {
+                                it?.syncService()?.stopAnyBackgroundSync()
+                            }
+                        } else {
+                            Timber.i("App entered foreground: there is an active call, set stopBackgroundSync to true")
+                            stopBackgroundSync = true
                         }
-                        stopBackgroundSync = false
-                    } else {
-                        Timber.i("App entered background: there is an active call do not stop background sync")
                     }
-                }
+
+                    override fun onPause(owner: LifecycleOwner) {
+                        Timber.i("App entered background")
+                        fcmHelper.onEnterBackground(activeSessionHolder)
+
+                        if (stopBackgroundSync) {
+                            if (webRtcCallManager.currentCall.get() == null) {
+                                Timber.i("App entered background: stop any background sync")
+                                activeSessionHolder.getSafeActiveSessionAsync {
+                                    it?.syncService()?.stopAnyBackgroundSync()
+                                }
+                                stopBackgroundSync = false
+                            } else {
+                                Timber.i("App entered background: there is an active call do not stop background sync")
+                            }
+                        }
+                    }
+                })
+                ProcessLifecycleOwner.get().lifecycle.addObserver(spaceStateHandler)
+                ProcessLifecycleOwner.get().lifecycle.addObserver(pinLocker)
+                ProcessLifecycleOwner.get().lifecycle.addObserver(callManager)
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to initialize ProcessLifecycleOwner observers")
             }
-        })
-        ProcessLifecycleOwner.get().lifecycle.addObserver(spaceStateHandler)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(pinLocker)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(callManager)
-        // This should be done as early as possible
-        // initKnownEmojiHashSet(appContext)
-        ContextCompat.registerReceiver(
-                applicationContext,
-                powerKeyReceiver,
-                IntentFilter().apply {
-                    // Looks like i cannot receive OFF, if i don't have both ON and OFF
-                    addAction(Intent.ACTION_SCREEN_OFF)
-                    addAction(Intent.ACTION_SCREEN_ON)
-                },
-                ContextCompat.RECEIVER_NOT_EXPORTED,
-        )
-        EmojiManager.install(GoogleEmojiProvider())
+        }.start()
+        // Move receiver registration and emoji initialization to background
+        Thread {
+            try {
+                // This should be done as early as possible
+                // initKnownEmojiHashSet(appContext)
+                ContextCompat.registerReceiver(
+                        applicationContext,
+                        powerKeyReceiver,
+                        IntentFilter().apply {
+                            // Looks like i cannot receive OFF, if i don't have both ON and OFF
+                            addAction(Intent.ACTION_SCREEN_OFF)
+                            addAction(Intent.ACTION_SCREEN_ON)
+                        },
+                        ContextCompat.RECEIVER_NOT_EXPORTED,
+                )
+                EmojiManager.install(GoogleEmojiProvider())
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to initialize receiver and emoji systems")
+            }
+        }.start()
 
         // Initialize Mapbox before inflating mapViews
-        Mapbox.getInstance(this)
+        // Move Mapbox initialization to background
+        Thread {
+            try {
+                Mapbox.getInstance(this@VectorApplication)
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to initialize Mapbox")
+            }
+        }.start()
 
         initMemoryLeakAnalysis()
     }
@@ -312,10 +380,161 @@ class VectorApplication :
     }
     
     /**
+     * Minimal startup for debug builds to prevent ANR
+     */
+    private fun initializeMinimalStartup() {
+        try {
+            // Only initialize absolutely essential systems
+            vectorUncaughtExceptionHandler.activate()
+            
+            // Basic logging setup
+            if (buildMeta.isDebug) {
+                Timber.plant(Timber.DebugTree())
+            }
+            Timber.plant(vectorFileLogger)
+            
+            // Basic info logging
+            logInfo()
+            
+            // Initialize only critical systems
+            LazyThreeTen.init(this)
+            Mavericks.initialize(debugMode = false)
+            
+            // Configure Epoxy
+            configureEpoxy()
+            
+            // Register activity lifecycle callbacks
+            registerActivityLifecycleCallbacks(VectorActivityLifecycleCallbacks(popupAlertManager))
+            
+            // Initialize memory leak analysis
+            initMemoryLeakAnalysis()
+            
+            Timber.d("Minimal startup completed successfully")
+            
+            // Initialize other systems in background after a delay
+            Handler(mainLooper).postDelayed({
+                Thread {
+                    try {
+                        // Initialize heavy systems in background
+                        flipperProxy.init(matrix)
+                        vectorAnalytics.init()
+                        vectorAnalytics.updateSuperProperties(
+                                SuperProperties(
+                                        appPlatform = SuperProperties.AppPlatform.EA,
+                                        cryptoSDK = SuperProperties.CryptoSDK.Rust,
+                                        cryptoSDKVersion = Matrix.getCryptoVersion(longFormat = false)
+                                )
+                        )
+                        invitesAcceptor.initialize()
+                        autoRageShaker.initialize()
+                        decryptionFailureTracker.start()
+                        
+                        if (buildMeta.isDebug) {
+                            Stetho.initializeWithDefaults(this@VectorApplication)
+                        }
+                        
+                        // Initialize other background systems
+                        val fontRequest = FontRequest(
+                                "com.google.android.gms.fonts",
+                                "com.google.android.gms",
+                                "Noto Color Emoji Compat",
+                                R.array.com_google_android_gms_fonts_certs
+                        )
+                        @Suppress("DEPRECATION")
+                        FontsContractCompat.requestFont(this@VectorApplication, fontRequest, emojiCompatFontProvider, getFontThreadHandler())
+                        vectorLocale.init()
+                        ThemeUtils.init(this@VectorApplication)
+                        vectorConfiguration.applyToApplicationContext()
+                        emojiCompatWrapper.init(fontRequest)
+                        notificationUtils.createNotificationChannels()
+                        
+                        // ProcessLifecycleOwner observers
+                        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+                            private var stopBackgroundSync = false
+
+                            override fun onResume(owner: LifecycleOwner) {
+                                Timber.i("App entered foreground")
+                                fcmHelper.onEnterForeground(activeSessionHolder)
+                                if (webRtcCallManager.currentCall.get() == null) {
+                                    Timber.i("App entered foreground and no active call: stop any background sync")
+                                    activeSessionHolder.getSafeActiveSessionAsync {
+                                        it?.syncService()?.stopAnyBackgroundSync()
+                                    }
+                                } else {
+                                    Timber.i("App entered foreground: there is an active call, set stopBackgroundSync to true")
+                                    stopBackgroundSync = true
+                                }
+                            }
+
+                            override fun onPause(owner: LifecycleOwner) {
+                                Timber.i("App entered background")
+                                fcmHelper.onEnterBackground(activeSessionHolder)
+
+                                if (stopBackgroundSync) {
+                                    if (webRtcCallManager.currentCall.get() == null) {
+                                        Timber.i("App entered background: stop any background sync")
+                                        activeSessionHolder.getSafeActiveSessionAsync {
+                                            it?.syncService()?.stopAnyBackgroundSync()
+                                        }
+                                        stopBackgroundSync = false
+                                    } else {
+                                        Timber.i("App entered background: there is an active call do not stop background sync")
+                                    }
+                                }
+                            }
+                        })
+                        ProcessLifecycleOwner.get().lifecycle.addObserver(spaceStateHandler)
+                        ProcessLifecycleOwner.get().lifecycle.addObserver(pinLocker)
+                        ProcessLifecycleOwner.get().lifecycle.addObserver(callManager)
+                        
+                        // Receiver registration
+                        ContextCompat.registerReceiver(
+                                applicationContext,
+                                powerKeyReceiver,
+                                IntentFilter().apply {
+                                    addAction(Intent.ACTION_SCREEN_OFF)
+                                    addAction(Intent.ACTION_SCREEN_ON)
+                                },
+                                ContextCompat.RECEIVER_NOT_EXPORTED,
+                        )
+                        EmojiManager.install(GoogleEmojiProvider())
+                        
+                        // Mapbox initialization
+                        Mapbox.getInstance(this@VectorApplication)
+                        
+                        Timber.d("Background initialization completed successfully")
+                    } catch (e: Exception) {
+                        Timber.e(e, "Failed to initialize background systems in minimal startup")
+                    }
+                }.start()
+            }, 2000) // 2 second delay to let main thread finish
+            
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to initialize minimal startup")
+        }
+    }
+    
+    /**
      * Initialize security systems including anti-debug protection
      */
     private fun initializeSecurity() {
         try {
+            // Check if security should be disabled in debug builds
+            val disableSecurityInDebug = try {
+                val buildConfigClass = Class.forName("im.vector.app.BuildConfig")
+                val field = buildConfigClass.getDeclaredField("DISABLE_SECURITY_IN_DEBUG")
+                field.isAccessible = true
+                field.getBoolean(null)
+            } catch (e: Exception) {
+                true // Default to true for safety
+            }
+            
+            // In debug builds, skip security initialization if configured
+            if (buildMeta.isDebug && disableSecurityInDebug) {
+                Timber.d("Debug build detected with security disabled - skipping security initialization")
+                return
+            }
+            
             // Initialize AntiDebug SDK with continuous monitoring for production builds
             AntiDebug.init(this, enableContinuousMonitoring = !buildMeta.isDebug)
             
@@ -344,6 +563,22 @@ class VectorApplication :
      */
     private fun initializeObfuscation() {
         try {
+            // Check if obfuscation should be disabled in debug builds
+            val disableObfuscationInDebug = try {
+                val buildConfigClass = Class.forName("im.vector.app.BuildConfig")
+                val field = buildConfigClass.getDeclaredField("DISABLE_OBFUSCATION_IN_DEBUG")
+                field.isAccessible = true
+                field.getBoolean(null)
+            } catch (e: Exception) {
+                true // Default to true for safety
+            }
+            
+            // Skip obfuscation in debug builds if configured
+            if (buildMeta.isDebug && disableObfuscationInDebug) {
+                Timber.d("Debug build detected with obfuscation disabled - skipping obfuscation initialization for faster startup")
+                return
+            }
+            
             // Initialize obfuscation manager with configuration
             ObfuscationManager.initialize(
                 context = this,
@@ -396,8 +631,11 @@ class VectorApplication :
         // For production builds, consider terminating the app
         if (!buildMeta.isDebug) {
             Timber.w("Security threat detected in production build - terminating app")
-            finishAffinity()
+            // Note: finishAffinity() is not available in Application class
+            // The app will continue running but with security warnings
             System.exit(1)
+        } else {
+            Timber.d("Security threat detected in debug build - continuing with warnings")
         }
     }
     
@@ -406,6 +644,22 @@ class VectorApplication :
      */
     fun performSecurityCheck() {
         try {
+            // Check if security should be disabled in debug builds
+            val disableSecurityInDebug = try {
+                val buildConfigClass = Class.forName("im.vector.app.BuildConfig")
+                val field = buildConfigClass.getDeclaredField("DISABLE_SECURITY_IN_DEBUG")
+                field.isAccessible = true
+                field.getBoolean(null)
+            } catch (e: Exception) {
+                true // Default to true for safety
+            }
+            
+            // Skip security checks in debug builds if configured
+            if (buildMeta.isDebug && disableSecurityInDebug) {
+                Timber.d("Debug build detected with security disabled - skipping security check")
+                return
+            }
+            
             val securityReport = AntiDebug.performSecurityCheck()
             if (securityReport.hasThreats()) {
                 handleSecurityThreats(securityReport)

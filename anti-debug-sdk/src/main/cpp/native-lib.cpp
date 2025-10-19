@@ -622,6 +622,11 @@ Java_com_example_antidebug_AntiDebug_nativeMemoryIntegrity(JNIEnv *env, jclass c
     int writable_executable_count = 0;
     int suspicious_libs = 0;
     
+    // Suppress unused variable warnings
+    (void)executable_count;
+    (void)writable_executable_count;
+    (void)suspicious_libs;
+    
     const char* suspicious_libraries[] = {
         "frida", "xposed", "substrate", "cydia", "libhook",
         "libinject", "libinjector", "libgdb", "liblldb", NULL

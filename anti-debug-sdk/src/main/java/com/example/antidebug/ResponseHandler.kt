@@ -169,20 +169,38 @@ class ResponseHandler(private val context: Context) {
      * Determine response level based on threat type and severity
      */
     private fun determineResponseLevel(threatType: AntiDebug.ThreatType, severity: Int): Int {
+        // In debug builds, be more lenient with security responses
+        val isDebugBuild = try {
+            val buildConfigClass = Class.forName("com.example.antidebug.BuildConfig")
+            val debugField = buildConfigClass.getDeclaredField("DEBUG")
+            debugField.isAccessible = true
+            debugField.getBoolean(null)
+        } catch (e: Exception) {
+            false
+        }
+        
         return when (threatType) {
             AntiDebug.ThreatType.DEBUGGER -> {
-                when (severity) {
-                    in 1..3 -> RESPONSE_LEVEL_MEDIUM
-                    in 4..6 -> RESPONSE_LEVEL_HIGH
-                    else -> RESPONSE_LEVEL_CRITICAL
+                if (isDebugBuild) {
+                    RESPONSE_LEVEL_LOW // Only log in debug builds
+                } else {
+                    when (severity) {
+                        in 1..3 -> RESPONSE_LEVEL_MEDIUM
+                        in 4..6 -> RESPONSE_LEVEL_HIGH
+                        else -> RESPONSE_LEVEL_CRITICAL
+                    }
                 }
             }
             
             AntiDebug.ThreatType.ROOT -> {
-                when (severity) {
-                    in 1..3 -> RESPONSE_LEVEL_HIGH
-                    in 4..6 -> RESPONSE_LEVEL_CRITICAL
-                    else -> RESPONSE_LEVEL_CRITICAL
+                if (isDebugBuild) {
+                    RESPONSE_LEVEL_MEDIUM // Don't terminate in debug builds
+                } else {
+                    when (severity) {
+                        in 1..3 -> RESPONSE_LEVEL_HIGH
+                        in 4..6 -> RESPONSE_LEVEL_CRITICAL
+                        else -> RESPONSE_LEVEL_CRITICAL
+                    }
                 }
             }
             

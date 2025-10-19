@@ -123,7 +123,7 @@ object ManifestObfuscator {
             return "${prefix}${hash.takeLast(3)}"
         }
     }
-    
+
     /**
      * Permission Obfuscator
      * Obfuscates and filters Android permissions
@@ -187,7 +187,7 @@ object ManifestObfuscator {
             return "android.permission.OBF_${hash.takeLast(6)}"
         }
     }
-    
+
     /**
      * Intent Filter Obfuscator
      * Obfuscates intent filters and actions
@@ -221,7 +221,7 @@ object ManifestObfuscator {
             return "android.intent.action.OBF_${hash.takeLast(6)}"
         }
     }
-    
+
     /**
      * Application Attribute Obfuscator
      * Obfuscates application-level attributes
@@ -288,7 +288,7 @@ object ManifestObfuscator {
             return "ic_${hash.takeLast(4)}"
         }
     }
-    
+
     /**
      * Metadata Obfuscator
      * Obfuscates metadata and custom attributes
@@ -319,7 +319,7 @@ object ManifestObfuscator {
             return "meta_${hash.takeLast(6)}"
         }
     }
-    
+
     /**
      * Comprehensive manifest obfuscation
      */
@@ -370,7 +370,7 @@ object ManifestObfuscator {
             "intent_filters" to intentFilterMappings
         )
     }
-    
+
     /**
      * Clear obfuscation mappings
      */

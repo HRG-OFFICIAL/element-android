@@ -12,7 +12,7 @@ import java.util.*
  */
 object SimpleManifestObfuscator {
 
-    private const val TAG = "SimpleManifestObfuscator"
+    private const val TAG = "SimpleManifestObf"
     
     // Obfuscation mappings
     private val componentMappings = mutableMapOf<String, String>()

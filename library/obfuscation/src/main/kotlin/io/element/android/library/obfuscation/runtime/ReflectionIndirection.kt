@@ -176,7 +176,7 @@ object ReflectionIndirection {
             clazz.getDeclaredConstructor(*paramTypes)
         } catch (e: NoSuchMethodException) {
             clazz.declaredConstructors.find { constructor ->
-                constructor.parameterCount == args.size
+                constructor.parameterTypes.size == args.size
             }
         }
     }

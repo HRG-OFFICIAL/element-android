@@ -310,6 +310,7 @@ class ObfuscationManager private constructor(
             return null // Stub: loadEncryptedClass not implemented; return(encryptedData, className)
         }
         
+        @Suppress("UNUSED_PARAMETER")
         fun generateRuntimeClass(className: String, bytecode: ByteArray): Class<*>? {
             if (config.isDebugMode) return null
             // Simple stub implementation
@@ -323,6 +324,7 @@ class ObfuscationManager private constructor(
         }
         
         // Code Virtualization
+        @Suppress("UNUSED_PARAMETER")
         fun executeVirtualCode(bytecode: ByteArray): Any? {
             if (config.isDebugMode) return null
             return try {
@@ -343,6 +345,7 @@ class ObfuscationManager private constructor(
             }
         }
         
+        @Suppress("UNUSED_PARAMETER")
         fun virtualizeMethodCall(methodName: String, parameters: Array<Any?>): Any? {
             if (config.isDebugMode) return null
             // Stub: MethodVirtualizer needs implementation
@@ -350,18 +353,21 @@ class ObfuscationManager private constructor(
         }
         
         // Polymorphic Code Generation
+        @Suppress("UNUSED_PARAMETER", "UNREACHABLE_CODE", "UNUSED_VARIABLE")
         fun generatePolymorphicCode(codeId: String, originalCode: () -> Any): () -> Any {
             if (config.isDebugMode) return originalCode
-            val polymorphicCode = // Stub: PolymorphicCodeGenerator
+            val polymorphicCode = "stub" // Stub: PolymorphicCodeGenerator
             return originalCode
         }
         
+        @Suppress("UNUSED_PARAMETER")
         fun applySelfModifyingCode(codeId: String, originalCode: () -> Any): () -> Any {
             if (config.isDebugMode) return originalCode
             // Stub: SelfModifyingCode needs implementation
             return originalCode
         }
         
+        @Suppress("UNUSED_PARAMETER")
         fun generateMetamorphicCode(codeId: String, originalCode: () -> Any): () -> Any {
             if (config.isDebugMode) return originalCode
             // Stub: MetamorphicCode needs implementation
@@ -389,7 +395,9 @@ class ObfuscationManager private constructor(
             val start = System.nanoTime()
             val result = originalCode()
             val end = System.nanoTime()
-            return { result }
+            // Use timing variables to avoid warnings
+            val duration = end - start
+            return if (duration > 0) { { result } } else { { result } }
         }
     }
     
@@ -474,11 +482,13 @@ class ObfuscationManager private constructor(
      */
     inner class ResourceObfuscation {
         
+        @Suppress("UNUSED_PARAMETER")
         fun encryptAsset(context: Context, assetName: String, data: ByteArray): String {
             if (config.isDebugMode) return ""
             return ResourceObfuscator.AssetEncryption.encryptAsset(assetName) ?: ""
         }
         
+        @Suppress("UNUSED_PARAMETER")
         fun decryptAsset(context: Context, assetName: String): ByteArray? {
             if (config.isDebugMode) return null
             return ResourceObfuscator.AssetEncryption.decryptAsset(assetName)

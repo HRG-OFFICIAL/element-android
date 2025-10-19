@@ -36,7 +36,7 @@ object PolymorphicCodeGenerator {
             
             return {
                 // Select variant based on execution count
-                val execCount = executionCount.getOrDefault(codeId, 0)
+                val execCount = executionCount[codeId] ?: 0
                 val selectedVariant = variants[execCount % variants.size]
                 
                 // Execute selected variant

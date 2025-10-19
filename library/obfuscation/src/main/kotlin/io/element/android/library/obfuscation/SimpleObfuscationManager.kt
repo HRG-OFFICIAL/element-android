@@ -220,30 +220,30 @@ class SimpleObfuscationManager private constructor(
      */
     fun applyBasicObfuscation(context: Context): Boolean {
         return try {
-            Log.d("SimpleObfuscationManager", "Applying basic obfuscation...")
+            Log.d("SimpleObfuscationMgr", "Applying basic obfuscation...")
             
             // Check for debugger
             if (AntiDebug.isDebuggerAttached()) {
-                Log.w("SimpleObfuscationManager", "Debugger detected!")
+                Log.w("SimpleObfuscationMgr", "Debugger detected!")
                 return false
             }
             
             // Check for emulator
             if (AntiDebug.isRunningInEmulator()) {
-                Log.w("SimpleObfuscationManager", "Emulator detected!")
+                Log.w("SimpleObfuscationMgr", "Emulator detected!")
                 return false
             }
             
             // Check for root
             if (AntiDebug.isDeviceRooted()) {
-                Log.w("SimpleObfuscationManager", "Rooted device detected!")
+                Log.w("SimpleObfuscationMgr", "Rooted device detected!")
                 return false
             }
             
-            Log.d("SimpleObfuscationManager", "Basic obfuscation applied successfully")
+            Log.d("SimpleObfuscationMgr", "Basic obfuscation applied successfully")
             true
         } catch (e: Exception) {
-            Log.e("SimpleObfuscationManager", "Error applying basic obfuscation", e)
+            Log.e("SimpleObfuscationMgr", "Error applying basic obfuscation", e)
             false
         }
     }

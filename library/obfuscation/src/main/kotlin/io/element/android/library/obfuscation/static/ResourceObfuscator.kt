@@ -10,6 +10,7 @@ import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import io.element.android.library.obfuscation.static.SimpleManifestObfuscator
 
 /**
  * enterprise-level-Level Resource Obfuscation Implementation
@@ -299,33 +300,33 @@ object ResourceObfuscator {
                 val manifestFile = File(manifestPath)
                 if (!manifestFile.exists()) return null
                 
-                var manifestContent = manifestFile.readText()
-                
-                // Obfuscate activity names
-                manifestContent = obfuscateActivityNames(manifestContent)
-                
-                // Obfuscate service names
-                manifestContent = obfuscateServiceNames(manifestContent)
-                
-                // Obfuscate receiver names
-                manifestContent = obfuscateReceiverNames(manifestContent)
-                
-                // Obfuscate provider names
-                manifestContent = obfuscateProviderNames(manifestContent)
-                
-                // Obfuscate permission names
-                manifestContent = obfuscatePermissionNames(manifestContent)
+                val manifestContent = manifestFile.readText()
+                val obfuscatedContent = SimpleManifestObfuscator.obfuscateManifestComponents(manifestContent)
                 
                 // Save obfuscated manifest
                 val obfuscatedPath = manifestPath.replace(".xml", "_obfuscated.xml")
                 val obfuscatedFile = File(obfuscatedPath)
-                obfuscatedFile.writeText(manifestContent)
+                obfuscatedFile.writeText(obfuscatedContent)
                 
                 obfuscatedPath
             } catch (e: Exception) {
                 null
+            }
         }
-    }
+        
+        /**
+         * Obfuscate permissions
+         */
+        fun obfuscatePermissions(permissions: List<String>): List<String> {
+            return SimpleManifestObfuscator.obfuscatePermissions(permissions)
+        }
+        
+        /**
+         * Obfuscate intent filters
+         */
+        fun obfuscateIntentFilters(intentFilters: List<String>): List<String> {
+            return SimpleManifestObfuscator.obfuscateIntentFilters(intentFilters)
+        }
     
     /**
          * Obfuscate activity names

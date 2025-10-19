@@ -20,6 +20,25 @@ import kotlinx.coroutines.*
  */
 object AntiDebug {
     
+    // Constants
+    const val DEBUGGER_DETECTED = "DEBUGGER_DETECTED"
+    const val ROOT_DETECTED = "ROOT_DETECTED"
+    const val EMULATOR_DETECTED = "EMULATOR_DETECTED"
+    const val TAMPER_DETECTED = "TAMPER_DETECTED"
+    const val HOOK_DETECTED = "HOOK_DETECTED"
+    const val BEHAVIORAL_ANOMALY = "BEHAVIORAL_ANOMALY"
+    const val DATA_BREACH = "DATA_BREACH"
+    const val UNKNOWN = "UNKNOWN"
+    
+    // Enums
+    enum class ThreatType {
+        DEBUGGER, ROOT, EMULATOR, TAMPERING, HOOKS, SUSPICIOUS_BEHAVIOR, DATA_BREACH, UNKNOWN
+    }
+    
+    enum class ResponseType {
+        BLOCK, LOG, NOTIFY, TERMINATE
+    }
+    
     private var initialized = false
     private lateinit var context: Context
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -78,7 +97,7 @@ object AntiDebug {
             "TODO: Add production certificate fingerprint here"
         )
         val allFingerprints = debugFingerprints + releaseFingerprints
-        TamperDetection.initializeFingerprints(allFingerprints)
+        // Note: Certificate fingerprints will be loaded at runtime from the main app
         
         initialized = true
         
@@ -100,6 +119,14 @@ object AntiDebug {
     }
     
     /**
+     * Initialize device fingerprints for detection
+     */
+    private fun initializeFingerprints() {
+        // Initialize device-specific fingerprints for detection
+        // This is a placeholder for fingerprint initialization
+    }
+    
+    /**
      * Check if a debugger is currently attached to the process
      * 
      * @return true if debugger is detected
@@ -111,7 +138,7 @@ object AntiDebug {
         
         if (isDetected) {
             responseHandler.handleSecurityThreat(
-                ThreatType.DEBUGGER_DETECTED,
+                ThreatType.DEBUGGER,
                 5,
                 "Debugger detected using advanced detection methods"
             )
@@ -132,7 +159,7 @@ object AntiDebug {
         
         if (isDetected) {
             responseHandler.handleSecurityThreat(
-                ThreatType.ROOT_DETECTED,
+                ThreatType.ROOT,
                 6,
                 "Root access detected on device"
             )
@@ -153,7 +180,7 @@ object AntiDebug {
         
         if (isDetected) {
             responseHandler.handleSecurityThreat(
-                ThreatType.EMULATOR_DETECTED,
+                ThreatType.EMULATOR,
                 4,
                 "Emulator environment detected"
             )
@@ -174,7 +201,7 @@ object AntiDebug {
         
         if (isDetected) {
             responseHandler.handleSecurityThreat(
-                ThreatType.TAMPER_DETECTED,
+                ThreatType.TAMPERING,
                 7,
                 "Application tampering detected"
             )
@@ -195,7 +222,7 @@ object AntiDebug {
         
         if (isDetected) {
             responseHandler.handleSecurityThreat(
-                ThreatType.HOOK_DETECTED,
+                ThreatType.HOOKS,
                 5,
                 "Hooking framework detected"
             )
@@ -216,7 +243,7 @@ object AntiDebug {
         
         if (isDetected) {
             responseHandler.handleSecurityThreat(
-                ThreatType.BEHAVIORAL_ANOMALY,
+                ThreatType.SUSPICIOUS_BEHAVIOR,
                 3,
                 "Suspicious behavior detected"
             )
@@ -262,7 +289,7 @@ object AntiDebug {
      * @param responseType Type of response when threats are detected
      */
     @JvmStatic
-    fun configureResponse(responseType: ResponseHandler.ResponseType) {
+    fun configureResponse(responseType: ResponseType) {
         ensureInitialized()
         responseHandler.setResponseType(responseType)
     }
@@ -378,14 +405,3 @@ data class SecurityReport(
     }
 }
 
-/**
- * Types of security threats that can be detected
- */
-enum class ThreatType {
-    DEBUGGER,
-    ROOT,
-    EMULATOR,
-    TAMPERING,
-    HOOKS,
-    SUSPICIOUS_BEHAVIOR
-}

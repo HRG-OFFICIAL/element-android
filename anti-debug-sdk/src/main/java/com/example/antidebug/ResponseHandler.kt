@@ -43,11 +43,19 @@ class ResponseHandler(private val context: Context) {
     private val lastResponseTime = AtomicLong(0L)
     private val securityEvents = ConcurrentHashMap<String, SecurityEvent>()
     private val auditTrail = mutableListOf<AuditEvent>()
+    private var currentResponseType = AntiDebug.ResponseType.LOG
+    
+    /**
+     * Set the response type for threats
+     */
+    fun setResponseType(responseType: AntiDebug.ResponseType) {
+        currentResponseType = responseType
+    }
     
     /**
      * Handle security threat with appropriate response
      */
-    fun handleSecurityThreat(threatType: ThreatType, severity: Int, details: String = "") {
+    fun handleSecurityThreat(threatType: AntiDebug.ThreatType, severity: Int, details: String = "") {
         try {
             val currentTime = System.currentTimeMillis()
             val threatId = generateThreatId()
@@ -91,7 +99,7 @@ class ResponseHandler(private val context: Context) {
     /**
      * Execute immediate response to critical threats
      */
-    fun executeImmediateResponse(threatType: ThreatType, details: String = "") {
+    fun executeImmediateResponse(threatType: AntiDebug.ThreatType, details: String = "") {
         try {
             Log.e(TAG, "EXECUTING IMMEDIATE RESPONSE: $threatType")
             
@@ -117,7 +125,7 @@ class ResponseHandler(private val context: Context) {
     /**
      * Execute graduated response based on threat level
      */
-    private fun executeResponse(level: Int, threatType: ThreatType, details: String) {
+    private fun executeResponse(level: Int, threatType: AntiDebug.ThreatType, details: String) {
         try {
             when (level) {
                 RESPONSE_LEVEL_LOW -> {
@@ -160,9 +168,9 @@ class ResponseHandler(private val context: Context) {
     /**
      * Determine response level based on threat type and severity
      */
-    private fun determineResponseLevel(threatType: ThreatType, severity: Int): Int {
+    private fun determineResponseLevel(threatType: AntiDebug.ThreatType, severity: Int): Int {
         return when (threatType) {
-            ThreatType.DEBUGGER_DETECTED -> {
+            AntiDebug.ThreatType.DEBUGGER -> {
                 when (severity) {
                     in 1..3 -> RESPONSE_LEVEL_MEDIUM
                     in 4..6 -> RESPONSE_LEVEL_HIGH
@@ -170,7 +178,7 @@ class ResponseHandler(private val context: Context) {
                 }
             }
             
-            ThreatType.ROOT_DETECTED -> {
+            AntiDebug.ThreatType.ROOT -> {
                 when (severity) {
                     in 1..3 -> RESPONSE_LEVEL_HIGH
                     in 4..6 -> RESPONSE_LEVEL_CRITICAL
@@ -178,7 +186,7 @@ class ResponseHandler(private val context: Context) {
                 }
             }
             
-            ThreatType.EMULATOR_DETECTED -> {
+            AntiDebug.ThreatType.EMULATOR -> {
                 when (severity) {
                     in 1..3 -> RESPONSE_LEVEL_LOW
                     in 4..6 -> RESPONSE_LEVEL_MEDIUM
@@ -186,7 +194,7 @@ class ResponseHandler(private val context: Context) {
                 }
             }
             
-            ThreatType.TAMPER_DETECTED -> {
+            AntiDebug.ThreatType.TAMPERING -> {
                 when (severity) {
                     in 1..3 -> RESPONSE_LEVEL_HIGH
                     in 4..6 -> RESPONSE_LEVEL_CRITICAL
@@ -194,7 +202,7 @@ class ResponseHandler(private val context: Context) {
                 }
             }
             
-            ThreatType.HOOK_DETECTED -> {
+            AntiDebug.ThreatType.HOOKS -> {
                 when (severity) {
                     in 1..3 -> RESPONSE_LEVEL_MEDIUM
                     in 4..6 -> RESPONSE_LEVEL_HIGH
@@ -202,7 +210,7 @@ class ResponseHandler(private val context: Context) {
                 }
             }
             
-            ThreatType.BEHAVIORAL_ANOMALY -> {
+            AntiDebug.ThreatType.SUSPICIOUS_BEHAVIOR -> {
                 when (severity) {
                     in 1..3 -> RESPONSE_LEVEL_LOW
                     in 4..6 -> RESPONSE_LEVEL_MEDIUM
@@ -210,11 +218,11 @@ class ResponseHandler(private val context: Context) {
                 }
             }
             
-            ThreatType.DATA_BREACH -> {
+            AntiDebug.ThreatType.DATA_BREACH -> {
                 RESPONSE_LEVEL_CRITICAL
             }
             
-            ThreatType.UNKNOWN -> {
+            AntiDebug.ThreatType.UNKNOWN -> {
                 RESPONSE_LEVEL_MEDIUM
             }
         }
@@ -268,7 +276,7 @@ class ResponseHandler(private val context: Context) {
     /**
      * Notify user of security threat
      */
-    private fun notifyUser(threatType: ThreatType, message: String) {
+    private fun notifyUser(threatType: AntiDebug.ThreatType, message: String) {
         try {
             // In a real implementation, you would show a notification or dialog
             Log.w(TAG, "User notification: $message")
@@ -331,7 +339,7 @@ class ResponseHandler(private val context: Context) {
     /**
      * Log security event
      */
-    private fun logSecurityEvent(threatType: ThreatType, details: String) {
+    private fun logSecurityEvent(threatType: AntiDebug.ThreatType, details: String) {
         try {
             val event = SecurityEvent(
                 id = generateThreatId(),
@@ -427,17 +435,17 @@ class ResponseHandler(private val context: Context) {
     /**
      * Handle threat (public method for external calls)
      */
-    fun handleThreat(threatType: ThreatType) {
+    fun handleThreat(threatType: AntiDebug.ThreatType) {
         try {
             val severity = when (threatType) {
-                ThreatType.DEBUGGER_DETECTED -> 5
-                ThreatType.ROOT_DETECTED -> 6
-                ThreatType.EMULATOR_DETECTED -> 4
-                ThreatType.TAMPER_DETECTED -> 7
-                ThreatType.HOOK_DETECTED -> 5
-                ThreatType.BEHAVIORAL_ANOMALY -> 3
-                ThreatType.DATA_BREACH -> 8
-                ThreatType.UNKNOWN -> 2
+                AntiDebug.ThreatType.DEBUGGER -> 5
+                AntiDebug.ThreatType.ROOT -> 6
+                AntiDebug.ThreatType.EMULATOR -> 4
+                AntiDebug.ThreatType.TAMPERING -> 7
+                AntiDebug.ThreatType.HOOKS -> 5
+                AntiDebug.ThreatType.SUSPICIOUS_BEHAVIOR -> 3
+                AntiDebug.ThreatType.DATA_BREACH -> 8
+                AntiDebug.ThreatType.UNKNOWN -> 2
             }
             
             handleSecurityThreat(threatType, severity, "External threat handling")
@@ -497,26 +505,13 @@ class ResponseHandler(private val context: Context) {
     }
 }
 
-/**
- * Threat types
- */
-enum class ThreatType {
-    DEBUGGER_DETECTED,
-    ROOT_DETECTED,
-    EMULATOR_DETECTED,
-    TAMPER_DETECTED,
-    HOOK_DETECTED,
-    BEHAVIORAL_ANOMALY,
-    DATA_BREACH,
-    UNKNOWN
-}
 
 /**
  * Security event data class
  */
 data class SecurityEvent(
     val id: String,
-    val type: ThreatType,
+    val type: AntiDebug.ThreatType,
     val severity: Int,
     val timestamp: Long,
     val details: String

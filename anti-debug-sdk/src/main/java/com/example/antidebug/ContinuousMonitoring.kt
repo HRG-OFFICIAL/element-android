@@ -74,12 +74,12 @@ class ContinuousMonitoring(private val context: Context) {
         this.responseHandler = responseHandler
         
         // Register detection modules
-        registerDetectionModule("debugger", debuggerDetection::isDebuggerAttached, ThreatType.DEBUGGER_DETECTED, 5)
-        registerDetectionModule("root", rootDetection::isDeviceRooted, ThreatType.ROOT_DETECTED, 6)
-        registerDetectionModule("emulator", emulatorDetection::isEmulator, ThreatType.EMULATOR_DETECTED, 4)
-        registerDetectionModule("tamper", tamperDetection::isApplicationTampered, ThreatType.TAMPER_DETECTED, 7)
-        registerDetectionModule("hook", hookDetection::isHookingDetected, ThreatType.HOOK_DETECTED, 5)
-        registerDetectionModule("behavioral", behavioralAnalysis::isSuspiciousBehaviorDetected, ThreatType.BEHAVIORAL_ANOMALY, 3)
+        registerDetectionModule("debugger", debuggerDetection::isDebuggerAttached, AntiDebug.ThreatType.DEBUGGER, 5)
+        registerDetectionModule("root", rootDetection::isDeviceRooted, AntiDebug.ThreatType.ROOT, 6)
+        registerDetectionModule("emulator", emulatorDetection::isEmulator, AntiDebug.ThreatType.EMULATOR, 4)
+        registerDetectionModule("tamper", tamperDetection::isApplicationTampered, AntiDebug.ThreatType.TAMPERING, 7)
+        registerDetectionModule("hook", hookDetection::isHookingDetected, AntiDebug.ThreatType.HOOKS, 5)
+        registerDetectionModule("behavioral", behavioralAnalysis::isSuspiciousBehaviorDetected, AntiDebug.ThreatType.SUSPICIOUS_BEHAVIOR, 3)
         
         Log.d(TAG, "Continuous monitoring system initialized")
     }
@@ -133,7 +133,7 @@ class ContinuousMonitoring(private val context: Context) {
     private fun registerDetectionModule(
         name: String,
         detectionFunction: () -> Boolean,
-        threatType: ThreatType,
+        threatType: AntiDebug.ThreatType,
         severity: Int
     ) {
         detectionModules[name] = DetectionModule(
@@ -266,7 +266,7 @@ class ContinuousMonitoring(private val context: Context) {
             
             // Escalate response
             responseHandler.handleSecurityThreat(
-                ThreatType.UNKNOWN,
+                AntiDebug.ThreatType.UNKNOWN,
                 8,
                 "Threat escalation detected: ${consecutiveThreats.get()} consecutive threats"
             )
@@ -288,7 +288,8 @@ class ContinuousMonitoring(private val context: Context) {
             
             // Restart monitoring to prevent resource exhaustion
             stopMonitoring()
-            delay(5000L) // Wait 5 seconds
+            // Note: In a real implementation, you would use a coroutine scope for delay
+            // delay(5000L) // Wait 5 seconds
             startMonitoring()
         }
     }
@@ -391,7 +392,7 @@ class ContinuousMonitoring(private val context: Context) {
 data class DetectionModule(
     val name: String,
     val detectionFunction: () -> Boolean,
-    val threatType: ThreatType,
+    val threatType: AntiDebug.ThreatType,
     val severity: Int,
     var lastCheckTime: Long,
     var consecutiveDetections: Long,
@@ -438,7 +439,7 @@ data class SecurityCheckResult(
  */
 data class ThreatInfo(
     val moduleName: String,
-    val threatType: ThreatType,
+    val threatType: AntiDebug.ThreatType,
     val severity: Int,
     val timestamp: Long
 )

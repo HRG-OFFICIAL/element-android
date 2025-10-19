@@ -103,7 +103,7 @@ class TamperDetection(private val context: Context) {
             val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             val signatures = packageInfo.signatures
             
-            if (signatures.isNotEmpty()) {
+            if (signatures?.isNotEmpty() == true) {
                 val signature = signatures[0]
                 val fingerprint = calculateFingerprint(signature)
                 
@@ -141,7 +141,7 @@ class TamperDetection(private val context: Context) {
         return try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
             val applicationInfo = packageInfo.applicationInfo
-            val sourceDir = applicationInfo.sourceDir
+            val sourceDir = applicationInfo?.sourceDir
             
             val dexFile = File(sourceDir)
             if (!dexFile.exists()) {
@@ -177,7 +177,7 @@ class TamperDetection(private val context: Context) {
         return try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
             val applicationInfo = packageInfo.applicationInfo
-            val nativeLibraryDir = applicationInfo.nativeLibraryDir
+            val nativeLibraryDir = applicationInfo?.nativeLibraryDir
             
             if (nativeLibraryDir != null) {
                 val libDir = File(nativeLibraryDir)
@@ -222,7 +222,7 @@ class TamperDetection(private val context: Context) {
                 }
             }
             
-            // Adobe threshold: more than 3 suspicious regions
+            // advanced threshold: more than 3 suspicious regions
             suspiciousRegions > 3
         } catch (e: Exception) {
             Log.w(TAG, "Memory integrity check failed: ${e.message}")
@@ -270,8 +270,8 @@ class TamperDetection(private val context: Context) {
         return try {
             val tamperIndicators = listOf(
                 // Check for debug build
-                context.packageManager.getPackageInfo(packageName, 0).versionName.contains("debug"),
-                context.packageManager.getPackageInfo(packageName, 0).versionName.contains("test"),
+                context.packageManager.getPackageInfo(packageName, 0).versionName?.contains("debug") == true,
+                context.packageManager.getPackageInfo(packageName, 0).versionName?.contains("test") == true,
                 
                 // Check for debug VM
                 System.getProperty("java.vm.name").contains("debug"),

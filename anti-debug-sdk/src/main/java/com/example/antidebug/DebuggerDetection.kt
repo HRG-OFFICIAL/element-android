@@ -40,7 +40,7 @@ class DebuggerDetection(private val context: Context) {
      */
     fun isDebuggerAttached(): Boolean {
         return try {
-            // Adobe-Level Anti-Debug: Use advanced multi-layered detection
+            // advanced-Level Anti-Debug: Use advanced multi-layered detection
             val primaryMethods = listOf(
                 ::checkAndroidDebugApi,
                 ::checkTracerPid,
@@ -122,7 +122,7 @@ class DebuggerDetection(private val context: Context) {
                 }
             }
             
-            // Adobe-level threshold: score >= 5 or any primary detection
+            // advanced-level threshold: score >= 5 or any primary detection
             val isDebuggerDetected = primaryDetected || detectionScore >= 5
             
             if (isDebuggerDetected) {
@@ -451,7 +451,7 @@ class DebuggerDetection(private val context: Context) {
                 }
             }
             
-            // Adobe-level threshold: more than 2 suspicious regions
+            // advanced-level threshold: more than 2 suspicious regions
             suspiciousRegions > 2
         } catch (e: Exception) {
             Log.w(TAG, "Breakpoint instruction check failed: ${e.message}")
@@ -486,7 +486,7 @@ class DebuggerDetection(private val context: Context) {
                 }
             }
             
-            // Adobe threshold: more than 3 breakpoint instructions in region
+            // advanced threshold: more than 3 breakpoint instructions in region
             breakpointCount > 3
         } catch (e: Exception) {
             Log.w(TAG, "Memory region check failed: ${e.message}")
@@ -495,7 +495,7 @@ class DebuggerDetection(private val context: Context) {
     }
     
     /**
-     * Adobe-Level Advanced Timing Attack Detection
+     * advanced-Level Advanced Timing Attack Detection
      * Uses multiple timing measurements with statistical analysis
      */
     private fun checkAdvancedTimingAttack(): Boolean {
@@ -524,7 +524,7 @@ class DebuggerDetection(private val context: Context) {
             val variance = measurements.map { (it - average) * (it - average) }.average()
             val standardDeviation = kotlin.math.sqrt(variance)
             
-            // Adobe-level thresholds
+            // advanced-level thresholds
             val isAnomaly = average > 1000000 || // > 1ms average
                            standardDeviation > average * 0.5 || // High variance
                            measurements.any { it > average * 3 } // Outliers
@@ -564,7 +564,7 @@ class DebuggerDetection(private val context: Context) {
                 }
             }
             
-            // Adobe threshold: more than 5 suspicious regions
+            // advanced threshold: more than 5 suspicious regions
             suspiciousRegions > 5
         } catch (e: Exception) {
             Log.w(TAG, "Memory breakpoint check failed: ${e.message}")
@@ -688,8 +688,8 @@ class DebuggerDetection(private val context: Context) {
         return try {
             // Check for common tampering indicators
             val tamperIndicators = listOf(
-                context.packageManager.getPackageInfo(context.packageName, 0).versionName.contains("debug"),
-                context.packageManager.getPackageInfo(context.packageName, 0).versionName.contains("test"),
+                context.packageManager.getPackageInfo(context.packageName, 0).versionName?.contains("debug") == true,
+                context.packageManager.getPackageInfo(context.packageName, 0).versionName?.contains("test") == true,
                 System.getProperty("java.vm.name").contains("debug")
             )
             

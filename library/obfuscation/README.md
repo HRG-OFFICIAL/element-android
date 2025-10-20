@@ -1,8 +1,8 @@
-# enterprise-level-Level Android Obfuscation Library
+# Android Obfuscation Library
 
 A **industry-leading**, standalone Android obfuscation library that implements **enterprise-level-level** code protection techniques. This library provides multiple layers of obfuscation, anti-debugging, and security techniques that match the sophistication of enterprise-grade applications.
 
-## enterprise-level-Level Features
+## enterprise-level Features
 
 ### **Identifier Obfuscation (enterprise-level-Style)**
 - **Single-character naming**: `a0`, `b2`, `c3`, `d1` (exactly like enterprise-level PDF)
@@ -149,7 +149,7 @@ val dynamicMethod = obfuscationManager.runtimeObfuscation.generateDynamicMethod(
 - **Data Techniques**: 8 (SDM, DDM, FPE, redaction, numeric masking, substitution, encryption)
 - **Native Techniques**: 6 (symbol stripping, function obfuscation, anti-debugging, anti-tampering, code encryption, integrity verification)
 - **Resource Techniques**: 25 (comprehensive resource obfuscation including layouts, drawables, strings, manifests, etc.)
-- **enterprise-level-Level Features**: 12 (single-character naming, multi-layer encryption, mathematical opaque predicates, custom VM)
+- **enterprise-level Features**: 12 (single-character naming, multi-layer encryption, mathematical opaque predicates, custom VM)
 - **Anti-Analysis Methods**: 18 (tool detection, timing attacks, environment detection, memory analysis)
 
 ##  Configuration
@@ -298,7 +298,7 @@ class ComprehensiveObfuscationExample(private val context: Context) {
     private val obfuscationManager = ObfuscationManager.getInstance()
 
     fun demonstrateAllTechniques() {
-        // 1. enterprise-level-Level String Obfuscation
+        // 1. enterprise-level String Obfuscation
         val encrypted = obfuscationManager.staticObfuscation.obfuscateStringenterprise-levelStyle(
             "API_KEY_12345_SECRET", 
             "api_context"

@@ -1,4 +1,4 @@
-﻿# enterprise-level-Level ProGuard Rules for Maximum Obfuscation
+﻿# enterprise-level ProGuard Rules for Maximum Obfuscation
 # These rules implement industry-leading obfuscation techniques
 
 # ===== CORE PROTECTION =====

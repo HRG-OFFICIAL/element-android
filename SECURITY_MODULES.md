@@ -75,7 +75,7 @@ vector.useMinimalStartupInDebug=true
 
 ## Important Notes
 
-⚠️ **This is a research/testing fork**
+**This is a research/testing fork**
 - Not intended for production use
 - For official Element Android, visit: [element-hq/element-android](https://github.com/element-hq/element-android)
 - Security modules are experimental and may not be fully tested

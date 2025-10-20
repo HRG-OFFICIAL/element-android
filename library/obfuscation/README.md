@@ -1,8 +1,8 @@
-﻿# enterprise-level-Level Android Obfuscation Library
+# enterprise-level-Level Android Obfuscation Library
 
 A **industry-leading**, standalone Android obfuscation library that implements **enterprise-level-level** code protection techniques. This library provides multiple layers of obfuscation, anti-debugging, and security techniques that match the sophistication of enterprise-grade applications.
 
-## 🚀 enterprise-level-Level Features
+## enterprise-level-Level Features
 
 ### **Identifier Obfuscation (enterprise-level-Style)**
 - **Single-character naming**: `a0`, `b2`, `c3`, `d1` (exactly like enterprise-level PDF)
@@ -29,32 +29,32 @@ A **industry-leading**, standalone Android obfuscation library that implements *
 - **Root detection**: Detects rooted devices
 - **Hook detection**: Identifies Xposed, LSPosed, etc.
 
-## 📦 Package Structure
+## Package Structure
 
 ```
 io.element.android.library.obfuscation/
-├── ObfuscationManager.kt          # Central coordinator for all obfuscation
-├── ObfuscationConfig.kt           # Configuration interface
-├── static/                        # Static code obfuscation (compile-time)
-│   ├── AdvancedObfuscator.kt      # enterprise-level-level static obfuscation
-│   ├── StringObfuscator.kt        # Multi-layer string encryption
-│   ├── ControlFlowObfuscator.kt   # Control flow obfuscation
-│   ├── FlowObfuscator.kt          # Advanced flow techniques
-│   ├── StringCrypto.kt            # String encryption utilities
-│   └── ResourceObfuscator.kt      # Resource and manifest obfuscation
-├── runtime/                       # Runtime/dynamic obfuscation
-│   └── ReflectionIndirection.kt   # Reflection-based indirection
-├── data/                          # Data masking and privacy
-│   └── DataMasking.kt             # Comprehensive data masking
-├── native/                        # Native code obfuscation
-│   └── NativeObfuscator.kt        # Native library protection
-└── demo/                          # Obfuscation demonstration
-    ├── ObfuscationDemo.kt         # Demo code showing obfuscation
-    ├── EncryptedClassLoader.kt    # Dynamic class loading demo
-    └── SecureUtility.kt           # Security utility demo
+ ObfuscationManager.kt          # Central coordinator for all obfuscation
+ ObfuscationConfig.kt           # Configuration interface
+ static/                        # Static code obfuscation (compile-time)
+    AdvancedObfuscator.kt      # enterprise-level-level static obfuscation
+    StringObfuscator.kt        # Multi-layer string encryption
+    ControlFlowObfuscator.kt   # Control flow obfuscation
+    FlowObfuscator.kt          # Advanced flow techniques
+    StringCrypto.kt            # String encryption utilities
+    ResourceObfuscator.kt      # Resource and manifest obfuscation
+ runtime/                       # Runtime/dynamic obfuscation
+    ReflectionIndirection.kt   # Reflection-based indirection
+ data/                          # Data masking and privacy
+    DataMasking.kt             # Comprehensive data masking
+ native/                        # Native code obfuscation
+    NativeObfuscator.kt        # Native library protection
+ demo/                          # Obfuscation demonstration
+     ObfuscationDemo.kt         # Demo code showing obfuscation
+     EncryptedClassLoader.kt    # Dynamic class loading demo
+     SecureUtility.kt           # Security utility demo
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Add Dependency
 
@@ -107,10 +107,10 @@ val maskedEmail = obfuscationManager.dataMasking.maskEmail("user@example.com")
 val dynamicMethod = obfuscationManager.runtimeObfuscation.generateDynamicMethod(12345L)
 ```
 
-## 🛡️ Obfuscation Categories
+##  Obfuscation Categories
 
 ### 1. Static Code Obfuscation
-- **Identifier Renaming**: Classes, methods, fields → meaningless names
+- **Identifier Renaming**: Classes, methods, fields  meaningless names
 - **Control Flow Obfuscation**: Opaque predicates, fake branches
 - **Advanced Flow Obfuscation**: State machines, timing checks, flattened execution
 - **String Encryption**: Runtime string decryption
@@ -141,7 +141,7 @@ val dynamicMethod = obfuscationManager.runtimeObfuscation.generateDynamicMethod(
 - **Asset Encryption**: Encrypt sensitive assets
 - **Manifest Obfuscation**: Hide component information
 
-## 📊 Obfuscation Statistics
+##  Obfuscation Statistics
 
 - **Total Techniques**: 35+ different obfuscation methods
 - **Static Techniques**: 15 (identifier renaming, control flow, string encryption, method inlining/outlining, metadata stripping, dead code insertion, anti-analysis)
@@ -152,7 +152,7 @@ val dynamicMethod = obfuscationManager.runtimeObfuscation.generateDynamicMethod(
 - **enterprise-level-Level Features**: 12 (single-character naming, multi-layer encryption, mathematical opaque predicates, custom VM)
 - **Anti-Analysis Methods**: 18 (tool detection, timing attacks, environment detection, memory analysis)
 
-## 🔧 Configuration
+##  Configuration
 
 ### ObfuscationConfig Interface
 
@@ -172,7 +172,7 @@ val customConfig = object : ObfuscationConfig {
 ObfuscationManager.initialize(context, customConfig)
 ```
 
-## 🏗️ Build Integration
+##  Build Integration
 
 ### ProGuard/R8 Rules
 
@@ -204,14 +204,14 @@ android {
 }
 ```
 
-## 📈 Performance Impact
+##  Performance Impact
 
 - **Build Time**: Increased due to obfuscation processing
 - **APK Size**: Slightly increased due to obfuscation overhead
 - **Runtime Performance**: Minimal impact with optimized implementation
 - **Memory Usage**: Slightly increased due to runtime decryption
 
-## 🛡️ Security Benefits
+##  Security Benefits
 
 - **Reverse Engineering**: Extremely difficult due to multiple obfuscation layers
 - **Static Analysis**: Significantly reduced effectiveness
@@ -219,7 +219,7 @@ android {
 - **Data Privacy**: Comprehensive data masking and encryption
 - **Tampering**: Anti-tampering and integrity verification
 
-## 🧪 Testing
+##  Testing
 
 ### Unit Tests
 
@@ -251,7 +251,7 @@ fun testDataMasking() {
 }
 ```
 
-## 🔄 Migration from App Module
+##  Migration from App Module
 
 If migrating from an app-specific obfuscation module:
 
@@ -289,7 +289,7 @@ If migrating from an app-specific obfuscation module:
    manager.staticObfuscation.applyComprehensiveObfuscation { }
    ```
 
-## 📚 Advanced Usage
+##  Advanced Usage
 
 ### Comprehensive Integration Example
 
@@ -391,7 +391,7 @@ object ObfuscationModule {
 }
 ```
 
-## ⚠️ Important Notes
+##  Important Notes
 
 - **Debugging**: Obfuscated code is harder to debug (keep mapping files)
 - **Reflection**: Some reflection-based code may need special ProGuard rules
@@ -399,12 +399,12 @@ object ObfuscationModule {
 - **Testing**: Always test obfuscated builds thoroughly
 - **Performance**: Monitor app performance after obfuscation
 
-## 📄 License
+##  License
 
 This library is part of Element Android and follows the same licensing terms:
 - AGPL-3.0-only OR LicenseRef-Element-Commercial
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -412,7 +412,7 @@ This library is part of Element Android and follows the same licensing terms:
 4. Add tests for new functionality
 5. Submit a pull request
 
-## 📞 Support
+##  Support
 
 For issues and questions:
 - Create an issue in the Element Android repository

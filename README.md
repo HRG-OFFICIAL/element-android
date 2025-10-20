@@ -1,3 +1,19 @@
+# ⚠️ FORK NOTICE
+
+**This is a FORK of [Element Android](https://github.com/element-hq/element-android) for testing Anti-Debug and Obfuscation modules.**
+
+This repository has been forked specifically to integrate and test custom security modules:
+- **Anti-Debug SDK**: Advanced debugging detection and prevention
+- **Obfuscation Manager**: Code obfuscation and data protection
+
+**⚠️ Important Notes:**
+- This is NOT the official Element Android repository
+- For the official Element Android app, visit: [element-hq/element-android](https://github.com/element-hq/element-android)
+- This fork is for research and testing purposes only
+- Do not use this for production applications
+
+---
+
 [![Latest build](https://github.com/element-hq/element-android/actions/workflows/build.yml/badge.svg?query=branch%3Adevelop)](https://github.com/element-hq/element-android/actions/workflows/build.yml?query=branch%3Adevelop)
 [![Weblate](https://translate.element.io/widgets/element-android/-/svg-badge.svg)](https://translate.element.io/engage/element-android/?utm_source=widget)
 [![Element Android Matrix room #element-android:matrix.org](https://img.shields.io/matrix/element-android:matrix.org.svg?label=%23element-android:matrix.org&logo=matrix&server_fqdn=matrix.org)](https://matrix.to/#/#element-android:matrix.org)
@@ -5,7 +21,7 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=element-android&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=element-android)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=element-android&metric=bugs)](https://sonarcloud.io/summary/new_code?id=element-android)
 
-# Element Android
+# Element Android (Fork for Security Testing)
 
 Element Classic Android is a previous-generation [Matrix](https://matrix.org/) client provided by [Element](https://element.io/). The app can be run on every Android devices with Android OS Lollipop and more (API 21). This client is still supported and receives security updates but no new features or usability enhancements are made. It is recommended to use [Element X](https://github.com/element-hq/element-x-android) that is the next-generation mobile app.
 
@@ -14,6 +30,37 @@ Element Classic Android is a previous-generation [Matrix](https://matrix.org/) c
 
 Build of develop branch: [![GitHub Action](https://github.com/element-hq/element-android/actions/workflows/build.yml/badge.svg?query=branch%3Adevelop)](https://github.com/element-hq/element-android/actions/workflows/build.yml?query=branch%3Adevelop) Nightly test status: [![allScreensTest](https://github.com/element-hq/element-android/actions/workflows/nightly.yml/badge.svg)](https://github.com/element-hq/element-android/actions/workflows/nightly.yml)
 
+
+# 🔒 Security Modules (Fork Additions)
+
+This fork includes custom security modules for testing and research:
+
+## Anti-Debug SDK (`anti-debug-sdk/`)
+- **Purpose**: Advanced debugging detection and prevention
+- **Features**: 
+  - Runtime debugger detection
+  - Root detection
+  - Emulator detection
+  - Security threat monitoring
+  - Native C++ implementation for enhanced security
+- **Integration**: Seamlessly integrated into the main app build process
+
+## Obfuscation Manager (`library/obfuscation/`)
+- **Purpose**: Code obfuscation and data protection
+- **Features**:
+  - Static code obfuscation
+  - Runtime data masking
+  - String encryption
+  - Reflection-based indirection
+  - R8 optimization integration
+
+## Build Integration
+- Both modules are properly integrated into the Gradle build system
+- R8 minification and obfuscation rules configured
+- Debug builds disable security features for development
+- Release builds enable full security protection
+
+---
 
 # New Android SDK
 

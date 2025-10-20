@@ -2,7 +2,7 @@
 
 A **industry-leading**, standalone Android obfuscation library that implements **enterprise-level-level** code protection techniques. This library provides multiple layers of obfuscation, anti-debugging, and security techniques that match the sophistication of enterprise-grade applications.
 
-## enterprise-level Features
+## Enterprise-level Features
 
 ### **Identifier Obfuscation (enterprise-level-Style)**
 - **Single-character naming**: `a0`, `b2`, `c3`, `d1` (exactly like enterprise-level PDF)

@@ -205,3 +205,166 @@
 -keep class com.example.antidebug.ContinuousMonitoring {
     public <methods>;
 }
+
+# R8-Specific Rules for Anti-Debug and Obfuscation Integration
+# Optimized rules for better R8 integration and smaller APK size
+
+# Keep only essential security classes (more aggressive obfuscation)
+-keep class com.example.antidebug.AntiDebug { *; }
+-keep class com.example.antidebug.DebuggerDetection { *; }
+-keep class com.example.antidebug.RootDetection { *; }
+-keep class com.example.antidebug.ResponseHandler { *; }
+-keep class com.example.antidebug.DataProtection { *; }
+-keep class com.example.antidebug.ContinuousMonitoring { *; }
+
+# Keep obfuscation manager but allow internal classes to be obfuscated
+-keep class io.element.android.library.obfuscation.ObfuscationManager { *; }
+-keepclassmembers class io.element.android.library.obfuscation.** {
+    public static <methods>;
+    public <methods>;
+}
+
+# Keep security initialization and monitoring methods
+-keepclassmembers class im.vector.app.VectorApplication {
+    public void initializeSecurity();
+    public void initializeObfuscation();
+    public void performSecurityCheck();
+    public void handleSecurityThreat(...);
+}
+
+# Keep obfuscation manager and its methods
+-keep class io.element.android.library.obfuscation.ObfuscationManager {
+    public static <methods>;
+    public <methods>;
+}
+
+# Optimized obfuscation rules - allow internal classes to be obfuscated
+-keepclassmembers class io.element.android.library.obfuscation.** {
+    public static * mask*(...);
+    public static * encrypt*(...);
+    public static * decrypt*(...);
+    public static * obfuscate*(...);
+    public static * getObfuscationStatus();
+    public static * getObfuscationStats();
+}
+
+# Allow R8 to optimize internal obfuscation classes
+-keepclassmembers class io.element.android.library.obfuscation.static.** {
+    public <methods>;
+}
+-keepclassmembers class io.element.android.library.obfuscation.runtime.** {
+    public <methods>;
+}
+-keepclassmembers class io.element.android.library.obfuscation.data.** {
+    public <methods>;
+}
+-keepclassmembers class io.element.android.library.obfuscation.native.** {
+    public <methods>;
+}
+
+# Keep anti-debug native methods and JNI functions
+-keepclasseswithmembernames class com.example.antidebug.** {
+    native <methods>;
+}
+
+# Keep anti-debug detection methods
+-keepclassmembers class com.example.antidebug.DebuggerDetection {
+    public static <methods>;
+    public <methods>;
+}
+
+-keepclassmembers class com.example.antidebug.RootDetection {
+    public static <methods>;
+    public <methods>;
+}
+
+# Keep security response handling
+-keepclassmembers class com.example.antidebug.ResponseHandler {
+    public <methods>;
+    private <methods>;
+}
+
+# Keep security data classes
+-keep class com.example.antidebug.SecurityReport { *; }
+-keep class com.example.antidebug.MonitoringStatistics { *; }
+-keep class com.example.antidebug.SecurityCheckResult { *; }
+-keep class com.example.antidebug.ThreatInfo { *; }
+-keep enum com.example.antidebug.ThreatType { *; }
+
+# Keep reflection-based security classes
+-keepclassmembers class * {
+    @io.element.android.library.obfuscation.runtime.ReflectionIndirection *;
+}
+
+# Keep security-related serializable classes
+-keep class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+# Google API Client - Missing classes during R8 minification
+-dontwarn com.google.api.client.http.GenericUrl
+-dontwarn com.google.api.client.http.HttpHeaders
+-dontwarn com.google.api.client.http.HttpRequest
+-dontwarn com.google.api.client.http.HttpRequestFactory
+-dontwarn com.google.api.client.http.HttpResponse
+-dontwarn com.google.api.client.http.HttpTransport
+-dontwarn com.google.api.client.http.javanet.NetHttpTransport$Builder
+-dontwarn com.google.api.client.http.javanet.NetHttpTransport
+-dontwarn org.joda.time.Instant
+
+# Exclude problematic Tink classes that require Google API Client
+-assumenosideeffects class com.google.crypto.tink.util.KeysDownloader {
+    public static java.lang.String fetchAndCacheData(...);
+}
+
+# Keep Google API Client classes if they exist
+-keep class com.google.api.client.http.** { *; }
+-keep class com.google.api.client.http.javanet.** { *; }
+-keep class org.joda.time.** { *; }
+
+# R8 Optimization Rules for Better Performance and Smaller APK
+# Allow aggressive optimization while preserving security functionality
+
+# Enable R8 optimizations
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-optimizationpasses 5
+-allowaccessmodification
+-dontpreverify
+
+# Aggressive shrinking for smaller APK (let R8 shrink and show warnings)
+# -dontshrink  // removed to allow code shrinking
+-dontwarn **
+# -ignorewarnings  // removed to keep visibility on potential issues
+
+# Keep only essential security methods, allow others to be optimized
+-keepclassmembers class com.example.antidebug.** {
+    public static <methods>;
+    public <methods>;
+    native <methods>;
+}
+
+# Allow R8 to optimize unused security methods
+-assumenosideeffects class com.example.antidebug.** {
+    public static void log*(...);
+    public static void debug*(...);
+}
+
+# Optimize reflection usage
+-keepclassmembers class * {
+    @io.element.android.library.obfuscation.runtime.ReflectionIndirection *;
+}
+
+# Allow aggressive optimization of data classes
+-keepclassmembers class com.example.antidebug.SecurityReport {
+    public <init>(...);
+    public <methods>;
+}
+-keepclassmembers class com.example.antidebug.MonitoringStatistics {
+    public <init>(...);
+    public <methods>;
+}

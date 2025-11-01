@@ -1,77 +1,62 @@
-## FORK NOTICE
+# Element Android (Advanced Security Research Fork)
 
-**This is a FORK of [Element Android](https://github.com/element-hq/element-android) for testing Anti-Debug and Obfuscation modules.**
+This is a specialized fork of the official Element Android repository. Its primary purpose is for the research, development, and testing of custom, integrated Android security modules.
 
-This repository has been forked specifically to integrate and test custom security modules:
-- **[Anti-Debug SDK](./anti-debug-sdk/)**: Advanced debugging detection and prevention
-- **[Obfuscation Manager](./library/obfuscation/)**: Code obfuscation and data protection
+**Disclaimer:** This is **not** the official Element Android repository and is intended for research and testing purposes only. It is not recommended for production use. For the official client, please visit [element-hq/element-android](https://github.com/element-hq/element-android).
 
-**Important Notes:**
-- This is NOT the official Element Android repository
-- For the official Element Android app, visit: [element-hq/element-android](https://github.com/element-hq/element-android)
-- This fork is for research and testing purposes only
-- Do not use this for production applications
+This fork integrates two custom modules to evaluate their effectiveness and integration impact on a large-scale application:
 
-## Security Modules (Fork Additions)
+- **`raspmodule` (RASP SDK):** Provides runtime detection of debuggers, root access, emulators, tampering, and hooking.
+- **`obfuscationlib` (Obfuscation Library):** Manages advanced static/dynamic code obfuscation and data protection.
 
-This fork includes custom security modules for testing and research:
+## Custom Security Modules
 
-### [Anti-Debug SDK](./anti-debug-sdk/)
-- **Purpose**: Advanced debugging detection and prevention
-- **Features**: 
-  - Runtime debugger detection
-  - Root detection
-  - Emulator detection
-  - Security threat monitoring
-  - Native C++ implementation for enhanced security
-- **Integration**: Seamlessly integrated into the main app build process
-- **Documentation**: [README](./anti-debug-sdk/README.md) | [Integration Guide](./anti-debug-sdk/INTEGRATION_GUIDE.md) | [Techniques](./anti-debug-sdk/Anti_Debug_Techniques_Documentation.md)
+### 1. RASP SDK (`raspmodule`)
 
-### [Obfuscation Manager](./library/obfuscation/)
-- **Purpose**: Code obfuscation and data protection
-- **Features**:
-  - Static code obfuscation
-  - Runtime data masking
-  - String encryption
-  - Reflection-based indirection
-  - R8 optimization integration
-- **Documentation**: [README](./library/obfuscation/README.md) | [Integration Summary](./library/obfuscation/INTEGRATION_SUMMARY.md) | [Techniques](./library/obfuscation/Obfuscation_Techniques_Documentation.md)
+**Purpose:** Provides robust detection of and prevention against runtime analysis and reverse-engineering attempts.
 
-### Build Integration
-- Both modules are properly integrated into the Gradle build system
-- R8 minification and obfuscation rules configured
-- Debug builds disable security features for development
-- Release builds enable full security protection
+**Key Features:**
 
-## Research Results
+- **Debugger Detection:** Detects attached debuggers (Java/JDWP, Native/Ptrace) and `TracerPid` status.
+- **Root Detection:** Scans for `su` binaries, root-management apps (Magisk), and insecure system properties.
+- **Emulator Detection:** Identifies virtual environments by checking hardware properties and QEMU artifacts.
+- **Tamper Detection:** Verifies APK signature and DEX file integrity (checksums).
+- **Hook Detection:** Scans for artifacts from common hooking frameworks (Frida, Xposed).
+- **Native C++ Implementation:** Core checks are implemented in native code for performance and resilience.
 
-This security research effort has successfully demonstrated:
+**Documentation:** `raspmodule/README.md`
 
-### Implementation Success
-- **Anti-Debug SDK**: Successfully integrated with native C++ components
-- **Obfuscation Manager**: Fully functional with R8 optimization
-- **Build System**: Seamless integration with existing Gradle configuration
-- **APK Generation**: Both debug (409MB) and release (301MB) APKs build successfully
+### 2. Obfuscation Library (`obfuscationlib`)
 
-### Security Features Validated
-- **Debugger Detection**: Multiple detection methods implemented and tested
-- **Root Detection**: Comprehensive root and emulator detection capabilities
-- **Code Obfuscation**: R8 integration with custom ProGuard rules
-- **Data Protection**: Runtime data masking and string encryption
-- **Build Optimization**: 25% size reduction in release builds through R8 minification
+**Purpose:** Implements layered code obfuscation and data protection strategies that work _with_ R8.
 
-### Technical Achievements
-- **Native Integration**: C++ anti-debug components compiled for multiple architectures
-- **R8 Compatibility**: Custom ProGuard rules optimized for R8 minification
-- **Multi-Architecture Support**: ARM64, ARMv7, x86, x86_64 support
-- **Debug/Release Separation**: Security features configurable per build type
-- **Documentation**: Comprehensive technical documentation and integration guides
+**Key Features:**
 
-### Research Outcomes
-- Demonstrated feasibility of integrating advanced security modules into large Android projects
-- Validated effectiveness of multi-layered security approach
-- Successfully tested R8 optimization with custom security rules
-- Created reusable security modules for future Android projects
+- **Static Code Obfuscation:** Applies aggressive Identifier Renaming, Control-Flow Flattening (CFF), and Instruction Substitution.
+- **Data Protection:** Implements multi-layer String Encryption for sensitive constants.
+- **Dynamic Loading:** Prepares the app by encrypting main DEX files, which are then loaded at runtime by a stub.
+- **Native Code Obfuscation:** Includes tools for Native Symbol Stripping and CFF.
+
+**Documentation:** `obfuscationlib/README.md`
+
+## Build and Integration
+
+Both security modules are integrated into the main application's Gradle build process. The configuration is build-type dependent:
+
+- **`aggressiveRelease` Builds:** Enable full RASP protections and all custom obfuscation passes, working in tandem with R8 minification.
+- **`debug` Builds:** Disable all security features to allow for standard development and debugging workflows.
+
+## Project Status & Objectives
+
+This fork serves as a proof-of-concept to validate the integration of advanced security layers into a complex, pre-existing Android application.
+
+The primary objectives of this research include:
+
+- **Validating Integration:** Testing the feasibility of integrating native (C++) security components and custom obfuscation rules into the Element codebase.
+- **Testing Efficacy:** Assessing the effectiveness of a multi-layered security approach (combining RASP, dynamic loading, and static obfuscation).
+- **Creating Reusable Modules:** Developing the **RASP SDK** and **Obfuscation Library** as standalone modules that can be adapted for other projects.
+- **Build Optimization:** Successfully compiling for multiple architectures (ARM64, ARMv7, x86, x86_64) while ensuring R8 minification and security rules work in sync.
+
 
 [![Latest build](https://github.com/element-hq/element-android/actions/workflows/build.yml/badge.svg?query=branch%3Adevelop)](https://github.com/element-hq/element-android/actions/workflows/build.yml?query=branch%3Adevelop)
 [![Weblate](https://translate.element.io/widgets/element-android/-/svg-badge.svg)](https://translate.element.io/engage/element-android/?utm_source=widget)
@@ -80,7 +65,7 @@ This security research effort has successfully demonstrated:
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=element-android&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=element-android)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=element-android&metric=bugs)](https://sonarcloud.io/summary/new_code?id=element-android)
 
-# Element Android (Fork for Security Testing)
+# Element Android
 
 Element Classic Android is a previous-generation [Matrix](https://matrix.org/) client provided by [Element](https://element.io/). The app can be run on every Android devices with Android OS Lollipop and more (API 21). This client is still supported and receives security updates but no new features or usability enhancements are made. It is recommended to use [Element X](https://github.com/element-hq/element-x-android) that is the next-generation mobile app.
 

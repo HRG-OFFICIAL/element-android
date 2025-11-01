@@ -1,4 +1,4 @@
-# Security Modules Documentation
+﻿# Security Modules Documentation
 
 This fork of Element Android includes custom security modules for testing and research purposes.
 
@@ -8,7 +8,7 @@ This repository has been forked from the official [Element Android](https://gith
 
 ## Modules
 
-### 1. Anti-Debug SDK (`anti-debug-sdk/`)
+### 1. RASP SDK (`raspmodule/`)
 
 A comprehensive anti-debugging solution that provides multiple layers of protection:
 
@@ -88,3 +88,4 @@ This fork maintains the same dual licensing as the original Element Android proj
 - Element Commercial License
 
 The security modules are provided as-is for research and testing purposes.
+

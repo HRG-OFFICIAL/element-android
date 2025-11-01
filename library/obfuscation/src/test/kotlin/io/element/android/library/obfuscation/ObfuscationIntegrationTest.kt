@@ -1,4 +1,4 @@
-package io.element.android.library.obfuscation
+﻿package io.element.android.library.obfuscation
 
 import android.content.Context
 import io.element.android.library.obfuscation.static.AdvancedObfuscator
@@ -158,8 +158,8 @@ class ObfuscationIntegrationTest {
         assertNotNull("Symbol stripping should work", strippedData)
 
         // Test anti-debug checks
-        val antiDebugData = nativeObf.addAntiDebugChecks(testLibraryData)
-        assertNotNull("Anti-debug checks should work", antiDebugData)
+        val RASPData = nativeObf.addRASPChecks(testLibraryData)
+        assertNotNull("Anti-debug checks should work", RASPData)
 
         // Test library integrity verification
         val integrityResult = nativeObf.verifyLibraryIntegrity(testLibraryPath)
@@ -267,3 +267,4 @@ class ObfuscationIntegrationTest {
         assertNotNull("TimingObfuscator should be accessible", TimingObfuscator)
     }
 }
+

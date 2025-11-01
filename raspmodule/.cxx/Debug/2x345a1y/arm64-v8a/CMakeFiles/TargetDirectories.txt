@@ -1,0 +1,4 @@
+﻿C:/Users/harsh/OneDrive/Desktop/Project/element-android/raspmodule/.cxx/Debug/2x345a1y/arm64-v8a/CMakeFiles/rasp-native.dir
+C:/Users/harsh/OneDrive/Desktop/Project/element-android/raspmodule/.cxx/Debug/2x345a1y/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/harsh/OneDrive/Desktop/Project/element-android/raspmodule/.cxx/Debug/2x345a1y/arm64-v8a/CMakeFiles/rebuild_cache.dir
+

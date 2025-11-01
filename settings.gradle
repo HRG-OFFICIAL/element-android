@@ -1,4 +1,4 @@
-include ':vector-app'
+﻿include ':vector-app'
 include ':vector'
 include ':vector-config'
 
@@ -23,5 +23,5 @@ include ':matrix-sdk-android'
 include ':matrix-sdk-android-flow'
 
 // Security and Obfuscation modules
-include ':anti-debug-sdk'
+include ':raspmodule'
 include ':library:obfuscation'

@@ -125,7 +125,7 @@
 
 # ===== ANTI-DEBUG PROTECTION =====
 # Keep anti-debug classes
--keep class com.example.antidebug.** { *; }
+-keep class com.example.raspsdk.** { *; }
 
 # ===== ADVANCED OBFUSCATION TECHNIQUES =====
 # enterprise-level-style class renaming

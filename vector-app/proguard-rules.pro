@@ -1,4 +1,4 @@
-# Add project specific ProGuard rules here.
+﻿# Add project specific ProGuard rules here.
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.
 #
@@ -96,9 +96,9 @@
 -dontwarn org.jspecify.annotations.NullMarked
 
 # Security and Obfuscation Rules
-# Anti-Debug SDK
+# RASP SDK
 -keep class im.vector.app.security.** { *; }
--keep class im.vector.app.security.AntiDebug { *; }
+-keep class im.vector.app.security.RASP { *; }
 -keep class im.vector.app.security.SecurityReport { *; }
 -keep class im.vector.app.security.ThreatType { *; }
 -keep class im.vector.app.security.ResponseHandler { *; }
@@ -168,9 +168,9 @@
     java.lang.Object readResolve();
 }
 
-# Anti-Debug SDK Rules
--keep class com.example.antidebug.** { *; }
--keepclassmembers class com.example.antidebug.** {
+# RASP SDK Rules
+-keep class com.example.raspsdk.** { *; }
+-keepclassmembers class com.example.raspsdk.** {
     public <methods>;
 }
 
@@ -180,29 +180,29 @@
 }
 
 # Keep anti-debug data classes
--keep class com.example.antidebug.SecurityReport { *; }
--keep class com.example.antidebug.MonitoringStatistics { *; }
--keep class com.example.antidebug.SecurityCheckResult { *; }
--keep class com.example.antidebug.ThreatInfo { *; }
--keep enum com.example.antidebug.ThreatType { *; }
+-keep class com.example.raspsdk.SecurityReport { *; }
+-keep class com.example.raspsdk.MonitoringStatistics { *; }
+-keep class com.example.raspsdk.SecurityCheckResult { *; }
+-keep class com.example.raspsdk.ThreatInfo { *; }
+-keep enum com.example.raspsdk.ThreatType { *; }
 
 # Keep anti-debug public API
--keep class com.example.antidebug.AntiDebug {
+-keep class com.example.raspsdk.RASP {
     public static <methods>;
 }
 
 # Keep response handler
--keep class com.example.antidebug.ResponseHandler {
+-keep class com.example.raspsdk.ResponseHandler {
     public <methods>;
 }
 
 # Keep data protection
--keep class com.example.antidebug.DataProtection {
+-keep class com.example.raspsdk.DataProtection {
     public <methods>;
 }
 
 # Keep continuous monitoring
--keep class com.example.antidebug.ContinuousMonitoring {
+-keep class com.example.raspsdk.ContinuousMonitoring {
     public <methods>;
 }
 
@@ -210,12 +210,12 @@
 # Optimized rules for better R8 integration and smaller APK size
 
 # Keep only essential security classes (more aggressive obfuscation)
--keep class com.example.antidebug.AntiDebug { *; }
--keep class com.example.antidebug.DebuggerDetection { *; }
--keep class com.example.antidebug.RootDetection { *; }
--keep class com.example.antidebug.ResponseHandler { *; }
--keep class com.example.antidebug.DataProtection { *; }
--keep class com.example.antidebug.ContinuousMonitoring { *; }
+-keep class com.example.raspsdk.RASP { *; }
+-keep class com.example.raspsdk.DebuggerDetection { *; }
+-keep class com.example.raspsdk.RootDetection { *; }
+-keep class com.example.raspsdk.ResponseHandler { *; }
+-keep class com.example.raspsdk.DataProtection { *; }
+-keep class com.example.raspsdk.ContinuousMonitoring { *; }
 
 # Keep obfuscation manager but allow internal classes to be obfuscated
 -keep class io.element.android.library.obfuscation.ObfuscationManager { *; }
@@ -263,33 +263,33 @@
 }
 
 # Keep anti-debug native methods and JNI functions
--keepclasseswithmembernames class com.example.antidebug.** {
+-keepclasseswithmembernames class com.example.raspsdk.** {
     native <methods>;
 }
 
 # Keep anti-debug detection methods
--keepclassmembers class com.example.antidebug.DebuggerDetection {
+-keepclassmembers class com.example.raspsdk.DebuggerDetection {
     public static <methods>;
     public <methods>;
 }
 
--keepclassmembers class com.example.antidebug.RootDetection {
+-keepclassmembers class com.example.raspsdk.RootDetection {
     public static <methods>;
     public <methods>;
 }
 
 # Keep security response handling
--keepclassmembers class com.example.antidebug.ResponseHandler {
+-keepclassmembers class com.example.raspsdk.ResponseHandler {
     public <methods>;
     private <methods>;
 }
 
 # Keep security data classes
--keep class com.example.antidebug.SecurityReport { *; }
--keep class com.example.antidebug.MonitoringStatistics { *; }
--keep class com.example.antidebug.SecurityCheckResult { *; }
--keep class com.example.antidebug.ThreatInfo { *; }
--keep enum com.example.antidebug.ThreatType { *; }
+-keep class com.example.raspsdk.SecurityReport { *; }
+-keep class com.example.raspsdk.MonitoringStatistics { *; }
+-keep class com.example.raspsdk.SecurityCheckResult { *; }
+-keep class com.example.raspsdk.ThreatInfo { *; }
+-keep enum com.example.raspsdk.ThreatType { *; }
 
 # Keep reflection-based security classes
 -keepclassmembers class * {
@@ -342,14 +342,14 @@
 # -ignorewarnings  // removed to keep visibility on potential issues
 
 # Keep only essential security methods, allow others to be optimized
--keepclassmembers class com.example.antidebug.** {
+-keepclassmembers class com.example.raspsdk.** {
     public static <methods>;
     public <methods>;
     native <methods>;
 }
 
 # Allow R8 to optimize unused security methods
--assumenosideeffects class com.example.antidebug.** {
+-assumenosideeffects class com.example.raspsdk.** {
     public static void log*(...);
     public static void debug*(...);
 }
@@ -360,11 +360,11 @@
 }
 
 # Allow aggressive optimization of data classes
--keepclassmembers class com.example.antidebug.SecurityReport {
+-keepclassmembers class com.example.raspsdk.SecurityReport {
     public <init>(...);
     public <methods>;
 }
--keepclassmembers class com.example.antidebug.MonitoringStatistics {
+-keepclassmembers class com.example.raspsdk.MonitoringStatistics {
     public <init>(...);
     public <methods>;
 }

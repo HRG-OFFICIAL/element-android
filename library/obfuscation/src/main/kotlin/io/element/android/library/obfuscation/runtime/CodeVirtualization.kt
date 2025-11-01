@@ -1,4 +1,4 @@
-package io.element.android.library.obfuscation.runtime
+﻿package io.element.android.library.obfuscation.runtime
 
 import java.security.SecureRandom
 import java.util.concurrent.ConcurrentHashMap
@@ -225,7 +225,7 @@ object CodeVirtualization {
             0x1002 -> performDataValidation()
             0x1003 -> performEncryption()
             0x1004 -> performDecryption()
-            0x1005 -> performAntiDebugCheck()
+            0x1005 -> performRASPCheck()
             else -> 0
         }
     }
@@ -265,7 +265,7 @@ object CodeVirtualization {
     /**
      * Anti-debug check function
      */
-    private fun performAntiDebugCheck(): Boolean {
+    private fun performRASPCheck(): Boolean {
         // Implement anti-debug checks here
         return false
     }
@@ -392,3 +392,4 @@ object CodeVirtualization {
         )
     }
 }
+

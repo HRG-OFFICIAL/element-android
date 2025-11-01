@@ -1,4 +1,4 @@
-import com.android.build.OutputFile
+﻿import com.android.build.OutputFile
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.appdistribution'
@@ -210,8 +210,8 @@ android {
     }
 
     testOptions {
-        // Disables animations during instrumented tests you run from the command line…
-        // This property does not affect tests that you run using Android Studio.”
+        // Disables animations during instrumented tests you run from the command lineâ€¦
+        // This property does not affect tests that you run using Android Studio.â€
         animationsDisabled = true
 
         // Comment to run on Android 12
@@ -388,7 +388,7 @@ dependencies {
     implementation project(':library:ui-strings')
     
     // Security and Obfuscation modules
-    implementation project(':anti-debug-sdk')
+    implementation project(':raspmodule')
     implementation project(':library:obfuscation')
     debugImplementation project(':library:external:span')
     debugImplementation project(':library:ui-styles')
@@ -451,3 +451,4 @@ dependencies {
     debugImplementation libs.androidx.fragmentTestingManifest
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 }
+

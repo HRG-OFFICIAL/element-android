@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2022-2024 New Vector Ltd.
  *
  * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-Element-Commercial
@@ -64,11 +64,11 @@ import im.vector.application.R
 import org.jitsi.meet.sdk.log.JitsiMeetDefaultLogHandler
 
 // Security and Obfuscation imports
-import com.example.antidebug.AntiDebug
-import com.example.antidebug.AntiDebug.ThreatType
-import com.example.antidebug.SecurityReport
-import com.example.antidebug.MonitoringStatistics
-import com.example.antidebug.SecurityCheckResult
+import com.example.raspsdk.RASP
+import com.example.raspsdk.RASP.ThreatType
+import com.example.raspsdk.SecurityReport
+import com.example.raspsdk.MonitoringStatistics
+import com.example.raspsdk.SecurityCheckResult
 import io.element.android.library.obfuscation.ObfuscationManager
 import io.element.android.library.obfuscation.ObfuscationConfig
 import org.matrix.android.sdk.api.Matrix
@@ -603,11 +603,11 @@ class VectorApplication :
                 return
             }
             
-            // Initialize AntiDebug SDK with continuous monitoring for production builds
-            AntiDebug.init(this, enableContinuousMonitoring = !buildMeta.isDebug)
+            // Initialize RASP SDK with continuous monitoring for production builds
+            RASP.init(this, enableContinuousMonitoring = !buildMeta.isDebug)
             
             // Perform initial security check
-            val securityReport = AntiDebug.performSecurityCheck()
+            val securityReport = RASP.performSecurityCheck()
             
             // Handle any detected threats
             if (securityReport.hasThreats()) {
@@ -728,7 +728,7 @@ class VectorApplication :
                 return
             }
             
-            val securityReport = AntiDebug.performSecurityCheck()
+            val securityReport = RASP.performSecurityCheck()
             if (securityReport.hasThreats()) {
                 handleSecurityThreats(securityReport)
             }
@@ -742,7 +742,7 @@ class VectorApplication :
      */
     fun getSecurityStatistics(): MonitoringStatistics? {
         return try {
-            AntiDebug.getMonitoringStatistics()
+            RASP.getMonitoringStatistics()
         } catch (e: Exception) {
             Timber.e(e, "Failed to get security statistics")
             null
@@ -754,7 +754,7 @@ class VectorApplication :
      */
     fun performImmediateSecurityCheck(): SecurityCheckResult? {
         return try {
-            AntiDebug.performImmediateSecurityCheck()
+            RASP.performImmediateSecurityCheck()
         } catch (e: Exception) {
             Timber.e(e, "Failed to perform immediate security check")
             null
@@ -766,7 +766,7 @@ class VectorApplication :
      */
     fun pauseSecurityMonitoring() {
         try {
-            AntiDebug.pauseMonitoring()
+            RASP.pauseMonitoring()
             Timber.d("Security monitoring paused")
         } catch (e: Exception) {
             Timber.e(e, "Failed to pause security monitoring")
@@ -778,7 +778,7 @@ class VectorApplication :
      */
     fun resumeSecurityMonitoring() {
         try {
-            AntiDebug.resumeMonitoring()
+            RASP.resumeMonitoring()
             Timber.d("Security monitoring resumed")
         } catch (e: Exception) {
             Timber.e(e, "Failed to resume security monitoring")
@@ -788,9 +788,9 @@ class VectorApplication :
     /**
      * Get data protection instance for secure storage
      */
-    fun getDataProtection(): com.example.antidebug.DataProtection? {
+    fun getDataProtection(): com.example.raspsdk.DataProtection? {
         return try {
-            AntiDebug.getDataProtection()
+            RASP.getDataProtection()
         } catch (e: Exception) {
             Timber.e(e, "Failed to get data protection instance")
             null
@@ -802,9 +802,10 @@ class VectorApplication :
      */
     fun handleSecurityThreat(threatType: ThreatType) {
         try {
-            AntiDebug.handleThreat(threatType)
+            RASP.handleThreat(threatType)
         } catch (e: Exception) {
             Timber.e(e, "Failed to handle security threat: $threatType")
         }
     }
 }
+

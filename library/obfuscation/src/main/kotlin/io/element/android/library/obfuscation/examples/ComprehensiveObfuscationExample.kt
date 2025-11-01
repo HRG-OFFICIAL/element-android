@@ -1,4 +1,4 @@
-package io.element.android.library.obfuscation.examples
+﻿package io.element.android.library.obfuscation.examples
 
 import android.content.Context
 import io.element.android.library.obfuscation.ObfuscationManager
@@ -316,14 +316,14 @@ class ComprehensiveObfuscationExample(private val context: Context) {
         val strippedData = obfuscationManager.nativeObfuscation.stripSymbols(libraryData)
         
         // Add anti-debug checks
-        val antiDebugData = obfuscationManager.nativeObfuscation.addAntiDebugChecks(libraryData)
+        val RASPData = obfuscationManager.nativeObfuscation.addRASPChecks(libraryData)
         
         // Verify library integrity
         val integrityResult = obfuscationManager.nativeObfuscation.verifyLibraryIntegrity(libraryPath)
         
         println("Library obfuscated: $obfuscatedPath")
         println("Symbols stripped: ${strippedData.size != libraryData.size}")
-        println("Anti-debug added: ${antiDebugData.size != libraryData.size}")
+        println("Anti-debug added: ${RASPData.size != libraryData.size}")
         println("Integrity verified: $integrityResult")
     }
 
@@ -426,3 +426,4 @@ class ComprehensiveObfuscationExample(private val context: Context) {
         println("=== Workflow Complete ===")
     }
 }
+

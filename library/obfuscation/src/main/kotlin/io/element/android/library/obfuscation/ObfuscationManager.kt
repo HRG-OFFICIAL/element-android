@@ -1,4 +1,4 @@
-package io.element.android.library.obfuscation
+﻿package io.element.android.library.obfuscation
 
 import android.content.Context
 import io.element.android.library.obfuscation.static.AdvancedObfuscator
@@ -467,8 +467,8 @@ class ObfuscationManager private constructor(
             return NativeObfuscator.SymbolStripper.stripSymbols(libraryData)
         }
         
-        fun addAntiDebugChecks(libraryData: ByteArray): ByteArray {
-            return NativeObfuscator.NativeAntiDebug.addAntiDebugChecks(libraryData)
+        fun addRASPChecks(libraryData: ByteArray): ByteArray {
+            return NativeObfuscator.NativeRASP.addRASPChecks(libraryData)
         }
         
         fun verifyLibraryIntegrity(libraryPath: String): Boolean {
@@ -748,4 +748,5 @@ class ObfuscationManager private constructor(
     }
     
 }
+
 

@@ -1,4 +1,4 @@
-package io.element.android.library.obfuscation
+﻿package io.element.android.library.obfuscation
 
 import android.content.Context
 import android.util.Log
@@ -140,7 +140,7 @@ class SimpleObfuscationManager private constructor(
     /**
      * Simple Anti-Debug
      */
-    object AntiDebug {
+    object RASP {
         
         /**
          * Check if debugger is attached
@@ -223,19 +223,19 @@ class SimpleObfuscationManager private constructor(
             Log.d("SimpleObfuscationMgr", "Applying basic obfuscation...")
             
             // Check for debugger
-            if (AntiDebug.isDebuggerAttached()) {
+            if (RASP.isDebuggerAttached()) {
                 Log.w("SimpleObfuscationMgr", "Debugger detected!")
                 return false
             }
             
             // Check for emulator
-            if (AntiDebug.isRunningInEmulator()) {
+            if (RASP.isRunningInEmulator()) {
                 Log.w("SimpleObfuscationMgr", "Emulator detected!")
                 return false
             }
             
             // Check for root
-            if (AntiDebug.isDeviceRooted()) {
+            if (RASP.isDeviceRooted()) {
                 Log.w("SimpleObfuscationMgr", "Rooted device detected!")
                 return false
             }
@@ -255,3 +255,4 @@ class SimpleObfuscationManager private constructor(
 class SimpleObfuscationConfig : ObfuscationConfig {
     override val isDebugMode: Boolean = false
 }
+

@@ -1,4 +1,4 @@
-package io.element.android.library.obfuscation.native
+﻿package io.element.android.library.obfuscation.native
 
 import android.content.Context
 import android.util.Base64
@@ -29,7 +29,7 @@ object NativeObfuscator {
     private val secureRandom = SecureRandom()
     private val nativeKey = generateNativeKey()
     private val obfuscationKey = generateObfuscationKey()
-    private val antiDebugKey = generateAntiDebugKey()
+    private val RASPKey = generateRASPKey()
     
     // ===== NATIVE CODE OBFUSCATION =====
     
@@ -239,22 +239,22 @@ object NativeObfuscator {
     /**
      * Anti-debugging and anti-tampering
      */
-    object NativeAntiDebug {
+    object NativeRASP {
         
-        fun addAntiDebugChecks(libraryData: ByteArray): ByteArray {
+        fun addRASPChecks(libraryData: ByteArray): ByteArray {
             val protected = libraryData.copyOf()
             
             // Add anti-debugging code patterns
-            val antiDebugCode = generateAntiDebugCode()
-            val result = ByteArray(protected.size + antiDebugCode.size)
+            val RASPCode = generateRASPCode()
+            val result = ByteArray(protected.size + RASPCode.size)
             
             System.arraycopy(protected, 0, result, 0, protected.size)
-            System.arraycopy(antiDebugCode, 0, result, protected.size, antiDebugCode.size)
+            System.arraycopy(RASPCode, 0, result, protected.size, RASPCode.size)
             
             return result
         }
         
-        private fun generateAntiDebugCode(): ByteArray {
+        private fun generateRASPCode(): ByteArray {
             // Generate anti-debugging machine code
             val code = ByteArray(64)
             secureRandom.nextBytes(code)
@@ -483,10 +483,10 @@ object NativeObfuscator {
         obfuscatedData = SymbolStripper.obfuscateFunctionNames(obfuscatedData)
         
         // 3. Add anti-debugging checks
-        obfuscatedData = NativeAntiDebug.addAntiDebugChecks(obfuscatedData)
+        obfuscatedData = NativeRASP.addRASPChecks(obfuscatedData)
         
         // 4. Add anti-tampering checks
-        obfuscatedData = NativeAntiDebug.addAntiTamperingChecks(obfuscatedData)
+        obfuscatedData = NativeRASP.addAntiTamperingChecks(obfuscatedData)
         
         // 5. Apply native library obfuscation
         obfuscatedData = obfuscateNativeCode(obfuscatedData)
@@ -530,7 +530,7 @@ object NativeObfuscator {
             obfuscated = encryptNativeCode(obfuscated)
             
             // Layer 6: Anti-debugging protection
-            obfuscated = insertAntiDebuggingCode(obfuscated)
+            obfuscated = insertRASPgingCode(obfuscated)
             
             return obfuscated
         }
@@ -649,7 +649,7 @@ object NativeObfuscator {
         /**
          * Insert anti-debugging code
          */
-        private fun insertAntiDebuggingCode(code: ByteArray): ByteArray {
+        private fun insertRASPgingCode(code: ByteArray): ByteArray {
             val obfuscatedCode = mutableListOf<Byte>()
             var i = 0
             
@@ -658,7 +658,7 @@ object NativeObfuscator {
                 
                 // Insert anti-debugging instructions randomly
                 if (secureRandom.nextInt(100) < 3) { // 3% chance
-                    obfuscatedCode.addAll(generateAntiDebuggingCode())
+                    obfuscatedCode.addAll(generateRASPgingCode())
                 }
                 
                 i++
@@ -713,7 +713,7 @@ object NativeObfuscator {
             )
         }
         
-        private fun generateAntiDebuggingCode(): List<Byte> {
+        private fun generateRASPgingCode(): List<Byte> {
             return listOf(
                 0x31.toByte(), 0xC0.toByte(), // XOR EAX, EAX
                 0x40.toByte(),                // INC EAX
@@ -730,10 +730,11 @@ object NativeObfuscator {
         return key
     }
     
-    private fun generateAntiDebugKey(): ByteArray {
+    private fun generateRASPKey(): ByteArray {
         val key = ByteArray(16)
         secureRandom.nextBytes(key)
         return key
     }
 }
+
 

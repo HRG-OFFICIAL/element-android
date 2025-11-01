@@ -1,0 +1,88 @@
+﻿plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.raspsdk'
+    compileSdk versions.compileSdk
+
+    defaultConfig {
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        // NDK configuration
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+        }
+
+        externalNativeBuild {
+            cmake {
+                cppFlags '-std=c++17'
+                arguments '-DANDROID_STL=c++_static'
+                // 16KB page size compatibility flags
+                arguments '-DANDROID_SUPPORT_16KB_PAGE_SIZE=ON'
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            // Suppress warnings for debug builds
+            kotlinOptions {
+                freeCompilerArgs += ["-Xsuppress-version-warnings"]
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility versions.sourceCompat
+        targetCompatibility versions.targetCompat
+    }
+
+    kotlinOptions {
+        jvmTarget = versions.jvmTarget
+        freeCompilerArgs += ["-Xallow-unstable-dependencies"]
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+    
+    // Suppress warnings
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs += ["-Xsuppress-version-warnings", "-Xno-warn"]
+            allWarningsAsErrors = false
+        }
+    }
+    
+}
+
+dependencies {
+    implementation project(':vector-config')
+    implementation libs.androidx.core
+    implementation libs.androidx.appCompat
+    implementation libs.jetbrains.coroutinesCore
+    implementation libs.jetbrains.coroutinesAndroid
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+    
+    testImplementation libs.tests.junit
+    androidTestImplementation libs.androidx.testRunner
+    androidTestImplementation libs.androidx.espressoCore
+}
+

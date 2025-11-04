@@ -1,21 +1,21 @@
-# Element Android (Advanced Security Research Fork)
+# Element Android — Advanced Security Research Fork
 
-This is a specialized fork of the official Element Android repository. Its primary purpose is for the research, development, and testing of custom, integrated Android security modules.
+This repository is a research-focused fork of the official Element Android app. It explores how advanced runtime protections and obfuscation can be integrated into a large, production-grade Android codebase.
 
-**Disclaimer:** This is **not** the official Element Android repository and is intended for research and testing purposes only. It is not recommended for production use. For the official client, please visit [element-hq/element-android](https://github.com/element-hq/element-android).
+Disclaimer: This is not the official Element Android repository and is intended for research and testing only. For the official client, see `element-hq/element-android`.
 
-This fork integrates two custom modules to evaluate their effectiveness and integration impact on a large-scale application:
+What’s included in this fork:
 
-- **`raspmodule` (RASP SDK):** Provides runtime detection of debuggers, root access, emulators, tampering, and hooking.
-- **`obfuscationlib` (Obfuscation Library):** Manages advanced static/dynamic code obfuscation and data protection.
+- `raspmodule` (RASP SDK): runtime detection and responses for debuggers, root, emulators, tampering, and hooking.
+- `obfuscationlib` (Obfuscation Library): layered static/dynamic obfuscation and data-protection utilities that complement R8.
 
 ## Custom Security Modules
 
-### 1. RASP SDK (`raspmodule`)
+### 1) RASP SDK (`raspmodule`)
 
-**Purpose:** Provides robust detection of and prevention against runtime analysis and reverse-engineering attempts.
+Purpose: resist runtime analysis and reverse engineering.
 
-**Key Features:**
+Highlights:
 
 - **Debugger Detection:** Detects attached debuggers (Java/JDWP, Native/Ptrace) and `TracerPid` status.
 - **Root Detection:** Scans for `su` binaries, root-management apps (Magisk), and insecure system properties.
@@ -26,11 +26,11 @@ This fork integrates two custom modules to evaluate their effectiveness and inte
 
 **Documentation:** `raspmodule/README.md`
 
-### 2. Obfuscation Library (`obfuscationlib`)
+### 2) Obfuscation Library (`obfuscationlib`)
 
-**Purpose:** Implements layered code obfuscation and data protection strategies that work _with_ R8.
+Purpose: provide layered obfuscation and data protection on top of R8.
 
-**Key Features:**
+Highlights:
 
 - **Static Code Obfuscation:** Applies aggressive Identifier Renaming, Control-Flow Flattening (CFF), and Instruction Substitution.
 - **Data Protection:** Implements multi-layer String Encryption for sensitive constants.
@@ -41,22 +41,21 @@ This fork integrates two custom modules to evaluate their effectiveness and inte
 
 ## Build and Integration
 
-Both security modules are integrated into the main application's Gradle build process. The configuration is build-type dependent:
+Security modules are wired into the Gradle build. Behavior differs by build type:
 
 - **`aggressiveRelease` Builds:** Enable full RASP protections and all custom obfuscation passes, working in tandem with R8 minification.
 - **`debug` Builds:** Disable all security features to allow for standard development and debugging workflows.
 
 ## Project Status & Objectives
 
-This fork serves as a proof-of-concept to validate the integration of advanced security layers into a complex, pre-existing Android application.
+This fork is a proof‑of‑concept to validate multi‑layer security within a complex Android app.
 
-The primary objectives of this research include:
+Primary goals:
 
 - **Validating Integration:** Testing the feasibility of integrating native (C++) security components and custom obfuscation rules into the Element codebase.
 - **Testing Efficacy:** Assessing the effectiveness of a multi-layered security approach (combining RASP, dynamic loading, and static obfuscation).
 - **Creating Reusable Modules:** Developing the **RASP SDK** and **Obfuscation Library** as standalone modules that can be adapted for other projects.
 - **Build Optimization:** Successfully compiling for multiple architectures (ARM64, ARMv7, x86, x86_64) while ensuring R8 minification and security rules work in sync.
-
 
 [![Latest build](https://github.com/element-hq/element-android/actions/workflows/build.yml/badge.svg?query=branch%3Adevelop)](https://github.com/element-hq/element-android/actions/workflows/build.yml?query=branch%3Adevelop)
 [![Weblate](https://translate.element.io/widgets/element-android/-/svg-badge.svg)](https://translate.element.io/engage/element-android/?utm_source=widget)
